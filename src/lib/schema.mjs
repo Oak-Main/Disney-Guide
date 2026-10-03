@@ -265,6 +265,17 @@ export function article (site, { url, title, description, modified, section }) {
     headline: truncate(title, 110),
     description: truncate(description, 300),
     url: abs(site, url),
+    // The same social card the page already declares as og:image/twitter:image,
+    // so this adds no new claim — it makes an existing one machine-readable.
+    // Left undefined when the operator has no social card, rather than pointing
+    // at some other image that does not represent this page.
+    image: site.socialImage || undefined,
+    // datePublished is deliberately NOT defaulted to `modified`. A page is not
+    // published on the day it was last verified, and repeating a modified date
+    // in a published field is a false statement in structured data. Pages with no
+    // real publish date are listed in schema-review.csv for a human to supply
+    // from the CMS or the authoring record — never from git.
+    datePublished: undefined,
     dateModified: modified,
     articleSection: section,
     inLanguage: site.brand.locale,
