@@ -1,9 +1,31 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises'
+import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-import { serviceWorkerVersion } from '../src/build.mjs'
+import { join, resolve, sep } from 'node:path'
+import { serviceWorkerVersion, buildServiceWorker } from '../src/build.mjs'
+import { loadData } from '../src/lib/data.mjs'
+import { heightCheckerPage } from '../src/pages/tools.mjs'
+
+for (const operator of ['disney', 'universal', 'coasterguide']) {
+  test(`${operator}: the generated worker precaches the exact operator stylesheet URL linked by an offline planning page`, async () => {
+    const dist = await mkdtemp(join(tmpdir(), 'disney-release-worker-'))
+    try {
+      const data = await loadData(operator)
+      const page = heightCheckerPage(data)
+      const href = page.html.match(/href="(\/assets\/css\/operator\.css\?[^"]+)"/)[1]
+      await mkdir(join(dist, 'assets', 'css'), { recursive: true })
+      await writeFile(join(dist, 'assets', 'css', 'operator.css'), 'body { color: white }')
+      await buildServiceWorker(dist, data, [page])
+      const worker = await readFile(join(dist, 'sw.js'), 'utf8')
+      const precache = JSON.parse(worker.match(/var PRECACHE_URLS = (\[[^\n]+\])/)[1])
+      assert.equal(precache.filter(url => url === href).length, 1, 'offline cache keys must include the same stylesheet query version as the page')
+    } finally {
+      assert.ok(resolve(dist).startsWith(resolve(tmpdir()) + sep + 'disney-release-worker-'))
+      await rm(dist, { recursive: true, force: true })
+    }
+  })
+}
 
 test('same-count accuracy corrections and script/style changes invalidate offline content revisions', async () => {
   const dist = await mkdtemp(join(tmpdir(), 'coasterready-cache-revision-'))

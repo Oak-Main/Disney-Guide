@@ -649,7 +649,7 @@ export async function serviceWorkerVersion (data, pages, dist, template) {
   return `${data.operator}-${BUILD_MONTH}-${ASSET_VERSION}-${hash.digest('hex').slice(0, 20)}`
 }
 
-async function buildServiceWorker (dist, data, pages) {
+export async function buildServiceWorker (dist, data, pages) {
   const template = await readFile(join(ASSETS_DIR, 'sw.js'), 'utf8')
   const precache = [
     '/',
@@ -679,7 +679,7 @@ async function buildServiceWorker (dist, data, pages) {
   ].filter((url) => url === '/offline/' || url.startsWith('/assets') || url === '/manifest.webmanifest' ||
     pages.some((p) => p.url === url) || url === '/')
 
-  if (existsSync(join(dist, 'assets', 'css', 'operator.css'))) precache.push(`/assets/css/operator.css?v=${ASSET_VERSION}`)
+  if (existsSync(join(dist, 'assets', 'css', 'operator.css'))) precache.push(`/assets/css/operator.css?v=${data.site.brand.assetVersion || ASSET_VERSION}`)
   for (const park of data.parks) {
     if (existsSync(join(dist, 'maps', `${park.slug}-map.svg`))) precache.push(`/maps/${park.slug}-map.svg`)
   }

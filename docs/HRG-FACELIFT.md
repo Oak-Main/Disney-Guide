@@ -339,6 +339,10 @@ merge, force-push, or push to `main`; the owner controls review and merging.
 
 ## Live waits panel
 
+This section records the original Replit CSS-only stage. Its renderer limitations below
+were subsequently repaired during the October 20 integration release; they are historical
+observations, not the behavior of the integrated candidate.
+
 - `src/lib/palette.mjs`: CSS only, in the Universal-edition block and scoped under `.hrg-park-page`. It restyles the
   existing `live-wait-*`, `live-indicator`, `wait-time` and `live-weather` markup that `assets/js/live-park-data.js`
   writes, as a departure board: large tabular-figure waits in the existing display face, ruled rows, a static
@@ -347,7 +351,7 @@ merge, force-push, or push to `main`; the owner controls review and merging.
 - The loading placeholder is restyled; on `data-live-status="error"` it gets an accented, dashed treatment. The JS
   leaves the placeholder text unchanged on error, and CSS cannot change that. The placeholder is hidden once
   `data-live-status="loaded"` is set.
-- Pre-existing limitations, not changed or fixed here: `fetchJson` discards the ingest envelope's metadata
+- Pre-existing limitations at that Replit stage: `fetchJson` discarded the ingest envelope's metadata
   (such as `fetchedAt` and `stale`), so stale data cannot be detected or flagged; and the wait and weather renderers
   both write into the same `data-live-wait`/`data-live-weather` container, so whichever finishes last overwrites the other.
 - Universal CSS cache key: `35-hrg-live`. Universal and sister builds passed; sister diffs
@@ -358,6 +362,20 @@ merge, force-push, or push to `main`; the owner controls review and merging.
 - A stale-envelope fixture still renders as loaded with no stale marker: that confirms
   the existing limitation rather than claiming CSS can fix it. These screenshots are
   visual fixtures, not current park conditions.
+
+### October 20 integration repairs
+
+The integration candidate retains the newer network-wide module from main `ce08bf4` and
+repairs zero-minute waits, independently rendered wait/weather slots, EPCOT weather,
+unavailable values and cache retrieval/stale labels. It removes the unverified five-minute
+refresh claim. Queue-Times IDs remain 64 for Islands of Adventure and 65 for Universal
+Studios Orlando, independently checked against the provider. Eight focused runtime tests
+cover these cases. Cached retrieval metadata is not a guarantee of upstream source freshness.
+
+The generated service worker now precaches the exact operator stylesheet URL linked by
+each operator's planning pages, including Universal's operator-specific cache token.
+Generated-output tests cover all three operators so a first offline planning visit can
+retain its intended brand styling.
 
 ## Park-template extension: final checks
 
