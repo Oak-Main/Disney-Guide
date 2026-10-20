@@ -8,6 +8,7 @@
 
 import { html, raw, inline } from '../lib/html.mjs'
 import { renderPage } from '../templates/layout.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 import * as C from '../templates/components.mjs'
 import * as SC from '../templates/seasonal-components.mjs'
 import * as S from '../lib/schema.mjs'
@@ -141,6 +142,7 @@ export function monthPage (month, data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `${cap(scopeOf(site).parksLabel)} in ${month.name}`,
         titleTail: ': Crowds, Weather, Cost',
         description: `Is ${month.name} a good time to visit ${scopeOf(site).resortNames}? Crowd levels, climate normals, cost, what is running, and a graded verdict.`,
@@ -226,6 +228,7 @@ export function whenToGoIndex (data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `Best time to visit the ${site.brand.shortName} parks`,
         titleTail: ': Every Month Graded',
         description: `All twelve months graded on crowds, cost, weather and events across ${resorts.length > 2 ? 'every region' : resorts.map((r) => r.shortName || r.name).join(' and ')} — with the months worth avoiding named outright.`,

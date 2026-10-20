@@ -13,6 +13,7 @@
 import { scopeOf } from '../lib/data.mjs'
 import { html, raw } from '../lib/html.mjs'
 import { renderPage } from '../templates/layout.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 import * as C from '../templates/components.mjs'
 import * as SC from '../templates/seasonal-components.mjs'
 import * as S from '../lib/schema.mjs'
@@ -149,6 +150,7 @@ export function tripTimingPage (data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: 'Trip timing tool',
         titleTail: ': Rank Months By What You Care About',
         description: 'Rank all twelve months against what you actually care about — crowds, cost, weather, or what is running.',

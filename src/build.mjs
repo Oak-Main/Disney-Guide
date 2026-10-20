@@ -602,7 +602,13 @@ function buildVercelConfig () {
  * ------------------------------------------------------------------ */
 
 async function copyAssets (dist, site) {
-  await cp(ASSETS_DIR, join(dist, 'assets'), { recursive: true })
+  // New opt-in font assets must not leak into the byte-identical sister builds.
+  const leagueAssets = ['league-gothic-latin-400.woff2', 'league-gothic-OFL.txt']
+    .map((name) => join(ASSETS_DIR, 'fonts', name))
+  await cp(ASSETS_DIR, join(dist, 'assets'), {
+    recursive: true,
+    filter: (source) => site.brand.font?.family === 'League Gothic' || !leagueAssets.includes(source),
+  })
   // IndexNow key file: indexnow.txt at the repo root holds the fleet key
   // (vaulted as INDEXNOW_KEY); the spec requires it served at /<key>.txt.
   try {

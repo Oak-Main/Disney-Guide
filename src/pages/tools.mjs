@@ -4,6 +4,7 @@ import * as C from '../templates/components.mjs'
 import * as S from '../lib/schema.mjs'
 import { urls, foodTrackerOrder } from '../lib/data.mjs'
 import * as f from '../lib/format.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 import { eligibilityPayload, isCurrentAttraction } from '../lib/eligibility.mjs'
 
 /* ------------------------------------------------------------------ *
@@ -98,7 +99,7 @@ export function foodTrackerPage (data) {
             <p class="band__intro">${park.food.length} tracked items · <a href="${urls.snacks(park)}">the ranked version</a></p>
           </header>
           <div class="food-grid">
-            ${park.topFood.map((item) => C.foodCard(item, { tracker: true, showPark: false }))}
+            ${park.topFood.map((item) => C.foodCard(item, { tracker: true, showPark: false, site }))}
           </div>
         </div>
       </section>
@@ -160,7 +161,7 @@ export function foodTrackerPage (data) {
         description: `Track ${total} listed theme park food items across ${data.parks.length} parks. Save when browser storage is available, share a link, or print a checklist. Load online and test offline access on your device first.`,
         trail,
         modified: '2026-07-01',
-        bodyClass: 'page-tracker',
+        bodyClass: isHollywoodEdition(site) ? 'page-tracker hrg-food-tracker' : 'page-tracker',
       },
       body,
       scripts: ['/assets/js/food-tracker.js'],
@@ -328,6 +329,7 @@ export function heightCheckerPage (data) {
       site,
       page: {
         url: urls.heightChecker(),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-tools' } : {}),
         title: `${site.brand.shortName} height checker`,
         titleTail: ': what can my kid ride?',
         description: `Set one slider to your child’s height and see verified ride minimums, near misses, and rides with unverified rules across all ${data.parks.length} parks.`,
@@ -412,6 +414,7 @@ export function dayBlueprintPage (data) {
       site,
       page: {
         url: urls.dayBlueprint(),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-tools' } : {}),
         title: 'Day Blueprint',
         titleTail: ': a generated park plan with its reasoning',
         description: `Generate a park plan for ${data.parks.length} covered parks from authored touring plans. Free, no account; offline access requires a previously cached page.`,
@@ -483,6 +486,7 @@ export function roadTripPage (data) {
       site,
       page: {
         url: urls.roadTrip(),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-tools' } : {}),
         title: 'Road-Trip Combiner',
         titleTail: ': multi-park itineraries with drive times',
         description: 'Combine two to five regional coaster parks into one ordered trip — drive legs, day assignments, and the school-calendar crowd windows that decide the dates.',
@@ -567,6 +571,7 @@ export function careerLadderPage (data) {
       site,
       page: {
         url: urls.careerLadder(),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-tools' } : {}),
         title: 'Coaster Career Ladder',
         titleTail: ': minimums at every height',
         description: 'Current coaster minimums across ten parks, separate rider restrictions, growth projections, and a credit counter that preserves historical rides.',
@@ -635,6 +640,7 @@ export function expressRoiPage (data) {
       site,
       page: {
         url: urls.expressRoi(),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-tools' } : {}),
         title: 'Express Pass ROI',
         titleTail: ': is it worth it, in hours',
         description: 'The Express Pass buy-or-skip arithmetic: party size and re-rides against banded prices, printed with every assumption. Ranges as of July 2026.',
@@ -721,6 +727,7 @@ export function hauntPlannerPage (data, seasonal) {
       site,
       page: {
         url: urls.hauntPlanner(),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-tools' } : {}),
         title: 'Haunt Planner',
         titleTail: ': 2026 house shortlist and ticket comparison',
         description: 'Choose must-do houses from the official 2026 lineups, compare your own ticket quotes, and save or print a checklist for Halloween Horror Nights.',
@@ -813,6 +820,7 @@ export function myRidersPage (data) {
       site,
       page: {
         url: urls.myRiders(),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-tools' } : {}),
         title: 'My Riders',
         titleTail: ': the height passport',
         description: `Save your children's heights once and every height requirement across all ${data.parks.length} parks labels itself for your family — with growth projections for every ride they have not yet reached.`,
@@ -922,6 +930,7 @@ export function toolsIndex (data) {
       site,
       page: {
         url: urls.toolsIndex(),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-tools' } : {}),
         title: `Free ${site.brand.shortName} planning tools`,
         description: `A height checker, food tracker, trip-timing ranker and printable coverage maps for ${data.parks.length} parks. No account; saving and offline access depend on your browser.`,
         trail,

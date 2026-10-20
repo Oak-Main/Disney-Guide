@@ -1,5 +1,6 @@
 import { html, raw, each, inline, paragraphs, escapeHtml, truncate, attrs } from '../lib/html.mjs'
 import * as f from '../lib/format.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 import { isKnownHeight, isCurrentAttraction, eligibilityPayload } from '../lib/eligibility.mjs'
 
 /* ------------------------------------------------------------------ *
@@ -43,7 +44,7 @@ export function breadcrumbs (trail) {
  * With no image this renders exactly as before, on the gradient. That is the state the site ships in
  * today, and the state it returns to if a photograph or video is ever pulled.
  */
-export function hero ({ eyebrow, title, lede, meta, actions, tone = 'default', aside, image, video }) {
+export function hero ({ eyebrow, title, lede, meta, actions, tone = 'default', aside, image, video, afterTitle }) {
   const hasMedia = Boolean(video || image)
   return html`
     <section class="hero hero--${tone}${hasMedia ? ' hero--photo' : ''}${video ? ' hero--video' : ''}">
@@ -62,7 +63,7 @@ export function hero ({ eyebrow, title, lede, meta, actions, tone = 'default', a
       <div class="shell hero__inner">
         <div class="hero__body">
           ${eyebrow ? html`<p class="hero__eyebrow">${eyebrow}</p>` : ''}
-          <h1 class="hero__title">${title}</h1>
+          <h1 class="hero__title">${title}</h1>${afterTitle || ''}
           ${lede ? html`<p class="hero__lede">${inline(lede)}</p>` : ''}
           ${meta && meta.length ? html`
             <ul class="hero__meta">
@@ -142,7 +143,7 @@ export function heightBadge (inches) {
 }
 
 /** Keep numerical height screening and independent rider rules visible to people and tools. */
-export function heightRequirementCell (attraction, { centimetres = false } = {}) {
+export function heightRequirementCell (attraction, { centimetres = false, disclosure = false } = {}) {
   const rules = eligibilityPayload(attraction)
   const details = [
     rules.max != null ? `${rules.max}" maximum` : null,
@@ -152,14 +153,18 @@ export function heightRequirementCell (attraction, { centimetres = false } = {})
   const label = rules.h == null
     ? 'Unverified'
     : `${rules.h}"${centimetres ? ` · ${Math.round(rules.h * 2.54)}cm` : ''}`
-  return html`<span${attrs({
+  const fieldAttrs = {
     'data-value': rules.h ?? 'unverified',
     'data-status': rules.s,
     'data-height-max': rules.max,
     'data-accompanied-below': rules.accompaniedBelow,
     'data-restrictions-known': String(rules.restrictionsKnown),
     'data-rider-restrictions': rules.restrictions.length ? JSON.stringify(rules.restrictions) : null,
-  })}>${label}${details.length ? html`<span class="small muted"> · ${details.join('; ')}</span>` : ''}</span>`
+  }
+  if (disclosure && details.length) {
+    return html`<details class="hrg-height-rule"${attrs(fieldAttrs)}><summary>${label}</summary><div class="small muted">${details.join('; ')}</div></details>`
+  }
+  return html`<span${attrs(fieldAttrs)}>${label}${details.length ? html`<span class="small muted"> · ${details.join('; ')}</span>` : ''}</span>`
 }
 
 export function lastVerified (date, label = 'Last verified') {
@@ -303,7 +308,7 @@ export function meter (label, value, max = 5, tone = '') {
  * @param columns  array of strings, or {label, align, scope, width, sort}
  * @param rows     array of arrays; cells may be strings or Raw
  */
-export function dataTable ({ caption, columns, rows, id, className = '', sortable = false, dense = false, attrs = {} }) {
+export function dataTable ({ caption, columns, rows, sortValues, id, className = '', sortable = false, dense = false, attrs = {} }) {
   if (!rows || !rows.length) return raw('')
   const cols = columns.map((c) => (typeof c === 'string' ? { label: c } : c))
   const attrStr = Object.entries(attrs).map(([k, v]) => (v === '' ? ` ${k}` : ` ${k}="${escapeHtml(String(v))}"`)).join('')
@@ -317,11 +322,11 @@ export function dataTable ({ caption, columns, rows, id, className = '', sortabl
           </tr>
         </thead>
         <tbody>
-          ${rows.map((row) => html`
+          ${rows.map((row, rowIndex) => html`
             <tr>
               ${row.map((cell, i) => (i === 0
                 ? html`<th scope="row"${cols[i] && cols[i].align ? raw(` class="ta-${cols[i].align}"`) : raw('')}>${cell}</th>`
-                : html`<td${cols[i] && cols[i].align ? raw(` class="ta-${cols[i].align}"`) : raw('')}${cols[i] && cols[i].label ? raw(` data-label="${escapeHtml(cols[i].label)}"`) : raw('')}>${cell}</td>`))}
+                : html`<td${cols[i] && cols[i].align ? raw(` class="ta-${cols[i].align}"`) : raw('')}${cols[i] && cols[i].label ? raw(` data-label="${escapeHtml(cols[i].label)}"`) : raw('')}${sortValues?.[rowIndex]?.[i] != null ? raw(` data-value="${escapeHtml(String(sortValues[rowIndex][i]))}"`) : raw('')}>${cell}</td>`))}
             </tr>
           `)}
         </tbody>
@@ -388,17 +393,17 @@ export function faqSection (faqs, { title = 'Frequently asked questions', id = '
  * Cards
  * ------------------------------------------------------------------ */
 
-export function card ({ id, href, eyebrow, title, summary, meta, badges, tone = '', footer, image }) {
+export function card ({ id, href, eyebrow, title, summary, meta, badges, tone = '', footer, image, className = '', afterTitle }) {
   const inner = html`
     ${image ? html`<div class="card__media">${photo(image, { className: 'card__photo', sizes: '(min-width: 940px) 33vw, (min-width: 620px) 50vw, 100vw' })}</div>` : ''}
     ${eyebrow ? html`<p class="card__eyebrow">${eyebrow}</p>` : ''}
-    <h3 class="card__title">${href ? html`<a href="${href}">${title}</a>` : title}</h3>
+    <h3 class="card__title">${href ? html`<a href="${href}">${title}</a>` : title}</h3>${afterTitle || ''}
     ${summary ? html`<p class="card__summary">${inline(summary)}</p>` : ''}
     ${badges && badges.length ? html`<p class="card__badges">${badges.filter(Boolean).map((b) => pill(b.label ?? b, b.tone))}</p>` : ''}
     ${meta && meta.length ? html`<ul class="card__meta">${meta.filter(Boolean).map((m) => html`<li><span>${m.label}</span><strong>${m.value}</strong></li>`)}</ul>` : ''}
     ${footer || ''}
   `
-  return html`<article class="card ${tone ? `card--${tone}` : ''}${image ? ' card--media' : ''}"${attrs({ id })}>${inner}</article>`
+  return html`<article class="card ${tone ? `card--${tone}` : ''}${image ? ' card--media' : ''}${className ? ` ${className}` : ''}"${attrs({ id })}>${inner}</article>`
 }
 
 export function cardGrid (cards, { columns = 3, className = '' } = {}) {
@@ -456,7 +461,31 @@ export function attractionCard (attraction) {
   })
 }
 
-export function diningCard (restaurant) {
+export function diningCard (restaurant, { site } = {}) {
+  if (isHollywoodEdition(site)) {
+    const chips = [
+      restaurant.service ? f.service(restaurant.service) : null,
+      ...(restaurant.dietary || []).map(f.diet),
+    ].filter(Boolean)
+    return card({
+      id: restaurant.slug,
+      href: restaurant.url,
+      eyebrow: restaurant.landInfo ? restaurant.landInfo.name : '',
+      title: restaurant.name,
+      className: 'hrg-dining-card',
+      afterTitle: html`<p class="hrg-dining-card__price">${restaurant.priceTierUnverified ? 'Price unverified' : restaurant.priceTier}</p>${chips.length ? html`<ul class="hrg-dining-tags">${chips.map((c) => html`<li>${c}</li>`)}</ul>` : ''}`,
+      summary: restaurant.summary,
+      badges: [
+        restaurant.mobileOrder ? { label: 'Mobile order', tone: 'good' } : null,
+        restaurant.characterDining ? { label: 'Character dining', tone: '' } : null,
+        restaurant.reservations === 'essential' ? { label: 'Book ahead', tone: 'warn' } : null,
+      ].filter(Boolean),
+      meta: [
+        { label: 'Cuisine', value: restaurant.cuisine },
+        { label: 'Reservations', value: f.reservations(restaurant.reservations) },
+      ],
+    })
+  }
   return card({
     id: restaurant.slug,
     href: restaurant.url,
@@ -481,9 +510,10 @@ export function diningCard (restaurant) {
  * The control is a real button group so it works without JS for reading, and the JS layer only adds
  * persistence.
  */
-export function foodCard (item, { tracker = false, showPark = false } = {}) {
+export function foodCard (item, { tracker = false, showPark = false, site } = {}) {
+  const edition = isHollywoodEdition(site)
   return html`
-    <article class="food-card" id="${item.id}" data-food-id="${item.id}" data-park="${item.parkSlug || ''}" data-category="${item.category}" data-price="${item.price ?? ''}" data-musttry="${item.mustTry || 0}" data-diet="${(item.dietaryTags || []).join(' ')}">
+    <article class="food-card${edition ? ' hrg-food-card' : ''}" id="${item.id}" data-food-id="${item.id}" data-park="${item.parkSlug || ''}" data-category="${item.category}" data-price="${item.price ?? ''}" data-musttry="${item.mustTry || 0}" data-diet="${(item.dietaryTags || []).join(' ')}">
       <div class="food-card__head">
         <div>
           <h3 class="food-card__name">${item.name}</h3>
@@ -519,7 +549,7 @@ export function foodCard (item, { tracker = false, showPark = false } = {}) {
  * Attraction detail blocks (reused on the ride list and land pages)
  * ------------------------------------------------------------------ */
 
-export function attractionInline (attraction) {
+export function attractionInline (attraction, { decorativeArrow = true } = {}) {
   return html`
     <article class="inline-attraction" id="${attraction.slug}">
       <div class="inline-attraction__head">
@@ -540,7 +570,7 @@ export function attractionInline (attraction) {
           <summary>Tips for ${attraction.name}</summary>
           ${bulletList(attraction.tips)}
         </details>` : ''}
-      ${attraction.hasPage ? html`<p class="inline-attraction__more"><a href="${attraction.url}">Full guide to ${attraction.name} →</a></p>` : ''}
+      ${attraction.hasPage ? html`<p class="inline-attraction__more"><a href="${attraction.url}">Full guide to ${attraction.name}${decorativeArrow ? ' →' : ''}</a></p>` : ''}
     </article>
   `
 }

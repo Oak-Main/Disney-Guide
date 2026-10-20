@@ -17,6 +17,7 @@
 
 import { html, raw, escapeHtml } from '../lib/html.mjs'
 import { renderPage } from '../templates/layout.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 import * as C from '../templates/components.mjs'
 import { urls } from '../lib/data.mjs'
 import { BUILD_MONTH } from '../lib/staleness.mjs'
@@ -118,6 +119,7 @@ export function statusIndex (data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: 'Ride status',
         titleTail: ' — scheduled closures and guest reports',
         description: 'Per-park ride status: verified scheduled closures plus anonymous, unverified guest reports on a twelve-hour rolling window, with the operator\'s official channels linked from every page.',
@@ -192,6 +194,7 @@ export function statusParkPage (park, data, seasonal) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `${park.name} ride status`,
         titleTail: ' — closures and guest reports',
         description: `Ride status at ${park.name}: verified scheduled closures plus unverified guest reports, expiring on a rolling window. The operator's app is authoritative.`,
