@@ -120,13 +120,24 @@
 
   function allRides(data) {
     if (!data) return []
-    if (Array.isArray(data.rides)) return data.rides
     var out = []
+    var seen = Object.create(null)
+    function add(ride) {
+      if (!ride) return
+      if (ride.id != null) {
+        var key = String(ride.id)
+        if (seen[key]) return
+        seen[key] = true
+      }
+      out.push(ride)
+    }
     var lands = data.lands || []
     for (var i = 0; i < lands.length; i++) {
       var rides = (lands[i] && lands[i].rides) || []
-      for (var j = 0; j < rides.length; j++) out.push(rides[j])
+      for (var j = 0; j < rides.length; j++) add(rides[j])
     }
+    var flat = Array.isArray(data.rides) ? data.rides : []
+    for (var k = 0; k < flat.length; k++) add(flat[k])
     return out
   }
 

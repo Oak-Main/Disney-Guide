@@ -53,6 +53,24 @@ test('zero-minute waits remain visible and missing, invalid and closed values ca
   assert.doesNotMatch(c.container.innerHTML, /Invalid wait[^<]*<[^>]*>0/)
 })
 
+test('an empty top-level rides array cannot hide populated land rides', async () => {
+  const c = client()
+  await c.respond(c.wait, { rides: [], lands: [{ rides: [ride('Nested walk-on', 0)] }] })
+  assert.match(c.container.innerHTML, /Nested walk-on/)
+  assert.match(c.container.innerHTML, /0m.*Walk-on/)
+  assert.doesNotMatch(c.container.innerHTML, /Wait times unavailable/)
+})
+
+test('land and unlanded rides are combined without duplicate provider IDs', async () => {
+  const c = client()
+  const nested = { ...ride('Nested attraction', 20), id: 1 }
+  await c.respond(c.wait, { lands: [{ rides: [nested, { ...ride('Closed attraction', 0, false), id: 2 }] }], rides: [{ ...nested }, { ...ride('Unlanded attraction', 0), id: 3 }] })
+  assert.equal((c.container.innerHTML.match(/Nested attraction/g) || []).length, 1)
+  assert.match(c.container.innerHTML, /Unlanded attraction/)
+  assert.match(c.container.innerHTML, /2 attractions operating/)
+  assert.doesNotMatch(c.container.innerHTML, /Closed attraction/)
+})
+
 for (const order of ['weather-first', 'wait-first']) {
   test(`independent wait and weather content survives ${order} response order`, async () => {
     const c = client()
