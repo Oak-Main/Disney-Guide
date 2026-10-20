@@ -69,9 +69,10 @@ test('same-count accuracy corrections and script/style changes invalidate offlin
       await writeFile(fontPath, 'font revision two')
       assert.notEqual(await revision(), addedFormat, `same-size ${extension} corrections require a new cache`)
     }
+    const beforeSearch = await revision()
     await writeFile(join(dist, 'search-index.json'), '[{"name":"Gold Rusher"}]')
     const changedSearch = await revision()
-    assert.notEqual(changedSearch, changedStyle, 'search or status data changes require a new cache')
+    assert.notEqual(changedSearch, beforeSearch, 'search or status data changes require a new cache')
     await mkdir(join(dist, 'maps'))
     await writeFile(join(dist, 'maps', 'magic-mountain-map.svg'), '<svg><title>Coverage diagram</title></svg>')
     assert.notEqual(await revision(), changedSearch, 'map corrections require a new cache')
