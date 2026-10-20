@@ -642,7 +642,7 @@ export async function serviceWorkerVersion (data, pages, dist, template) {
     for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
       const path = join(directory, entry.name)
       if (entry.isDirectory()) await addResources(path)
-      else if (/\.(?:js|css|json|svg)$/.test(entry.name)) hash.update(path.slice(dist.length)).update('\0').update(await readFile(path)).update('\0')
+      else if (/\.(?:js|css|json|svg|woff2?)$/.test(entry.name)) hash.update(path.slice(dist.length)).update('\0').update(await readFile(path)).update('\0')
     }
   }
   await addResources(dist)
@@ -680,6 +680,8 @@ export async function buildServiceWorker (dist, data, pages) {
     pages.some((p) => p.url === url) || url === '/')
 
   if (existsSync(join(dist, 'assets', 'css', 'operator.css'))) precache.push(`/assets/css/operator.css?v=${data.site.brand.assetVersion || ASSET_VERSION}`)
+  const displayFont = data.site.brand.font?.file
+  if (displayFont?.startsWith('/assets/fonts/') && existsSync(join(dist, displayFont))) precache.push(displayFont)
   for (const park of data.parks) {
     if (existsSync(join(dist, 'maps', `${park.slug}-map.svg`))) precache.push(`/maps/${park.slug}-map.svg`)
   }

@@ -39,7 +39,9 @@ preserved separately at `/tmp/replit-migration-baseline-dist`: it has migration-
   responsive destination, spec, comparison, verdict and About-network treatments.
 - `src/build.mjs`: excludes the two new League Gothic assets unless that font is selected.
   This is essential: the original unconditional asset copy would otherwise add files to
-  both sister outputs. Service-worker logic is unchanged.
+  both sister outputs. The October 20 integration also aligns operator stylesheet precache
+  URLs with the HTML, precaches the declared local display font, and hashes font bytes in
+  the offline content revision. `buildServiceWorker` is exported for generated-output tests.
 - `src/templates/layout.mjs`: optional operator-only CSS version, without changing the shared
   asset version; conditional footer-column filtering and the network-column lookup.
   The studio-call-sheet WOFF2 is preloaded before render-blocking stylesheets to prevent the
@@ -62,9 +64,10 @@ preserved separately at `/tmp/replit-migration-baseline-dist`: it has migration-
   No factual expectations or other existing test expectations were changed.
 - `docs/HRG-FACELIFT.md`: these implementation, switch-off, copy and owner notes.
 
-No changes to shared `main.css`, browser tools, analytics, JSON-LD builders, URLs,
-sitemaps, redirects, service-worker behaviour, validation/factcheck scripts, or protected data.
+The original Replit patch did not change shared `main.css`, browser tools, analytics,
+JSON-LD builders, URLs, sitemaps, redirects, validation/factcheck scripts, or protected data.
 Universal's normal generated service-worker content hash changes with its HTML/CSS, as intended.
+The integration's later live-panel and offline-cache repairs are described below.
 
 ## Switch-off controls
 
@@ -364,6 +367,13 @@ observations, not the behavior of the integrated candidate.
   visual fixtures, not current park conditions.
 
 ### October 20 integration repairs
+
+The exact visual patch at integration commit `06834ee` left every generated Disney and
+CoasterReady file byte-identical to main `ce08bf4`. That comparison applies to the visual
+patch alone. The subsequent network-wide panel repairs intentionally advance shared asset
+URLs from version 31 to 32 and change all three service-worker revisions; the final release
+does not claim byte identity for the sister sites. Their design and authored data remain
+unchanged. No attraction or price data was refreshed by this release.
 
 The integration candidate retains the newer network-wide module from main `ce08bf4` and
 repairs zero-minute waits, independently rendered wait/weather slots, EPCOT weather,
