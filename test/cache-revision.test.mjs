@@ -6,6 +6,7 @@ import { join, resolve, sep } from 'node:path'
 import { serviceWorkerVersion, buildServiceWorker } from '../src/build.mjs'
 import { loadData } from '../src/lib/data.mjs'
 import { heightCheckerPage } from '../src/pages/tools.mjs'
+import { ASSET_VERSION } from '../src/templates/layout.mjs'
 
 for (const operator of ['disney', 'universal', 'coasterguide']) {
   test(`${operator}: the generated worker precaches the exact stylesheet URL and declared display font for offline planning`, async () => {
@@ -25,6 +26,7 @@ for (const operator of ['disney', 'universal', 'coasterguide']) {
       const worker = await readFile(join(dist, 'sw.js'), 'utf8')
       const precache = JSON.parse(worker.match(/var PRECACHE_URLS = (\[[^\n]+\])/)[1])
       assert.equal(precache.filter(url => url === href).length, 1, 'offline cache keys must include the same stylesheet query version as the page')
+      assert.ok(precache.includes(`/assets/js/live-park-data.js?v=${ASSET_VERSION}`), 'the live-panel enhancement must be available to render unavailable states offline')
       if (font) assert.equal(precache.filter(url => url === font).length, 1, 'the selected display face must be available even if its first request preceded worker activation')
     } finally {
       assert.ok(resolve(dist).startsWith(resolve(tmpdir()) + sep + 'disney-release-worker-'))
@@ -60,9 +62,19 @@ test('same-count accuracy corrections and script/style changes invalidate offlin
     assert.notEqual(addedFont, changedStyle, 'new font files require a new cache')
     await writeFile(join(dist, 'assets', 'fonts', 'display.woff2'), 'font revision two')
     assert.notEqual(await revision(), addedFont, 'same-size font corrections require a new cache')
+    for (const extension of ['ttf', 'otf', 'woff']) {
+      const beforeFont = await revision()
+      const fontPath = join(dist, 'assets', 'fonts', `display.${extension}`)
+      await writeFile(fontPath, 'font revision one')
+      const addedFormat = await revision()
+      assert.notEqual(addedFormat, beforeFont, `${extension} files require a new cache`)
+      await writeFile(fontPath, 'font revision two')
+      assert.notEqual(await revision(), addedFormat, `same-size ${extension} corrections require a new cache`)
+    }
+    const beforeSearch = await revision()
     await writeFile(join(dist, 'search-index.json'), '[{"name":"Gold Rusher"}]')
     const changedSearch = await revision()
-    assert.notEqual(changedSearch, changedStyle, 'search or status data changes require a new cache')
+    assert.notEqual(changedSearch, beforeSearch, 'search or status data changes require a new cache')
     await mkdir(join(dist, 'maps'))
     await writeFile(join(dist, 'maps', 'magic-mountain-map.svg'), '<svg><title>Coverage diagram</title></svg>')
     assert.notEqual(await revision(), changedSearch, 'map corrections require a new cache')

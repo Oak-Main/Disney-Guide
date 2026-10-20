@@ -1906,14 +1906,15 @@ html, body { overflow-x: clip; }
 /* === Live park data (Queue-Times via TrueAPI ingest) === */
 
 .live-wait-placeholder {
-  color: var(--text-soft, #6b7280);
+  color: var(--ink-2);
   font-size: 0.875rem;
   padding: 1rem 0;
 }
 
 .live-wait-grid {
-  background: var(--panel-bg, #f8fafc);
-  border: 1px solid var(--panel-border, #e2e8f0);
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
   border-radius: 0.5rem;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -1927,7 +1928,7 @@ html, body { overflow-x: clip; }
 
 .live-wait-meta {
   font-size: 0.75rem;
-  color: var(--text-soft, #6b7280);
+  color: var(--ink-2);
   margin: 0 0 0.75rem;
 }
 
@@ -1957,7 +1958,7 @@ html, body { overflow-x: clip; }
   justify-content: space-between;
   align-items: baseline;
   padding: 0.375rem 0;
-  border-bottom: 1px solid var(--panel-border, #e2e8f0);
+  border-bottom: 1px solid var(--line);
 }
 
 .live-wait-item:last-child {
@@ -1976,14 +1977,14 @@ html, body { overflow-x: clip; }
   white-space: nowrap;
 }
 
-.wait-time.wait-low { color: #16a34a; }
-.wait-time.wait-medium { color: #d97706; }
-.wait-time.wait-high { color: #dc2626; }
-.wait-time.wait-unknown { color: var(--text-soft, #6b7280); }
+.wait-time.wait-low { color: var(--good); }
+.wait-time.wait-medium { color: var(--warn); }
+.wait-time.wait-high { color: var(--danger); }
+.wait-time.wait-unknown { color: var(--ink-2); }
 
 .live-wait-footer {
   font-size: 0.75rem;
-  color: var(--text-soft, #6b7280);
+  color: var(--ink-2);
   margin: 0.5rem 0 0;
 }
 

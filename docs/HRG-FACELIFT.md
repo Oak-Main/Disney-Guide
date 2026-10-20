@@ -368,6 +368,17 @@ observations, not the behavior of the integrated candidate.
 
 ### October 20 integration repairs
 
+The final release follow-up extends font revision hashing to the existing CoasterReady
+TTF format (and supported OTF/WOFF formats), reserves the wait slot before requests so
+weather stays below waits in both response orders, and advances shared asset URLs to 33.
+It also replaces the legacy live-widget light background and gray fallbacks with each
+operator's current surface, ink and semantic colors. Preserving both sections exposed
+light-on-light wait text on the sister sites; component contrast tests now cover it.
+Actual queue payloads contain both `lands[].rides[]` and a frequently empty top-level
+`rides` array. The parser now combines both collections and deduplicates provider IDs;
+an empty flat list no longer masks available land rides. This corrects the earlier
+assumption that every unavailable panel reflected an unavailable upstream feed.
+
 The exact visual patch at integration commit `06834ee` left every generated Disney and
 CoasterReady file byte-identical to main `ce08bf4`. That comparison applies to the visual
 patch alone. The subsequent network-wide panel repairs intentionally advance shared asset
