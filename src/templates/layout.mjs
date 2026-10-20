@@ -1,13 +1,13 @@
 import { html, raw, escapeHtml, truncate, plain } from '../lib/html.mjs'
 import * as S from '../lib/schema.mjs'
 import { urls } from '../lib/data.mjs'
-import { hasPalette, hasChrome, palettePaper } from '../lib/palette.mjs'
+import { hasPalette, hasChrome, palettePaper, isHollywoodEdition } from '../lib/palette.mjs'
 import { BUILD_MONTH } from '../lib/staleness.mjs'
 import { ga4LoaderId } from '../lib/ga4.mjs'
 
 // CSS/JS URLs are cached as immutable: increment this when publishing changed assets.
-export const ASSET_VERSION = '31'
-const v = (path) => `${path}?v=${ASSET_VERSION}`
+export const ASSET_VERSION = '32'
+const v = (path, version = ASSET_VERSION) => `${path}?v=${version}`
 
 const TITLE_MAX = 66
 
@@ -152,7 +152,7 @@ function siteFooter (site) {
             <p class="site-footer__tagline">${site.brand.tagline}</p>
             <p class="site-footer__note">${site.legal.accuracyNote}</p>
           </div>
-          ${site.nav.footer.map((column) => html`
+          ${site.nav.footer.filter((column) => !site.brand.networkLinksOnAboutOnly || column !== networkLinksColumn(site)).map((column) => html`
             <nav class="site-footer__col" aria-label="${column.heading}">
               <h2>${column.heading}</h2>
               <ul>
@@ -168,6 +168,11 @@ function siteFooter (site) {
       </div>
     </footer>
   `
+}
+
+/** Keep authored network labels and links in one source of truth. */
+export function networkLinksColumn (site) {
+  return site.nav.footer.find((column) => column.heading === 'Our park-guide network')
 }
 
 /**
@@ -195,15 +200,15 @@ export function renderPage ({ site, page, body, schema = [], scripts = [] }) {
 
   const jsonLd = S.serialize(graph)
 
-  return '<!doctype html>\n' + html`<html lang="en">
+  return '<!doctype html>\n' + html`<html lang="en"${isHollywoodEdition(site) ? raw(' class="hrg-edition"') : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="${palettePaper(site) || '#100f0c'}">
 <meta name="color-scheme" content="dark">
-${metaTags(site, page)}
+${metaTags(site, page)}${site.brand?.motif === 'studio-call-sheet' && site.brand.font?.format === 'woff2' ? html`<link rel="preload" href="${site.brand.font.file}" as="font" type="font/woff2" crossorigin>` : ''}
 <link rel="stylesheet" href="${v('/assets/css/main.css')}">
-${(hasPalette(site) || hasChrome(site)) ? html`<link rel="stylesheet" href="${v('/assets/css/operator.css')}">` : ''}
+${(hasPalette(site) || hasChrome(site)) ? html`<link rel="stylesheet" href="${v('/assets/css/operator.css', site.brand.assetVersion || ASSET_VERSION)}">` : ''}
 <link rel="stylesheet" href="${v('/assets/css/print.css')}" media="print">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">

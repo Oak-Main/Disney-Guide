@@ -602,7 +602,13 @@ function buildVercelConfig () {
  * ------------------------------------------------------------------ */
 
 async function copyAssets (dist, site) {
-  await cp(ASSETS_DIR, join(dist, 'assets'), { recursive: true })
+  // New opt-in font assets must not leak into the byte-identical sister builds.
+  const leagueAssets = ['league-gothic-latin-400.woff2', 'league-gothic-OFL.txt']
+    .map((name) => join(ASSETS_DIR, 'fonts', name))
+  await cp(ASSETS_DIR, join(dist, 'assets'), {
+    recursive: true,
+    filter: (source) => site.brand.font?.family === 'League Gothic' || !leagueAssets.includes(source),
+  })
   // IndexNow key file: indexnow.txt at the repo root holds the fleet key
   // (vaulted as INDEXNOW_KEY); the spec requires it served at /<key>.txt.
   try {
@@ -636,14 +642,14 @@ export async function serviceWorkerVersion (data, pages, dist, template) {
     for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
       const path = join(directory, entry.name)
       if (entry.isDirectory()) await addResources(path)
-      else if (/\.(?:js|css|json|svg)$/.test(entry.name)) hash.update(path.slice(dist.length)).update('\0').update(await readFile(path)).update('\0')
+      else if (/\.(?:js|css|json|svg|woff2?)$/.test(entry.name)) hash.update(path.slice(dist.length)).update('\0').update(await readFile(path)).update('\0')
     }
   }
   await addResources(dist)
   return `${data.operator}-${BUILD_MONTH}-${ASSET_VERSION}-${hash.digest('hex').slice(0, 20)}`
 }
 
-async function buildServiceWorker (dist, data, pages) {
+export async function buildServiceWorker (dist, data, pages) {
   const template = await readFile(join(ASSETS_DIR, 'sw.js'), 'utf8')
   const precache = [
     '/',
@@ -673,7 +679,9 @@ async function buildServiceWorker (dist, data, pages) {
   ].filter((url) => url === '/offline/' || url.startsWith('/assets') || url === '/manifest.webmanifest' ||
     pages.some((p) => p.url === url) || url === '/')
 
-  if (existsSync(join(dist, 'assets', 'css', 'operator.css'))) precache.push(`/assets/css/operator.css?v=${ASSET_VERSION}`)
+  if (existsSync(join(dist, 'assets', 'css', 'operator.css'))) precache.push(`/assets/css/operator.css?v=${data.site.brand.assetVersion || ASSET_VERSION}`)
+  const displayFont = data.site.brand.font?.file
+  if (displayFont?.startsWith('/assets/fonts/') && existsSync(join(dist, displayFont))) precache.push(displayFont)
   for (const park of data.parks) {
     if (existsSync(join(dist, 'maps', `${park.slug}-map.svg`))) precache.push(`/maps/${park.slug}-map.svg`)
   }

@@ -9,6 +9,7 @@
 import { scopeOf } from '../lib/data.mjs'
 import { html, raw, inline } from '../lib/html.mjs'
 import { renderPage } from '../templates/layout.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 import * as C from '../templates/components.mjs'
 import * as SC from '../templates/seasonal-components.mjs'
 import * as S from '../lib/schema.mjs'
@@ -73,6 +74,7 @@ export function holidayPage (holiday, data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: holiday.title,
         titleTail: holiday.titleTail,
         description: holiday.description,
@@ -120,6 +122,7 @@ export function holidaysIndex (data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `${cap(scopeOf(site).parksLabel)} at the holidays`,
         titleTail: ': Every Option, Every Park',
         description: `Halloween, Christmas, New Year, spring break and summer at ${scopeOf(site).resortNames} — what runs, what it costs, and whether it is worth the crowds.`,
@@ -187,6 +190,7 @@ export function pricePage (price, data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: price.title,
         titleTail: price.titleTail,
         description: price.description,
@@ -257,6 +261,7 @@ export function pricesIndex (data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `${cap(scopeOf(site).parksLabel)} prices`,
         titleTail: `: Tickets, ${site.queue.name}, Parking`,
         description: `Current price ranges for tickets, ${site.queue.name}, parking, dining plans and annual passes at ${scopeOf(site).resortNames}, each dated.`,
@@ -320,6 +325,7 @@ export function closuresPage (tracker, data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `${label} closures`,
         titleTail: ': Refurbishment Tracker',
         description: `Attractions closed for refurbishment at ${label}, with expected reopening where it has actually been announced.`,
@@ -368,6 +374,7 @@ export function closuresIndex (data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `${cap(scopeOf(site).parksLabel)} closures and refurbishments`,
         titleTail: '',
         description: `Current refurbishment and closure trackers for ${scopeOf(site).resortNames}, with reopening dates only where they have been announced.`,

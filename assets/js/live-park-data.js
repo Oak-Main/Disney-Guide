@@ -13,8 +13,7 @@
 //
 // Rendering: progressive enhancement. Pages render fully without this module;
 // [data-live-wait] / [data-live-weather] targets fill in when data arrives.
-// A park with no Queue-Times mapping (e.g. EPCOT) clears its placeholder and
-// still gets weather.
+// Weather resolves independently of queue coverage and response order.
 
 (function () {
   'use strict'
@@ -78,6 +77,11 @@
     'seaworld-san-antonio': 22,
   }
 
+  // EPCOT has no warmed queue feed in this client; Orlando weather remains available.
+  var WEATHER_ONLY = {
+    epcot: { name: 'EPCOT', weather: { latitude: 28.39, longitude: -81.35 } },
+  }
+
   // EXACT query the ingest's open-meteo-weather feed warmed (feeds.mjs
   // OM_WEATHER_FEEDS). Any deviation is a canonical-key miss → 404.
   var WEATHER_QUERY = {
@@ -95,9 +99,23 @@
       })
       .then(function (envelope) {
         return envelope && typeof envelope === 'object' && 'data' in envelope
-          ? envelope.data
-          : envelope
+          ? envelope
+          : { data: envelope }
       })
+  }
+
+  function sourceNote(feed) {
+    var fetched = Date.parse(feed.fetchedAt)
+    var expired = Number.isFinite(fetched) && Number.isFinite(feed.ttlSeconds)
+      && feed.ttlSeconds > 0 && Date.now() - fetched > feed.ttlSeconds * 1000
+    var note = feed.stale === true || expired ? 'Stale cached data' : 'Cached source data'
+    if (Number.isFinite(fetched)) note += ' · retrieved ' + new Date(fetched).toISOString().slice(0, 16).replace('T', ' ') + ' UTC'
+    if (typeof feed.stale !== 'boolean' || !Number.isFinite(fetched)) note += ' · Freshness unknown'
+    return note
+  }
+
+  function validNumber(value) {
+    return typeof value === 'number' && Number.isFinite(value)
   }
 
   function allRides(data) {
@@ -113,14 +131,14 @@
   }
 
   function formatWait(minutes) {
-    if (minutes == null || isNaN(minutes)) return '—'
-    if (minutes === 0) return 'Walk-on'
+    if (!validNumber(minutes) || minutes < 0) return 'Wait unavailable'
+    if (minutes === 0) return '0m · Walk-on'
     if (minutes >= 60) return Math.floor(minutes / 60) + 'h ' + (minutes % 60) + 'm'
     return minutes + 'm'
   }
 
   function waitBand(minutes) {
-    if (minutes == null) return 'unknown'
+    if (!validNumber(minutes) || minutes < 0) return 'unknown'
     if (minutes <= 20) return 'low'
     if (minutes <= 45) return 'medium'
     return 'high'
@@ -153,17 +171,24 @@
     return '⛈️'
   }
 
-  function weatherSlot(container) {
-    // Wait times render first and include a weather slot; weather fills that
-    // slot if present (both data attributes share one container), else it
-    // owns the container outright.
-    var slot = container.querySelector('.live-weather-slot')
+  function sectionSlot(container, className) {
+    var slot = container.querySelector('.' + className)
     if (!slot) {
       slot = document.createElement('div')
-      slot.className = 'live-weather-slot'
+      slot.className = className
       container.appendChild(slot)
     }
     return slot
+  }
+
+  function waitSlot(container) {
+    var placeholder = container.querySelector('.live-wait-placeholder')
+    if (placeholder) placeholder.remove()
+    return sectionSlot(container, 'live-wait-slot')
+  }
+
+  function weatherSlot(container) {
+    return sectionSlot(container, 'live-weather-slot')
   }
 
   function renderWaitTimes(container, parkId) {
@@ -171,15 +196,19 @@
     if (!park) return
 
     fetchJson(INGEST + '/queue-times/parks/' + parkId + '/queue_times.json')
-      .then(function (data) {
+      .then(function (feed) {
+        var data = feed.data
         var rides = allRides(data)
-        var open = rides.filter(function (r) { return r.is_open && r.wait_time !== null && r.wait_time > 0 })
-        open.sort(function (a, b) { return (b.wait_time || 0) - (a.wait_time || 0) })
-        var operating = rides.filter(function (r) { return r.is_open })
+        var operating = rides.filter(function (r) { return r && r.is_open === true })
+        var open = operating.slice().sort(function (a, b) {
+          var aWait = validNumber(a.wait_time) && a.wait_time >= 0 ? a.wait_time : -1
+          var bWait = validNumber(b.wait_time) && b.wait_time >= 0 ? b.wait_time : -1
+          return bWait - aWait
+        })
 
         var html = '<div class="live-wait-grid" role="region" aria-label="Current wait times for ' + escapeHtml(park.name) + '">'
         html += '<h3 class="live-wait-header">' + escapeHtml(park.name) + ' — Current Waits</h3>'
-        html += '<p class="live-wait-meta"><span class="live-indicator" aria-hidden="true"></span>Live from Queue-Times · updates every 5 min</p>'
+        html += '<p class="live-wait-meta">Queue-Times · ' + escapeHtml(sourceNote(feed)) + '</p>'
 
         if (open.length) {
           html += '<ul class="live-wait-list">'
@@ -191,27 +220,23 @@
           })
           html += '</ul>'
           html += '<p class="live-wait-footer">' + operating.length + ' attractions operating</p>'
-        } else if (operating.length) {
-          html += '<p class="live-wait-closed">Attractions operating — wait times posting shortly.</p>'
         } else {
-          html += '<p class="live-wait-closed">Park closed — wait times resume at opening.</p>'
+          html += '<p class="live-wait-closed">' + (rides.length ? 'No operating attractions reported by this feed.' : 'Wait times unavailable.') + '</p>'
         }
 
-        html += '<div class="live-weather-slot" aria-hidden="false"></div>'
         html += '</div>'
 
-        container.innerHTML = html
+        waitSlot(container).innerHTML = html
         container.setAttribute('data-live-status', 'loaded')
       })
       .catch(function (err) {
         container.setAttribute('data-live-status', 'error')
-        // Silent: the static editorial content is the fallback
+        waitSlot(container).innerHTML = '<p class="live-wait-closed">Wait times unavailable.</p>'
         if (window.console && console.log) console.log('live-wait: ' + err.message)
       })
   }
 
-  function renderWeather(container, parkId) {
-    var park = PARKS[parkId]
+  function renderWeather(container, park) {
     if (!park) return
 
     var params = new URLSearchParams({
@@ -224,21 +249,34 @@
     })
 
     fetchJson(INGEST + '/open-meteo-weather?' + params.toString())
-      .then(function (data) {
-        if (!data || !data.daily || !data.daily.time) return
+      .then(function (feed) {
+        var data = feed.data
         var slot = weatherSlot(container)
+        if (!data || !data.daily || !data.daily.time || !data.daily.time.length) {
+          slot.innerHTML = '<p class="live-wait-closed">Weather unavailable.</p>'
+          container.setAttribute('data-weather-status', 'error')
+          return
+        }
 
         var code = data.daily.weathercode ? data.daily.weathercode[0] : null
-        var max = Math.round(data.daily.temperature_2m_max ? data.daily.temperature_2m_max[0] : 0)
-        var min = Math.round(data.daily.temperature_2m_min ? data.daily.temperature_2m_min[0] : 0)
+        var maxValue = data.daily.temperature_2m_max && data.daily.temperature_2m_max[0]
+        var minValue = data.daily.temperature_2m_min && data.daily.temperature_2m_min[0]
+        var units = data.daily_units && data.daily_units.temperature_2m_max
+        var range = validNumber(maxValue) && validNumber(minValue)
+          ? Math.round(minValue) + '°–' + Math.round(maxValue) + (units === '°C' || units === '°F' ? units : '°')
+          : 'Temperature unavailable'
 
-        slot.innerHTML = '<div class="live-weather" role="region" aria-label="Today\'s weather">'
+        slot.innerHTML = '<div class="live-weather" role="region" aria-label="Park weather forecast">'
           + '<span class="weather-icon" aria-hidden="true">' + weatherIcon(code) + '</span>'
           + '<span class="weather-desc">' + weatherDescription(code) + '</span>'
-          + '<span class="weather-range">' + min + '°–' + max + '°</span>'
+          + '<span class="weather-range">' + escapeHtml(range) + '</span>'
           + '</div>'
+          + '<p class="live-wait-meta">Forecast for ' + escapeHtml(data.daily.time[0]) + ' · ' + escapeHtml(sourceNote(feed)) + '</p>'
+        container.setAttribute('data-weather-status', 'loaded')
       })
       .catch(function (err) {
+        weatherSlot(container).innerHTML = '<p class="live-wait-closed">Weather unavailable.</p>'
+        container.setAttribute('data-weather-status', 'error')
         if (window.console && console.log) console.log('live-weather: ' + err.message)
       })
   }
@@ -253,7 +291,10 @@
       var raw = el.getAttribute('data-live-wait')
       var parkId = parseInt(raw, 10) || SLUG_TO_QT_ID[raw] || 0
       if (parkId && PARKS[parkId]) renderWaitTimes(el, parkId)
-      else el.innerHTML = ''
+      else {
+        waitSlot(el).innerHTML = '<p class="live-wait-closed">Wait times unavailable for this park.</p>'
+        el.setAttribute('data-live-status', 'unsupported')
+      }
     }
 
     var weatherTargets = document.querySelectorAll('[data-live-weather]')
@@ -261,8 +302,12 @@
       var el2 = weatherTargets[j]
       var raw2 = el2.getAttribute('data-live-weather')
       var parkId2 = parseInt(raw2, 10) || SLUG_TO_QT_ID[raw2] || 0
-      if (parkId2 && PARKS[parkId2]) renderWeather(el2, parkId2)
-      else if (!el2.querySelector('.live-weather-slot') && !el2.getAttribute('data-live-wait')) el2.innerHTML = ''
+      var weatherPark = PARKS[parkId2] || WEATHER_ONLY[raw2]
+      if (weatherPark) renderWeather(el2, weatherPark)
+      else {
+        weatherSlot(el2).innerHTML = '<p class="live-wait-closed">Weather unavailable for this park.</p>'
+        el2.setAttribute('data-weather-status', 'unsupported')
+      }
     }
   }
 

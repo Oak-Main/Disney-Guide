@@ -1,5 +1,6 @@
 import { html, raw, paragraphs, inline } from '../lib/html.mjs'
 import { renderPage } from '../templates/layout.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 import * as C from '../templates/components.mjs'
 import * as S from '../lib/schema.mjs'
 import { urls } from '../lib/data.mjs'
@@ -206,6 +207,7 @@ export function guidePage (guide, data) {
       page: {
         url: urls.guide(guide.slug),
         title: guide.title,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-guide' } : {}),
         description: C.truncate(guide.metaDescription, 158),
         trail,
         modified: `${guide.lastVerified || '2026-07'}-01`,
@@ -269,6 +271,7 @@ export function guidesIndex (data) {
       page: {
         url: urls.guidesIndex(),
         title: `${site.brand.shortName} park planning guides`,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-guides-index' } : {}),
         description: `${guides.length} evergreen guides to the ${data.parks.length} parks: ${data.queue.name}, height requirements, accessibility, motion sickness, packing, and park etiquette.`,
         trail,
         modified: '2026-07-01',
@@ -287,7 +290,7 @@ export function guidesIndex (data) {
  * Comparisons
  * ------------------------------------------------------------------ */
 
-function comparisonTable (page) {
+function comparisonTable (page, hollywood = false) {
   const contenders = page.contenders || []
   const dims = page.dimensions || []
   if (!dims.length || !contenders.length) return raw('')
@@ -310,7 +313,7 @@ function comparisonTable (page) {
   return C.dataTable({
     columns,
     rows,
-    className: 'compare-table data-table--stack',
+    className: `compare-table data-table--stack${hollywood ? ' hrg-head-to-head' : ''}`,
     caption: '“Edge” marks which side we think wins that row. A row with no edge marked is genuinely a tie.',
   })
 }
@@ -390,7 +393,7 @@ export function comparePage (page, data) {
     ${C.section({
       children: html`
         ${page.verdict ? html`
-          <div class="verdict-box">
+          <div class="verdict-box${isHollywoodEdition(site) ? ' hrg-verdict' : ''}">
             <h2>The verdict</h2>
             <p class="verdict-box__short">${inline(page.verdict.short)}</p>
             ${paragraphs(page.verdict.body)}
@@ -403,7 +406,7 @@ export function comparePage (page, data) {
       tone: 'tint',
       title: 'Head to head',
       wide: true,
-      children: comparisonTable(page),
+      children: comparisonTable(page, isHollywoodEdition(site)),
     }) : ''}
 
     ${page.ranking && page.ranking.length ? C.section({
@@ -516,6 +519,7 @@ export function compareIndex (data) {
       page: {
         url: urls.compareIndex(),
         title: 'Park comparisons with actual verdicts',
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-compare-index' } : {}),
         description: `Resort against resort, the best park for young children, all ${data.parks.length} parks ranked — comparison pages that commit to an answer instead of hedging.`,
         trail,
         modified: '2026-07-01',

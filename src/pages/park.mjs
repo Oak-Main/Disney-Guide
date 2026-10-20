@@ -6,7 +6,9 @@ import { urls, attractionCoverage } from '../lib/data.mjs'
 import { renderParkMap } from '../lib/map.mjs'
 import { riderDataPayload } from './tools.mjs'
 import * as f from '../lib/format.mjs'
-import { isCurrentAttraction, isKnownHeight } from '../lib/eligibility.mjs'
+import { isCurrentAttraction, isKnownHeight, eligibilityPayload } from '../lib/eligibility.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
+import { rideSpecItems } from '../lib/ride-specs.mjs'
 
 const crumbs = (park, ...rest) => [...park.breadcrumbTrail, ...rest]
 const coverageMode = (data) => data.operator === 'coasterguide' || data.site.operator === 'coasterguide'
@@ -44,18 +46,23 @@ export function parkHub (park, data) {
     { href: urls.firstTimer(park), label: 'First-timer guide', summary: 'A plan you can actually follow' },
   ].filter(Boolean)
 
-  const body = html`
+  const edition = isHollywoodEdition(site)
+  const fullDay = park.stats && park.stats.typicalFullDayHours
+  const slate = edition ? html`<dl class="hrg-park-slate"><div><dt>Opened</dt><dd>${f.humanDate(park.opened)}</dd></div>${fullDay ? html`<div><dt>A full day is</dt><dd>${park.stats.typicalFullDayHours}</dd></div>` : ''}</dl>` : undefined
+
+  const body = html`${edition ? raw('<div class="hrg-park-page hrg-park-hub">') : ''}
     ${C.breadcrumbs(park.breadcrumbTrail)}
     ${C.hero({
+      afterTitle: slate,
       eyebrow: park.resortInfo ? `${park.resortInfo.name} · ${park.location}` : park.location,
       title: park.name,
       lede: park.tagline || park.summary,
-      image: data.photo[park.heroImage || (park.slug.charCodeAt(0) % 2 ? 'scene-coaster' : 'scene-carousel')],
+      image: edition ? data.photo[park.heroImage] : data.photo[park.heroImage || (park.slug.charCodeAt(0) % 2 ? 'scene-coaster' : 'scene-carousel')],
       meta: [
-        { label: 'Opened', value: f.humanDate(park.opened) },
+        edition ? null : { label: 'Opened', value: f.humanDate(park.opened) },
         { label: attractionCountLabel(data), value: String(open.length) },
         { label: 'Height requirements', value: String(park.heightAttractions.length) },
-        park.stats && park.stats.typicalFullDayHours ? { label: 'A full day is', value: park.stats.typicalFullDayHours } : null,
+        !edition && park.stats && park.stats.typicalFullDayHours ? { label: 'A full day is', value: park.stats.typicalFullDayHours } : null,
         park.sizeAcres ? { label: 'Size', value: `${park.sizeAcres} acres` } : null,
       ].filter(Boolean),
       actions: [
@@ -130,7 +137,7 @@ export function parkHub (park, data) {
       kicker: 'Food',
       intro: coverageMode(data) && park.slug === 'magic-mountain' ? 'Source-listed items and a clearly marked unverified legacy record. Current prices and firsthand taste reviews are unverified. Mark items on the tracker and they save to your device.' : `Our highest-priority items in ${park.name}. Mark them on the tracker and they save to your device.`,
       children: html`
-        <div class="food-grid">${park.topFood.slice(0, 6).map((item) => C.foodCard(item, { tracker: true }))}</div>
+        <div class="food-grid">${park.topFood.slice(0, 6).map((item) => C.foodCard(item, { tracker: true, site }))}</div>
         <p class="mt-5">
           <a class="btn btn--primary" href="${urls.snacks(park)}">All ${park.food.length} tracked snacks</a>
           <a class="btn btn--ghost" href="${urls.dining(park)}">${coverageMode(data) ? 'Dining coverage guide' : 'Full dining guide'}</a>
@@ -169,7 +176,7 @@ export function parkHub (park, data) {
       { href: urls.heightChecker(), label: 'Height checker', summary: 'Recorded height conditions and rules to check' },
       { href: data.link.parkRankings, label: 'Every park, ranked', summary: 'We commit to an order' },
     ])}
-  `
+  ${edition ? raw('</div>') : ''}`
 
   return {
     url: park.url,
@@ -204,17 +211,21 @@ export function ridesPage (park, data) {
   const open = park.attractions.filter(isCurrentAttraction)
   const counts = attractionCoverage(park)
 
-  const rows = open.map((a) => [
-    a.hasPage ? html`<a href="${a.url}">${a.name}</a>` : html`<a href="#${a.slug}">${a.name}</a>`,
-    a.landInfo ? html`<a href="${a.landInfo.url}">${a.landInfo.name}</a>` : 'Location unverified',
-    f.attractionType(a.type),
-    C.heightRequirementCell(a),
-    html`<span data-value="${a.intensity || 0}">${f.intensityLabel(a.intensity)}</span>`,
-    html`<span data-value="${a.scary && a.scary.score ? a.scary.score : 0}">${a.scary && a.scary.score ? `${a.scary.score}/5` : '—'}</span>`,
-    a.queueLabelShort,
-  ])
+  const edition = isHollywoodEdition(site)
+  const rows = open.map((a) => {
+    const name = a.hasPage ? html`<a href="${a.url}">${a.name}</a>` : html`<a href="#${a.slug}">${a.name}</a>`
+    const land = a.landInfo ? html`<a href="${a.landInfo.url}">${a.landInfo.name}</a>` : 'Location unverified'
+    const type = f.attractionType(a.type)
+    const height = C.heightRequirementCell(a, { disclosure: edition })
+    const rest = [
+      html`<span data-value="${a.intensity || 0}">${f.intensityLabel(a.intensity)}</span>`,
+      html`<span data-value="${a.scary && a.scary.score ? a.scary.score : 0}">${a.scary && a.scary.score ? `${a.scary.score}/5` : '—'}</span>`,
+      a.queueLabelShort,
+    ]
+    return edition ? [name, height, land, type, ...rest] : [name, land, type, height, ...rest]
+  })
 
-  const body = html`
+  const body = html`${edition ? raw('<div class="hrg-park-page hrg-rides-page">') : ''}
     ${C.breadcrumbs(trail)}
     ${C.hero({
       eyebrow: park.name,
@@ -240,9 +251,22 @@ export function ridesPage (park, data) {
         ${coverageNotice(park, data)}
         ${C.dataTable({
           sortable: true,
-          className: 'data-table--stack',
+          className: edition ? 'data-table--stack hrg-running-order' : 'data-table--stack',
+          attrs: edition ? { role: 'table' } : {},
+          sortValues: edition ? open.map(a => ({
+            1: eligibilityPayload(a).h ?? 'unverified',
+            4: a.intensity || 0,
+            5: a.scary && a.scary.score ? a.scary.score : 0,
+          })) : undefined,
           caption: 'Tap any column heading to sort. Height is a recorded minimum; maximum height, accompaniment and other rider rules also apply. Attraction staff decide final eligibility.',
-          columns: [
+          columns: edition ? [
+            'Attraction',
+            { label: 'Height', align: 'num', sort: 'number' },
+            'Land', 'Type',
+            { label: 'Intensity', align: 'center', sort: 'number' },
+            { label: 'Scare', align: 'center', sort: 'number' },
+            data.queue.name,
+          ] : [
             'Attraction', 'Land', 'Type',
             { label: 'Height', align: 'num', sort: 'number' },
             { label: 'Intensity', align: 'center', sort: 'number' },
@@ -282,7 +306,7 @@ export function ridesPage (park, data) {
         kicker: `${list.length} attraction${list.length === 1 ? '' : 's'}${coverageMode(data) ? ' covered' : ''}`,
         intro: land.summary,
         children: html`
-          ${list.map(C.attractionInline)}
+          ${list.map(a => C.attractionInline(a, { decorativeArrow: !edition }))}
           <p class="mt-5"><a class="btn btn--ghost" href="${land.url}">${coverageMode(data) ? 'Our guide to' : 'Everything in'} ${land.name}</a></p>
         `,
       })
@@ -296,7 +320,7 @@ export function ridesPage (park, data) {
       { href: urls.snacks(park), label: 'Best snacks', summary: 'What to eat between rides' },
       { href: urls.firstTimer(park), label: 'First-timer plan', summary: 'The order to do them in' },
     ])}
-  `
+  ${edition ? raw('</div>') : ''}`
 
   return {
     url: urls.rides(park),
@@ -362,7 +386,12 @@ export function attractionPage (attraction, data) {
         current ? { label: data.queue.name, value: attraction.queueLabelShort } : null,
         attraction.opened ? { label: 'Opened', value: String(attraction.opened) } : null,
       ].filter(Boolean),
-      aside: html`
+      aside: isHollywoodEdition(site) ? html`
+        <div class="hrg-specs">
+          ${C.factPanel(rideSpecItems(attraction, site), { title: current ? 'Ride facts' : historical ? 'Historical ride facts' : 'Recorded ride facts', columns: 1 })}
+        </div>
+        ${C.lastVerified(attraction.lastVerified)}
+      ` : html`
         ${C.factPanel([
           { label: 'Type', value: f.attractionType(attraction.type) },
           { label: current ? 'Height' : historical ? 'Former height rule' : 'Recorded height rule', value: f.height(attraction.heightIn), hint: attraction.heightNote },
@@ -501,7 +530,9 @@ export function landPage (land, data) {
   const trail = crumbs(park, { label: land.name, href: land.url })
   const open = land.attractions.filter(isCurrentAttraction)
 
-  const body = html`
+  const edition = isHollywoodEdition(site)
+
+  const body = html`${edition ? raw('<div class="hrg-park-page hrg-land-page">') : ''}
     ${C.breadcrumbs(trail)}
     ${C.hero({
       eyebrow: park.name,
@@ -536,19 +567,19 @@ export function landPage (land, data) {
       tone: 'tint',
       title: `${coverageMode(data) ? 'Attractions covered in' : 'Attractions in'} ${land.name}`,
       intro: coverageMode(data) ? 'This list covers current catalog records in this area. It is not a complete official inventory or a same-day availability report.' : '',
-      children: html`${open.map(C.attractionInline)}`,
+      children: edition ? html`<div class="hrg-running-list">${open.map(a => C.attractionInline(a, { decorativeArrow: false }))}</div>` : html`${open.map(C.attractionInline)}`,
     }) : ''}
 
     ${land.dining.length ? C.section({
       title: `${coverageMode(data) ? 'Dining records covered in' : 'Eating in'} ${land.name}`,
       intro: coverageMode(data) ? 'These are catalog records, including any clearly marked unverified legacy venues. This is not a complete dining inventory or confirmation of current operation.' : '',
-      children: C.cardGrid(land.dining.map(C.diningCard), { columns: 3 }),
+      children: C.cardGrid(land.dining.map((d) => C.diningCard(d, { site })), { columns: 3 }),
     }) : ''}
 
     ${land.food.length ? C.section({
       tone: 'tint',
       title: coverageMode(data) && park.slug === 'magic-mountain' ? 'Snack and meal records covered' : 'Snacks worth stopping for',
-      children: html`<div class="food-grid">${land.food.slice(0, 6).map((item) => C.foodCard(item, { tracker: true }))}</div>`,
+      children: html`<div class="food-grid">${land.food.slice(0, 6).map((item) => C.foodCard(item, { tracker: true, site }))}</div>`,
     }) : ''}
 
     ${C.relatedLinks([
@@ -556,7 +587,7 @@ export function landPage (land, data) {
       { href: urls.rides(park), label: coverageMode(data) ? 'Covered attractions' : 'All attractions', summary: coverageMode(data) ? `Our current catalog for ${park.name}` : `Every ride in ${park.name}` },
       ...park.lands.filter((l) => l.slug !== land.slug).slice(0, 2).map((l) => ({ href: l.url, label: l.name, summary: l.summary })),
     ], { title: 'Nearby' })}
-  `
+  ${edition ? raw('</div>') : ''}`
 
   return {
     url: land.url,
@@ -705,6 +736,7 @@ export function heightsPage (park, data) {
       site,
       page: {
         url: urls.heights(park),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-park-reference' } : {}),
         title: `${park.shortLabel} height requirements`,
         titleTail: ' (2026)',
         description: `${park.heightAttractions.length} verified numerical height minimums at ${park.name}, with rider-height bands and unverified attractions clearly separated. Check current rules with the park.`,
@@ -823,6 +855,7 @@ export function accessibilityPage (park, data) {
       site,
       page: {
         url: urls.accessibility(park),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-park-reference' } : {}),
         title: `${park.shortLabel} accessibility guide`,
         titleTail: '',
         description: `Wheelchair and ECV rentals, ride transfer requirements, quiet spaces, and sensory notes for ${park.name}. Written for planning, not for reassurance.`,
@@ -936,6 +969,7 @@ export function firstTimerPage (park, data) {
       site,
       page: {
         url: urls.firstTimer(park),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-park-reference' } : {}),
         title: `${park.shortLabel} first-timer guide`,
         titleTail: ': a plan that works',
         description: `A hour-by-hour first-visit plan for ${park.name}: what to book, what order to ride, where to eat, and the rookie mistakes that cost you two hours.`,
@@ -1058,6 +1092,7 @@ export function mapPage (park, data) {
       site,
       page: {
         url: urls.map(park),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-park-reference' } : {}),
         title: coverageDiagram ? `${park.shortLabel} guide coverage diagram` : `${park.shortLabel} map`,
         titleTail: coverageMode(data) ? ' (printable; cache for offline access)' : ' (printable & offline)',
         description: coverageMode(data)
@@ -1204,6 +1239,7 @@ export function bestRidesPage (park, data) {
       site,
       page: {
         url: urls.bestRides(park),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-park-reference' } : {}),
         title: `Best rides at ${park.shortLabel}`,
         titleTail: ', ranked',
         description: C.truncate(`Our ranking of the ${ranked.length} best rides at ${park.name}, defended one by one — plus the ones we think are overrated and the ones everyone walks past.`, 155),

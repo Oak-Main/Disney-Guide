@@ -10,6 +10,7 @@
 import { scopeOf } from '../lib/data.mjs'
 import { html, raw, inline, paragraphs } from '../lib/html.mjs'
 import { renderPage } from '../templates/layout.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 import * as C from '../templates/components.mjs'
 import * as SC from '../templates/seasonal-components.mjs'
 import * as S from '../lib/schema.mjs'
@@ -163,6 +164,7 @@ export function eventPage (event, data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: event.title || event.name,
         titleTail: event.titleTail,
         description: event.description,
@@ -260,6 +262,7 @@ export function editionPage (event, edition, data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         // Park-scoped on purpose: several parks on one operator share a shortName (four Fright
         // Fests, three Howl-O-Screams), and "Fright Fest 2026" x4 is four pages splitting one
         // search result. event.title carries the venue; the hero below stays short and human.
@@ -343,6 +346,7 @@ export function eventsIndex (data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `Seasonal events at the ${scopeOf(site).parksLabel}`,
         titleTail: ': Dates, Prices, Verdicts',
         description: `Seasonal parties, festivals and after-hours events ${scopeOf(site).venuePhrase} — confirmed date ranges, admission rules and honest verdicts.`,

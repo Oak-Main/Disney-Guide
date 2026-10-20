@@ -8,6 +8,7 @@
 
 import { html, raw, inline } from '../lib/html.mjs'
 import { renderPage } from '../templates/layout.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 import * as C from '../templates/components.mjs'
 import * as SC from '../templates/seasonal-components.mjs'
 import * as S from '../lib/schema.mjs'
@@ -74,6 +75,7 @@ export function calendarPage (data) {
       site,
       page: {
         url,
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `${scopeOf(site).parksLabel.charAt(0).toUpperCase() + scopeOf(site).parksLabel.slice(1)} seasonal calendar`,
         titleTail: ': The Whole Year',
         description: `Every seasonal event ${scopeOf(site).venuePhrase} on one twelve-month timeline, with confidence levels shown.`,

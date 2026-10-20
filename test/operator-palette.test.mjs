@@ -129,8 +129,9 @@ for (const { slug, site } of paletteOperators) {
   if (site.brand.font) {
     test(`${slug}: the declared display face is declared and wired through the font token`, async () => {
       const css = paletteCss(site)
-      assert.match(css, /@font-face\s*{[^}]*font-family: 'Archivo Black'/)
-      assert.match(css, /--font-display: 'Archivo Black'/)
+      const family = site.brand.font.family.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      assert.match(css, new RegExp(`@font-face\\s*{[^}]*font-family: '${family}'`))
+      assert.match(css, new RegExp(`--font-display: '${family}'`))
       const fontFile = new URL('..' + site.brand.font.file, import.meta.url)
       const stat = await statUrl(fontFile)
       assert.ok(stat && stat.size > 10000, 'the webfont file actually exists on disk')

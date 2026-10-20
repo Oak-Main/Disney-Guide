@@ -15,10 +15,11 @@
 
 import { scopeOf } from '../lib/data.mjs'
 import { html, paragraphs } from '../lib/html.mjs'
-import { renderPage } from '../templates/layout.mjs'
+import { renderPage, networkLinksColumn } from '../templates/layout.mjs'
 import * as C from '../templates/components.mjs'
 import { urls } from '../lib/data.mjs'
 import { ga4Ids } from '../lib/ga4.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 
 /**
  * Hard-coded rather than derived from the build month.
@@ -33,6 +34,7 @@ const UPDATED = '2026-07-01'
 function docPage (data, { url, title, titleTail, h1, description, lede, sections, toc, noindex, updated = UPDATED }) {
   const { site } = data
   const trail = [{ label: 'Home', href: urls.home() }, { label: h1, href: url }]
+  const network = site.brand.networkLinksOnAboutOnly === true && url === urls.about() ? networkLinksColumn(site) : null
 
   const body = html`
     ${C.breadcrumbs(trail)}
@@ -51,14 +53,21 @@ function docPage (data, { url, title, titleTail, h1, description, lede, sections
           `)}
         </div>
       `,
-    })}
+    })}${network ? C.section({
+      title: network.heading,
+      children: html`
+        <nav class="hrg-network" aria-label="${network.heading}">
+          <ul>${network.links.map((link) => html`<li><a href="${link.href}">${link.label}</a></li>`)}</ul>
+        </nav>
+      `,
+    }) : ''}
   `
 
   return {
     url,
     html: renderPage({
       site,
-      page: { url, title, titleTail, description, trail, modified: updated, noindex },
+      page: { url, title, titleTail, description, trail, modified: updated, noindex, ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-legal' } : {}) },
       body,
     }),
   }
@@ -784,7 +793,7 @@ export function legalPages (data, seasonal = null) {
       url,
       html: renderPage({
         site,
-        page: { url, title: 'Offline', description: 'You are offline.', noindex: true },
+        page: { url, title: 'Offline', description: 'You are offline.', noindex: true, ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-legal' } : {}) },
         body,
       }),
     })
@@ -813,7 +822,7 @@ export function legalPages (data, seasonal = null) {
       url,
       html: renderPage({
         site,
-        page: { url: '/404.html', title: 'Page not found', description: 'That page does not exist.', noindex: true },
+        page: { url: '/404.html', title: 'Page not found', description: 'That page does not exist.', noindex: true, ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-legal' } : {}) },
         body,
       }),
     })

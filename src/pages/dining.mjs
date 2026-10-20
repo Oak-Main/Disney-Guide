@@ -4,6 +4,7 @@ import * as C from '../templates/components.mjs'
 import * as S from '../lib/schema.mjs'
 import { urls } from '../lib/data.mjs'
 import * as f from '../lib/format.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 
 const crumbs = (park, ...rest) => [...park.breadcrumbTrail, ...rest]
 const sourceBasedDining = (park, data) => park.slug === 'magic-mountain' && (data.operator === 'coasterguide' || data.site.operator === 'coasterguide')
@@ -19,6 +20,7 @@ export function diningHub (park, data) {
   const sourceBased = sourceBasedDining(park, data)
   const listed = park.dining.filter(currentListing)
   const trail = crumbs(park, { label: 'Dining', href: urls.dining(park) })
+  const edition = isHollywoodEdition(site)
 
   const byService = {}
   for (const restaurant of park.dining) {
@@ -33,7 +35,7 @@ export function diningHub (park, data) {
     ...Object.keys(byService).filter((key) => !serviceOrder.includes(key)).sort(),
   ]
 
-  const body = html`
+  const body = html`${edition ? raw('<div class="hrg-park-page hrg-dining-hub">') : ''}
     ${C.breadcrumbs(trail)}
     ${C.hero({
       eyebrow: park.name,
@@ -55,17 +57,23 @@ export function diningHub (park, data) {
       children: html`
         ${C.dataTable({
           sortable: true,
-          className: 'data-table--stack',
+          className: edition ? 'data-table--stack hrg-dining-table' : 'data-table--stack',
+          attrs: edition ? { role: 'table' } : {},
+          sortValues: edition ? park.dining.map(d => ({ 1: d.priceTier ? d.priceTier.length : 'unverified' })) : undefined,
           caption: sourceBased ? 'Dining records covered here, including clearly marked unverified legacy records. Current prices are unverified; check the official directory and park app for the full inventory.' : 'Every dining location in the park. Sort by price, service style, or land.',
-          columns: ['Restaurant', 'Land', 'Service', 'Cuisine', { label: 'Price', align: 'center' }, 'Reservations'],
-          rows: park.dining.map((d) => [
-            html`${d.hasPage ? html`<a href="${d.url}">${d.name}</a>` : d.name}${sourceBased && !currentListing(d) ? ' · Legacy record; current venue unverified' : ''}`,
-            sourceBased && !currentListing(d) ? 'Legacy location; unverified' : d.landInfo ? html`<a href="${d.landInfo.url}">${d.landInfo.name}</a>` : '—',
-            f.service(d.service),
-            d.cuisine,
-            sourceBased && !d.priceVerified ? 'Price unverified' : html`<span data-value="${(d.priceTier || '').length}">${d.priceTier}</span>`,
-            sourceBased && !currentListing(d) ? 'Unverified' : f.reservations(d.reservations),
-          ]),
+          columns: edition
+            ? ['Restaurant', { label: 'Price', align: 'center', sort: 'number' }, 'Land', 'Service', 'Cuisine', 'Reservations']
+            : ['Restaurant', 'Land', 'Service', 'Cuisine', { label: 'Price', align: 'center' }, 'Reservations'],
+          rows: park.dining.map((d) => {
+            const name = html`${d.hasPage ? html`<a href="${d.url}">${d.name}</a>` : d.name}${sourceBased && !currentListing(d) ? ' · Legacy record; current venue unverified' : ''}`
+            const land = sourceBased && !currentListing(d) ? 'Legacy location; unverified' : d.landInfo ? html`<a href="${d.landInfo.url}">${d.landInfo.name}</a>` : '—'
+            const service = edition ? html`<span class="hrg-dining-service">${f.service(d.service)}</span>` : f.service(d.service)
+            const price = sourceBased && !d.priceVerified ? 'Price unverified' : html`<span data-value="${(d.priceTier || '').length}">${d.priceTier}</span>`
+            const reservations = sourceBased && !currentListing(d) ? 'Unverified' : f.reservations(d.reservations)
+            return edition
+              ? [name, price, land, service, d.cuisine, reservations]
+              : [name, land, service, d.cuisine, price, reservations]
+          }),
         })}
         ${sourceBased ? html`<p class="small muted">Official dining and Fright Fest sources checked October 9, 2026. Prices were not verified. <a href="https://www.sixflags.com/magicmountain/dining">Official dining directory</a> · <a href="https://www.sixflags.com/magicmountain/events/fright-fest">Fright Fest menus</a></p>` : C.lastVerified(park.lastVerified)}
       `,
@@ -76,7 +84,7 @@ export function diningHub (park, data) {
       id: key,
       title: f.service(key),
       kicker: `${byService[key].length} ${sourceBased ? 'records covered' : 'in this park'}`,
-      children: C.cardGrid(byService[key].map((restaurant) => C.diningCard(sourceBased ? { ...restaurant, priceTier: restaurant.priceVerified ? restaurant.priceTier : 'Price unverified' } : restaurant)), { columns: 3 }),
+      children: C.cardGrid(byService[key].map((restaurant) => C.diningCard(sourceBased ? { ...restaurant, priceTier: restaurant.priceVerified ? restaurant.priceTier : 'Price unverified' } : restaurant, { site })), { columns: 3 }),
     }))}
 
     ${C.section({
@@ -108,7 +116,7 @@ export function diningHub (park, data) {
       { href: data.link.dining, label: 'Mobile order & reservations', summary: 'How to actually get a table' },
       { href: data.link.bestForFood, label: 'Best park for food', summary: 'We settle it' },
     ])}
-  `
+  ${edition ? raw('</div>') : ''}`
 
   return {
     url: urls.dining(park),
@@ -142,16 +150,29 @@ export function restaurantPage (restaurant, data) {
     { label: restaurant.name, href: restaurant.url })
 
   const linkedFood = park.food.filter((item) => item.restaurantSlug === restaurant.slug)
+  const edition = isHollywoodEdition(site)
+  const priceText = sourceBased && !restaurant.priceVerified ? 'Price unverified' : restaurant.priceTier
+  const chips = edition ? [
+    restaurant.service ? f.service(restaurant.service) : null,
+    ...(restaurant.dietary || []).map(f.diet),
+  ].filter(Boolean) : []
+  const priceBlock = edition ? html`<div class="hrg-dining-price"><p class="hrg-dining-price__figure">${priceText}</p>${restaurant.priceNote ? html`<p class="hrg-dining-price__note">${restaurant.priceNote}</p>` : ''}${chips.length ? html`<ul class="hrg-dining-tags">${chips.map((c) => html`<li>${c}</li>`)}</ul>` : ''}</div>` : undefined
+  const verdictBox = restaurant.verdict ? html`
+              <div class="verdict-box${edition ? ' hrg-dining-verdict' : ''}">
+                <h2>${sourceBased ? 'Planning note' : 'Our verdict'}</h2>
+                <p class="verdict-box__short">${inline(restaurant.verdict)}</p>
+              </div>` : ''
 
-  const body = html`
+  const body = html`${edition ? raw('<div class="hrg-park-page hrg-dining-page">') : ''}
     ${C.breadcrumbs(trail)}
     ${C.hero({
+      afterTitle: edition ? html`${priceBlock}${verdictBox}` : undefined,
       eyebrow: `${park.name}${unverifiedVenue ? ' · Legacy venue record' : restaurant.landInfo ? ` · ${restaurant.landInfo.name}` : ''}`,
       title: restaurant.name,
       lede: restaurant.summary,
       meta: [
-        { label: 'Service', value: f.service(restaurant.service) },
-        { label: 'Price', value: sourceBased && !restaurant.priceVerified ? 'Price unverified' : restaurant.priceTier },
+        !edition ? { label: 'Service', value: f.service(restaurant.service) } : null,
+        !edition ? { label: 'Price', value: sourceBased && !restaurant.priceVerified ? 'Price unverified' : restaurant.priceTier } : null,
         { label: 'Cuisine', value: restaurant.cuisine },
         { label: 'Reservations', value: unverifiedVenue ? 'Unverified' : f.reservations(restaurant.reservations) },
       ],
@@ -179,11 +200,7 @@ export function restaurantPage (restaurant, data) {
               ${paragraphs(restaurant.description)}
             </div>
 
-            ${restaurant.verdict ? html`
-              <div class="verdict-box">
-                <h2>${sourceBased ? 'Planning note' : 'Our verdict'}</h2>
-                <p class="verdict-box__short">${inline(restaurant.verdict)}</p>
-              </div>` : ''}
+            ${edition ? '' : verdictBox}
 
             ${restaurant.signatureItems && restaurant.signatureItems.length ? html`
               <div class="doc-section">
@@ -217,7 +234,7 @@ export function restaurantPage (restaurant, data) {
       tone: 'tint',
       title: `Tracked items from ${restaurant.name}`,
       intro: sourceBased ? 'Linked catalog items, with unknown prices labeled unverified. A legacy venue record does not establish current availability. Mark anything here and it saves to your device.' : 'Prices we have checked ourselves, with the month we checked them. Mark anything here and it saves to your device.',
-      children: html`<div class="food-grid">${linkedFood.map((item) => C.foodCard(item, { tracker: true }))}</div>`,
+      children: html`<div class="food-grid">${linkedFood.map((item) => C.foodCard(item, { tracker: true, site }))}</div>`,
     }) : ''}
 
     ${C.faqSection(restaurant.faqs, { title: `${restaurant.name}: common questions` })}
@@ -228,7 +245,7 @@ export function restaurantPage (restaurant, data) {
       { href: data.link.dining, label: 'Reservations & mobile order', summary: 'How to get a table' },
       { href: data.link.bestForFood, label: 'Best park for food', summary: 'The verdict' },
     ])}
-  `
+  ${edition ? raw('</div>') : ''}`
 
   return {
     url: restaurant.url,
@@ -275,7 +292,8 @@ export function snacksPage (park, data) {
   const categories = [...new Set(items.map((i) => i.category))]
   const diets = [...new Set(items.flatMap((i) => i.dietaryTags || []))]
 
-  const body = html`
+  const edition = isHollywoodEdition(site)
+  const body = html`${edition ? raw('<div class="hrg-park-page hrg-snacks-page">') : ''}
     ${C.breadcrumbs(trail)}
     ${C.hero({
       eyebrow: park.name,
@@ -309,7 +327,7 @@ export function snacksPage (park, data) {
         </div>
         <p class="small muted" data-print-hide role="status"><span data-shown-count>${items.length}</span> shown · <span data-count="tried">0</span> tried · <span data-count="want">0</span> on your list</p>
         <div class="food-grid">
-          ${items.map((item) => C.foodCard(item, { tracker: true }))}
+          ${items.map((item) => C.foodCard(item, { tracker: true, site }))}
         </div>
         <div class="empty-state" data-empty-state hidden>
           <h3>Nothing matches those filters</h3>
@@ -356,7 +374,7 @@ export function snacksPage (park, data) {
       { href: data.link.bestForFood, label: 'Best park for food', summary: 'Where this park lands' },
       { href: urls.map(park), label: 'Park map', summary: 'Find these on the ground' },
     ])}
-  `
+  ${edition ? raw('</div>') : ''}`
 
   return {
     url: urls.snacks(park),

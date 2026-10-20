@@ -12,6 +12,8 @@ import { BUILD_MONTH } from '../lib/staleness.mjs'
 import { MONTHS } from '../lib/seasonal-data.mjs'
 import { latestParkTimeZone } from '../lib/park-time-zone.mjs'
 import { isCurrentAttraction } from '../lib/eligibility.mjs'
+import { homeCopy } from '../lib/home-copy.mjs'
+import { isHollywoodEdition } from '../lib/palette.mjs'
 
 const coverageMode = (data) => data.operator === 'coasterguide' || data.site.operator === 'coasterguide'
 
@@ -178,6 +180,10 @@ function landingBats (until, timeZone) {
 
 export function homePage (data, seasonal) {
   const { site, parks } = data
+  const copy = homeCopy(site, {
+    parkCount: parks.length, foodCount: data.allFood.length, guideCount: data.guides.length,
+    month: MONTHS[BUILD_MONTH_NUMBER - 1].name, shortDisclaimer: site.legal.shortDisclaimer,
+  })
   const totalAttractions = parks.reduce((count, park) => count + attractionCoverage(park).currentCount, 0)
   const totalFood = data.allFood.length
   const totalHeights = data.allHeightAttractions.length
@@ -225,179 +231,202 @@ export function homePage (data, seasonal) {
   const nextMonth = seasonal.monthByNumber.get(BUILD_MONTH_NUMBER === 12 ? 1 : BUILD_MONTH_NUMBER + 1)
   const buildMonthEnd = `${BUILD_MONTH}-${String(new Date(Number(BUILD_MONTH.slice(0, 4)), Number(BUILD_MONTH.slice(5, 7)), 0).getDate()).padStart(2, '0')}`
 
+  const hollywood = isHollywoodEdition(site)
+  const destinationChoice = hollywood ? html`
+        <div class="hrg-destinations">
+          ${(site.resorts || []).map((resort) => html`
+            <a class="hrg-destination" href="${urls.resort(resort.slug)}">
+              <h2>${resort.name}</h2>
+              <p>${resort.tagline}</p>
+            </a>
+          `)}
+        </div>
+        ${C.lastVerified(BUILD_MONTH, copy('hero.reviewLabel'))}
+      ` : undefined
+  const parkSection = C.section({
+    title: copy('parks.title'),
+    kicker: copy('parks.kicker'),
+    intro: coverageMode(data)
+      ? 'Each park hub links to the attractions currently covered, recorded height rules, dining, a printable diagram, accessibility notes and a first-timer plan. Check official park information for the complete inventory and same-day availability.'
+      : copy('parks.intro'),
+    children: C.cardGrid(parks.map((park) => parkCard(park, data.photo[park.heroImage])), { columns: 3 }),
+  })
+  const toolSection = C.section({
+    tone: 'tint',
+    title: copy('tools.title'),
+    kicker: copy('tools.kicker'),
+    children: html`
+        ${C.cardGrid([
+          C.card({
+            href: urls.heightChecker(),
+            tone: 'feature',
+            eyebrow: copy('tools.height.eyebrow'),
+            title: copy('tools.height.title'),
+            summary: copy('tools.height.summary'),
+          }),
+          C.card({
+            href: urls.foodTracker(),
+            tone: 'feature',
+            eyebrow: site.operator === 'coasterguide' ? 'Save, share or print' : copy('tools.food.eyebrow'),
+            title: copy('tools.food.title'),
+            summary: site.operator === 'coasterguide'
+              ? `Mark ${totalFood} listed food items as want, tried or skip. Save when browser storage is available, share or print. Load online and test offline access on your device first.`
+              : copy('tools.food.summary'),
+          }),
+          C.card({
+            href: urls.parksIndex(),
+            tone: 'feature',
+            eyebrow: copy('tools.maps.eyebrow'),
+            title: copy('tools.maps.title'),
+            summary: coverageMode(data)
+              ? 'Printable guide diagrams showing areas currently covered. Use the current official park maps for actual layout and navigation.'
+              : copy('tools.maps.summary'),
+          }),
+        ], { columns: 3 })}
+      `,
+  })
+
   const body = html`
-    ${landingBats(halloweenEnd.date, halloweenEnd.timeZone)}
+    ${hollywood ? '' : landingBats(halloweenEnd.date, halloweenEnd.timeZone)}
     ${C.hero({
-      eyebrow: `${data.parks.length} US parks · independent & unofficial`,
-      title: 'Know exactly what your family can ride, eat, and skip.',
+      eyebrow: copy('hero.kicker'),
+      title: copy('hero.title'),
+      afterTitle: destinationChoice,
       lede: coverageMode(data)
         ? 'Recorded height requirements, attraction guides and curated snacks across the parks we cover — checked, dated, and built to work on park WiFi. Our catalog is guide coverage, not a complete official inventory or a report of what is open today.'
-        : 'Every height requirement, every ride worth queueing for, every snack worth the money — checked, dated, and built to work on park WiFi. No affiliate-driven rankings, no reprinted press releases.',
+        : copy('hero.lede'),
       actions: [
-        { href: urls.heightChecker(), label: 'Check what your kid can ride', primary: true },
-        { href: urls.foodTracker(), label: 'Build a snack list' },
+        { href: urls.heightChecker(), label: copy('hero.actions.height'), primary: true },
+        { href: urls.foodTracker(), label: copy('hero.actions.food') },
       ],
-      aside: html`
+      tone: hollywood ? 'hrg-home' : undefined,
+      meta: hollywood ? [
+        { value: totalAttractions, label: copy('hero.stats.attractions') },
+        { value: totalHeights, label: copy('hero.stats.heights') },
+        { value: totalFood, label: copy('hero.stats.food') },
+        { value: totalDining, label: copy('hero.stats.dining') },
+      ] : undefined,
+      aside: hollywood ? undefined : html`
         ${C.statRow([
-          { value: totalAttractions, label: coverageMode(data) ? 'Current attractions covered' : 'Attractions documented' },
-          { value: totalHeights, label: 'Height requirements' },
-          { value: totalFood, label: 'Snacks with real prices' },
-          { value: totalDining, label: 'Places to eat' },
+          { value: totalAttractions, label: coverageMode(data) ? 'Current attractions covered' : copy('hero.stats.attractions') },
+          { value: totalHeights, label: copy('hero.stats.heights') },
+          { value: totalFood, label: copy('hero.stats.food') },
+          { value: totalDining, label: copy('hero.stats.dining') },
         ])}
-        ${C.lastVerified(BUILD_MONTH, 'Seasonal information reviewed')}
+        ${C.lastVerified(BUILD_MONTH, copy('hero.reviewLabel'))}
       `,
-      image: data.photo.hero,
-      video: site.heroVideo,
+      image: hollywood ? undefined : data.photo.hero,
+      video: hollywood ? undefined : site.heroVideo,
     })}
 
     ${C.trustStrip([
-      { title: 'Independent and unofficial',
-        body: 'We buy our own tickets. No park pays for a place on this site.',
+      { title: copy('trust[0].title'),
+        body: copy('trust[0].body'),
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.2 8.3 8 9 4.8-.7 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>' },
-      { title: 'Every fact is dated',
-        body: 'Each page carries the month it was checked, and says so when it is overdue.',
+      { title: copy('trust[1].title'),
+        body: copy('trust[1].body'),
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' },
-      { title: 'Rankings are not for sale',
-        body: 'Affiliate links exist and are disclosed. They never change an order or a verdict.',
+      { title: copy('trust[2].title'),
+        body: copy('trust[2].body'),
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M7 7v11a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7"/><path d="M10 4h4"/><path d="M10 11v5M14 11v5"/></svg>' },
-      { title: 'Works without signal',
-        body: 'The tools keep running on park WiFi, or on none at all.',
+      { title: copy('trust[3].title'),
+        body: copy('trust[3].body'),
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/><path d="m3 3 18 18"/></svg>' },
     ])}
 
     <div class="rider-watch rider-watch--home" data-rider-watch hidden></div>
 
-    ${C.section({
-      title: 'Start with your park',
-      kicker: `The ${data.parks.length} parks`,
-      intro: coverageMode(data)
-        ? 'Each park hub links to the attractions currently covered, recorded height rules, dining, a printable diagram, accessibility notes and a first-timer plan. Check official park information for the complete inventory and same-day availability.'
-        : 'Each park hub links to its full ride list, height chart, dining, printable map, accessibility notes, and a first-timer plan you can actually follow.',
-      children: C.cardGrid(parks.map((park) => parkCard(park, data.photo[park.heroImage])), { columns: 3 }),
-    })}
+    ${hollywood ? html`${parkSection}${toolSection}` : parkSection}
 
     ${seasonSpotlight(site, runningNow)}
 
     ${haunt.band}
 
-    ${C.section({
-      tone: 'tint',
-      title: 'Three things we do that a search result cannot',
-      kicker: 'Tools, not listicles',
-      children: html`
-        ${C.cardGrid([
-          C.card({
-            href: urls.heightChecker(),
-            tone: 'feature',
-            eyebrow: 'Interactive',
-            title: 'Height Checker',
-            summary: 'Drag one slider to your child’s height and see, park by park, the recorded height conditions, rules that need checking and near misses.',
-          }),
-          C.card({
-            href: urls.foodTracker(),
-            tone: 'feature',
-            eyebrow: site.operator === 'coasterguide' ? 'Save, share or print' : 'Saves offline',
-            title: 'Food Tracker',
-            summary: site.operator === 'coasterguide'
-              ? `Mark ${totalFood} listed food items as want, tried or skip. Save when browser storage is available, share or print. Load online and test offline access on your device first.`
-              : `Mark ${totalFood} snacks as want, tried, or skip. It saves on your device, shares as a link, prints as a checklist, and keeps working when the park WiFi does not.`,
-          }),
-          C.card({
-            href: urls.parksIndex(),
-            tone: 'feature',
-            eyebrow: 'Printable',
-            title: 'Park maps',
-            summary: coverageMode(data)
-              ? 'Printable guide diagrams showing areas currently covered. Use the current official park maps for actual layout and navigation.'
-              : 'Clean schematic maps drawn from open geographic data — no clutter, no ads baked into the image, and they print on one page in black and white.',
-          }),
-        ], { columns: 3 })}
-      `,
-    })}
+    ${hollywood ? '' : toolSection}
 
     ${C.photoBand({
-      image: data.photo.hero,
-      kicker: 'The day you will still be talking about',
-      title: 'The fireworks at the end of a very long, very good day.',
-      lede: 'You will forget the queue times by next week. You will still be describing this part in ten years. That is the trip this site exists to help you plan — not the most attractions, the best day.',
+      image: hollywood ? data.photo['universal-resort-lagoon'] : data.photo.hero,
+      kicker: copy('photoBand.kicker'),
+      title: copy('photoBand.title'),
+      lede: copy('photoBand.lede'),
       href: urls.tripTiming(),
-      label: 'Start with when to go',
+      label: copy('photoBand.label'),
     })}
 
     ${otherRunning.length ? html`<div data-season-until="${buildMonthEnd}" data-season-time-zone="${latestParkTimeZone(otherRunning.slice(0, 6))}">${C.section({
-      title: `Seasonal guide for ${MONTHS[BUILD_MONTH_NUMBER - 1].name}`,
-      kicker: 'What may be running',
-      intro: 'These event windows overlap this month. Each card states whether this year is confirmed, expected, or drawn from the last confirmed cycle.',
+      title: copy('seasonal.title'),
+      kicker: copy('seasonal.kicker'),
+      intro: copy('seasonal.intro'),
       children: C.cardGrid(otherRunning.slice(0, 6).map((e) => SC.eventCard(e, e.staleness)), { columns: 3 }),
     })}</div>` : ''}
 
     ${thisMonth || nextMonth ? C.section({
       tone: 'tint',
-      title: 'Thinking about when to go',
-      kicker: 'Timing',
-      intro: 'Every month graded on crowds, cost, weather, and what is actually running — including the months we think you should avoid.',
+      title: copy('timing.title'),
+      kicker: copy('timing.kicker'),
+      intro: copy('timing.intro'),
       children: html`
         <div class="month-grid">${[thisMonth, nextMonth].filter(Boolean).map((m) => SC.monthCard(m))}</div>
         <p class="mt-5">
-          <a class="btn btn--primary" href="${urls.tripTiming()}">Rank the months by what you care about</a>
-          <a class="btn btn--ghost" href="${urls.whenToGoIndex()}">All twelve, graded</a>
+          <a class="btn btn--primary" href="${urls.tripTiming()}">${copy('timing.rankLabel')}</a>
+          <a class="btn btn--ghost" href="${urls.whenToGoIndex()}">${copy('timing.allLabel')}</a>
         </p>
       `,
     }) : ''}
 
     ${C.section({
-      title: 'The guides people actually need',
-      kicker: 'Planning',
+      title: copy('guides.title'),
+      kicker: copy('guides.kicker'),
       children: html`
         ${C.linkGrid(featuredGuides.map((g) => ({ href: urls.guide(g.slug), label: g.h1 || g.title, summary: g.summary })), { columns: 3 })}
-        <p class="mt-5"><a class="btn btn--ghost" href="${urls.guidesIndex()}">All ${data.guides.length} guides</a></p>
+        <p class="mt-5"><a class="btn btn--ghost" href="${urls.guidesIndex()}">${copy('guides.allLabel')}</a></p>
       `,
     })}
 
     ${bands.length ? C.section({
-      title: 'The whole year on one page',
-      kicker: 'Seasonal calendar',
-      intro: 'Season ranges for parties, festivals and overlays. Colour shows how much has been confirmed; check each event page for its exact dates.',
+      title: copy('calendar.title'),
+      kicker: copy('calendar.kicker'),
+      intro: copy('calendar.intro'),
       wide: true,
       children: html`
         ${SC.calendarGantt(bands)}
-        <p class="mt-5"><a class="btn btn--ghost" href="${urls.calendar()}">Open the full calendar</a></p>
+        <p class="mt-5"><a class="btn btn--ghost" href="${urls.calendar()}">${copy('calendar.label')}</a></p>
       `,
     }) : ''}
 
     ${C.section({
       tone: 'tint',
-      title: 'Settle the argument',
-      kicker: 'Comparisons',
-      intro: 'We commit to an answer on every comparison page. Hedging is not a service.',
+      title: copy('compare.title'),
+      kicker: copy('compare.kicker'),
+      intro: copy('compare.intro'),
       children: html`
         ${C.linkGrid(featuredCompare.map((c) => ({ href: urls.compare(c.slug), label: c.h1 || c.title, summary: c.summary })), { columns: 2 })}
-        <p class="mt-5"><a class="btn btn--ghost" href="${urls.compareIndex()}">All comparisons</a></p>
+        <p class="mt-5"><a class="btn btn--ghost" href="${urls.compareIndex()}">${copy('compare.allLabel')}</a></p>
       `,
     })}
 
     ${C.section({
-      title: 'How this site pays for itself',
+      title: copy('funding.title'),
       children: html`
         <div class="split">
           <div class="prose">
             ${paragraphs([
-              'A small number of affiliate links, mostly to authorized ticket resellers, and nothing else at present. That is the entire business model today. Display advertising may follow; if it does, it will be disclosed here before it ships. Affiliate links are disclosed directly above the link, not buried in the footer.',
-              'What that money does not buy is placement. No restaurant, ride, or reseller can pay to be ranked higher, described more kindly, or added to a “best of” list. When we think something is overpriced or overrated, we say so — including things we would earn a commission on.',
-              site.legal.shortDisclaimer + ' We buy our own tickets.',
+              copy('funding.body[0]'),
+              copy('funding.body[1]'),
+              copy('funding.body[2]'),
             ])}
-            <p class="mt-5"><a class="btn btn--ghost" href="${urls.editorial()}">Read the editorial policy</a></p>
+            <p class="mt-5"><a class="btn btn--ghost" href="${urls.editorial()}">${copy('funding.policyLabel')}</a></p>
           </div>
           <div>
             ${C.callout({
               type: 'legal',
-              title: 'Independent and unofficial',
+              title: copy('funding.independenceTitle'),
               body: site.legal.disclaimer,
             })}
             ${C.callout({
               type: 'note',
-              title: 'We say what we actually know',
-              body: 'Permanent facts carry the month we last checked them. Anything that moves with the season also says whether it is **confirmed**, **expected**, or **last cycle** — and a page past its own review date says so in a banner nobody here can switch off. Most sites publish this year’s dates whether or not anyone announced them.',
+              title: copy('funding.knowledgeTitle'),
+              body: copy('funding.knowledgeBody'),
             })}
           </div>
         </div>
@@ -485,6 +514,7 @@ export function parksIndexPage (data) {
       site,
       page: {
         url: urls.parksIndex(),
+        ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-park-reference' } : {}),
         title: `All ${data.parks.length} parks compared`,
         description: coverageMode(data)
           ? `Compare ${data.parks.length} covered parks, current attraction catalog counts and recorded height requirements. Guide coverage is separate from same-day park availability.`
@@ -619,6 +649,7 @@ export function companyPages (data, seasonal) {
         site,
         page: {
           url: urls.company(company.slug),
+          ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-park-reference' } : {}),
           // The tail leads with the coaster count — numbers lift CTR on
           // "six flags parks" queries — and names the live Fright Fest year.
           // Both assume the events section exists, true for every company
@@ -740,6 +771,7 @@ export function resortPages (data) {
         site,
         page: {
           url: urls.resort(resort.slug),
+          ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-park-reference' } : {}),
           title: `${resort.name} planning guide`,
           titleTail: ': honest and unofficial',
           description: C.truncate(resort.summary, 155),
