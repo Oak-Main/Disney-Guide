@@ -6,6 +6,7 @@ import { join, resolve, sep } from 'node:path'
 import { serviceWorkerVersion, buildServiceWorker } from '../src/build.mjs'
 import { loadData } from '../src/lib/data.mjs'
 import { heightCheckerPage } from '../src/pages/tools.mjs'
+import { ASSET_VERSION } from '../src/templates/layout.mjs'
 
 for (const operator of ['disney', 'universal', 'coasterguide']) {
   test(`${operator}: the generated worker precaches the exact stylesheet URL and declared display font for offline planning`, async () => {
@@ -25,6 +26,7 @@ for (const operator of ['disney', 'universal', 'coasterguide']) {
       const worker = await readFile(join(dist, 'sw.js'), 'utf8')
       const precache = JSON.parse(worker.match(/var PRECACHE_URLS = (\[[^\n]+\])/)[1])
       assert.equal(precache.filter(url => url === href).length, 1, 'offline cache keys must include the same stylesheet query version as the page')
+      assert.ok(precache.includes(`/assets/js/live-park-data.js?v=${ASSET_VERSION}`), 'the live-panel enhancement must be available to render unavailable states offline')
       if (font) assert.equal(precache.filter(url => url === font).length, 1, 'the selected display face must be available even if its first request preceded worker activation')
     } finally {
       assert.ok(resolve(dist).startsWith(resolve(tmpdir()) + sep + 'disney-release-worker-'))
