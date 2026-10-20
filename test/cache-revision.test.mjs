@@ -60,6 +60,15 @@ test('same-count accuracy corrections and script/style changes invalidate offlin
     assert.notEqual(addedFont, changedStyle, 'new font files require a new cache')
     await writeFile(join(dist, 'assets', 'fonts', 'display.woff2'), 'font revision two')
     assert.notEqual(await revision(), addedFont, 'same-size font corrections require a new cache')
+    for (const extension of ['ttf', 'otf', 'woff']) {
+      const beforeFont = await revision()
+      const fontPath = join(dist, 'assets', 'fonts', `display.${extension}`)
+      await writeFile(fontPath, 'font revision one')
+      const addedFormat = await revision()
+      assert.notEqual(addedFormat, beforeFont, `${extension} files require a new cache`)
+      await writeFile(fontPath, 'font revision two')
+      assert.notEqual(await revision(), addedFormat, `same-size ${extension} corrections require a new cache`)
+    }
     await writeFile(join(dist, 'search-index.json'), '[{"name":"Gold Rusher"}]')
     const changedSearch = await revision()
     assert.notEqual(changedSearch, changedStyle, 'search or status data changes require a new cache')

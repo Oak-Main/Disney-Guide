@@ -288,6 +288,8 @@
     var waitTargets = document.querySelectorAll('[data-live-wait]')
     for (var i = 0; i < waitTargets.length; i++) {
       var el = waitTargets[i]
+      // Reserve the wait section before either request resolves, keeping weather below it.
+      sectionSlot(el, 'live-wait-slot')
       var raw = el.getAttribute('data-live-wait')
       var parkId = parseInt(raw, 10) || SLUG_TO_QT_ID[raw] || 0
       if (parkId && PARKS[parkId]) renderWaitTimes(el, parkId)

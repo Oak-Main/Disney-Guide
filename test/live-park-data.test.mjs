@@ -63,6 +63,7 @@ for (const order of ['weather-first', 'wait-first']) {
     assert.match(c.container.innerHTML, /Clear sky/)
     assert.match(c.container.innerHTML, /−?2°|\-2°/)
     assert.match(c.container.innerHTML, /0°/)
+    assert.deepEqual(c.container.children.map(el => el.className), ['live-wait-slot', 'live-weather-slot'], 'response order must not reorder the visible sections')
   })
 }
 

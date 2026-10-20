@@ -642,7 +642,7 @@ export async function serviceWorkerVersion (data, pages, dist, template) {
     for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
       const path = join(directory, entry.name)
       if (entry.isDirectory()) await addResources(path)
-      else if (/\.(?:js|css|json|svg|woff2?)$/.test(entry.name)) hash.update(path.slice(dist.length)).update('\0').update(await readFile(path)).update('\0')
+      else if (/\.(?:js|css|json|svg|woff2?|ttf|otf)$/.test(entry.name)) hash.update(path.slice(dist.length)).update('\0').update(await readFile(path)).update('\0')
     }
   }
   await addResources(dist)
