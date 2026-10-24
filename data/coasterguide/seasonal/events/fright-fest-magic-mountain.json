@@ -6,11 +6,11 @@
   "parkSlug": "magic-mountain",
   "category": "overlay",
   "season": "halloween",
-  "summary": "Six Flags Magic Mountain runs Fright Fest on select nights through November 1, 2026, including Thursday, October 15. Park admission or a valid pass covers the general event; haunted mazes require a Haunted Attractions Pass unless the selected bundle explicitly includes both. Maze Express and ordinary ride Fast Lane are separate products.",
+  "summary": "Six Flags Magic Mountain runs Fright Fest on select nights through November 1, 2026, including the final weekend. Park admission or a valid pass covers the general event; haunted mazes require a Haunted Attractions Pass unless the selected bundle explicitly includes both. Maze Express and ordinary ride Fast Lane are separate products.",
   "h1": "Fright Fest at Six Flags Magic Mountain: what it is and whether it is worth it",
   "title": "Fright Fest Six Flags Magic Mountain",
-  "titleTail": ": 2026 Hours & Dates",
-  "description": "Magic Mountain Fright Fest 2026: October 15 park hours, 6:30 p.m. opening scaremony, 7 p.m. event block, separate maze admission and Express options.",
+  "titleTail": ": Ends Nov 1",
+  "description": "Magic Mountain Fright Fest 2026 final nights: October 22–25, 29–31 and November 1. The 6:30 p.m. scaremony, 7 p.m. event block, maze pass and Express.",
   "typicalWindow": {
     "startsAround": "mid-September",
     "endsAround": "early November",
@@ -95,8 +95,8 @@
       "a": "General scare zones and shows are part of the scheduled park event, and every guest needs their own paid admission ticket or valid pass. Haunted mazes require a Haunted Attractions Pass unless the selected bundle explicitly includes park admission and maze access. Check the product terms for the date selected."
     },
     {
-      "q": "Does Fright Fest run on Thursday, October 15, 2026?",
-      "a": "Yes. Checked October 9, the official calendar schedules October 15 park hours from 10:30 a.m. to 11 p.m. PDT (America/Los_Angeles). It lists Unleashed at 6:30 p.m. and the Fright Fest event block from 7 to 11 p.m. October 14 is listed closed. Recheck the date-specific calendar and official app before visiting."
+      "q": "What are Fright Fest's final nights at Magic Mountain?",
+      "a": "The scheduled closing nights are October 22–25, October 29–31 and November 1, 2026. The checked October 15 calendar ran 10:30 a.m. to 11 p.m. with the Fright Fest block from 7 to 11 p.m.; expect the same event block on closing nights and recheck the date-specific calendar before visiting."
     },
     {
       "q": "When does Fright Fest run in 2026?",
@@ -115,12 +115,16 @@
       "a": "A Haunted Attractions Pass provides maze admission; park admission is separate unless an explicitly inclusive bundle is purchased. Maze Express is an optional queue upgrade, separate unless included in the selected product. Ordinary ride Fast Lane does not establish maze access or maze Express coverage."
     },
     {
-      "q": "What is the October 15 price?",
-      "a": "A date-selected checkout total has not been verified here. The event page’s starting prices do not establish October 15 pricing. Select that night and check product inclusions, taxes, fees and parking before paying."
+      "q": "What do final-night tickets cost?",
+      "a": "Final nights use the same products: park admission or a valid pass covers the general event, haunted mazes require the Haunted Attractions Pass unless a bundle includes both, and Express is a separate upgrade. Checkout prices are date-specific and not published in advance — check the park's calendar for the night selected."
     },
     {
       "q": "Can I leave and re-enter during Fright Fest?",
       "a": "Re-entry is not permitted after 9 p.m., according to the official event page. Confirm current park procedures before leaving for a break."
+    },
+    {
+      "q": "When does Fright Fest end in 2026?",
+      "a": "The 2026 edition ends Sunday, November 1. Magic Mountain's scheduled closing nights are October 22–25, October 29–31 and November 1. Recheck the official date-specific calendar and app before visiting, because hours and attraction openings are set per date."
     }
   ],
   "crossLinks": [
@@ -152,6 +156,8 @@
       "dates": "Select nights, September 18–November 1, 2026",
       "startDate": "2026-09-18",
       "endDate": "2026-11-01",
+
+      "titleTail": ": Ends Nov 1",
       "changes": [
         "Scheduled 2026 nights: September 18–20 and 25–27; October 2–4, 8–11, 15–18, 22–25 and 29–31; November 1. Selected Thursdays include October 8, 15, 22 and 29.",
         "October 15 is scheduled from 10:30 a.m. to 11 p.m. PDT (America/Los_Angeles), checked October 9. October 14 is listed closed. Recheck the [official selected-date calendar](https://www.sixflags.com/magicmountain/park-hours?date=2026-10-15) before visiting.",
@@ -168,7 +174,7 @@
         "reviewBy": "2026-11",
         "cycle": "annual"
       },
-      "description": "Fright Fest at Magic Mountain in 2026: selected Thursdays, October 15 park hours and distinct opening, event and admission rules."
+      "description": "Magic Mountain Fright Fest 2026 final nights: October 22–25, 29–31 and November 1 — opening scaremony, event block and separate maze admission."
     }
   ]
 }
