@@ -9,7 +9,7 @@
   "summary": "The best festival Disney runs and the most expensive way to eat at a theme park — go on a weekday, budget around $60 a head, and treat the booths as dinner rather than as snacks you graze between rides.",
   "h1": "EPCOT International Food & Wine Festival: what it is and whether it's worth it",
   "title": "EPCOT International Food & Wine Festival",
-  "titleTail": ": Dates, Booths & Verdict",
+  "titleTail": ": Ends Nov 21",
   "description": "Confirmed 2026 EPCOT Food & Wine Festival dates: August 27–November 21. Included with valid EPCOT admission; food and drink cost extra.",
   "typicalWindow": {
     "startsAround": "late August",
@@ -225,6 +225,10 @@
     {
       "q": "Which EPCOT festival is the best one?",
       "a": "Food & Wine offers a large global marketplace lineup; Festival of the Arts offers more non-food programming, and Flower & Garden has a different spring menu. Compare the published dates and menus for your trip rather than assuming the autumn festival is longest every year."
+    },
+    {
+      "q": "When does the EPCOT Food & Wine Festival end in 2026?",
+      "a": "The 2026 festival closes November 21. It began August 27 and is included with valid EPCOT admission; marketplace food and drink are priced separately."
     }
   ],
   "crossLinks": [
@@ -277,6 +281,8 @@
       "dates": "August 27 – November 21, 2026",
       "startDate": "2026-08-27",
       "endDate": "2026-11-21",
+
+      "titleTail": ": Ends Nov 21",
       "changes": [
         "Runs 27 August through 21 November 2026, included with valid EPCOT admission — no separate ticket.",
         "The Eat to the Beat concert series returns alongside the Global Marketplaces.",

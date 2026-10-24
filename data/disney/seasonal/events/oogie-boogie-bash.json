@@ -10,8 +10,8 @@
   "summary": "The 2026 party runs on 33 select nights at Disney California Adventure. General admission is sold out as of September 26; Disney says D23-member tickets remain for September 27. Existing ticket holders get the five-hour party plus admission from 3 p.m.",
   "h1": "Oogie Boogie Bash: what the ticket buys, what it costs, and how to actually get one",
   "title": "Oogie Boogie Bash",
-  "titleTail": ": Dates, Prices & Verdict",
-  "description": "2026 Oogie Boogie Bash dates, $139–$199 ticket prices, sold-out status, 3 p.m. entry, and the new Madame Leota street party.",
+  "titleTail": ": Ends Oct 31",
+  "description": "Final 2026 Oogie Boogie Bash nights run through October 31 at Disney California Adventure: $139–$199 tickets, 3 p.m. entry and the Madame Leota street party.",
   "typicalWindow": {
     "startsAround": "early to mid-August",
     "endsAround": "31 October",
@@ -164,6 +164,10 @@
     {
       "q": "Are the 2026 dates and ticket status confirmed?",
       "a": "Yes. Disney published 33 event dates from August 18 through October 31, 2026, and currently says general admission is sold out. It identifies September 27 as a D23-member night with tickets still available as of September 26. Event details and availability can change."
+    },
+    {
+      "q": "When does Oogie Boogie Bash end in 2026?",
+      "a": "The last 2026 Oogie Boogie Bash is Saturday, October 31 at Disney California Adventure. The 2026 run began August 18 on select nights, with $139–$199 tickets and 3 p.m. event entry."
     }
   ],
   "crossLinks": [
@@ -204,6 +208,8 @@
       "dates": "August 18 – October 31, 2026 (select nights)",
       "startDate": "2026-08-18",
       "endDate": "2026-10-31",
+
+      "titleTail": ": Ends Oct 31",
       "changes": [
         "33 party nights, August 18 through October 31, 2026, from 6:00–11:00 p.m. with ticketed DCA entry from 3:00 p.m.",
         "Future dates as of September 26: September 27 (D23 members and guests only) and 29; October 1, 4, 6, 8, 11, 13, 15, 18, 20, 22, 25, 27, 29 and 31.",

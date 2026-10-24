@@ -9,7 +9,7 @@
   "summary": "Disney confirms Holidays at the Disneyland Resort for November 13, 2026–January 6, 2027. Both parks offer included seasonal entertainment and ride overlays; the festival food and optional extras cost more.",
   "h1": "Holidays at the Disneyland Resort: what is included, and the two weeks to book instead of Christmas",
   "title": "Holidays at the Disneyland Resort",
-  "titleTail": ": What's Included & When To Go",
+  "titleTail": ": Starts Nov 13",
   "description": "Confirmed Disneyland holiday dates for 2026–27, including Festival of Holidays, four ride overlays, parade, fireworks and World of Color.",
   "typicalWindow": {
     "startsAround": "mid-November (November 13 in 2026)",
@@ -191,6 +191,10 @@
     {
       "q": "Can I ride the normal \"it's a small world\" during the holidays?",
       "a": "During the holiday overlay, the attraction operates as “it’s a small world” Holiday rather than its regular version. Disney lists it in the November 13–January 6 holiday program; check the daily calendar for operating hours."
+    },
+    {
+      "q": "When does Holidays at the Disneyland Resort start in 2026?",
+      "a": "Holiday entertainment begins November 13, 2026 and runs through January 6, 2027, including Festival of Holidays, the Christmas parade, fireworks and World of Color seasonal additions."
     }
   ],
   "crossLinks": [
@@ -236,6 +240,8 @@
       "dates": "November 13, 2026 – January 6, 2027",
       "startDate": "2026-11-13",
       "endDate": "2027-01-06",
+
+      "titleTail": ": Starts Nov 13",
       "changes": [
         "Disney moved the 2026 holiday opening from the originally published November 18 to November 13; the confirmed run ends January 6, 2027.",
         "Disney Festival of Holidays and Disney ¡Viva Navidad! share the November 13–January 6 window at Disney California Adventure.",

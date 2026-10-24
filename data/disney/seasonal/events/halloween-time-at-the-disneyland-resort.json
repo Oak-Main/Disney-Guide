@@ -10,8 +10,8 @@
   "summary": "Halloween Time runs August 21–October 31, 2026, across both Disneyland Resort parks with regular admission and a same-day park reservation. Disney California Adventure décor and Monsters After Dark began August 18; Plaza de la Familia continues through November 2.",
   "h1": "Halloween Time at the Disneyland Resort: what changes, what it costs you, and when to go",
   "title": "Halloween Time at the Disneyland Resort",
-  "titleTail": ": What Changes & When To Go",
-  "description": "Disneyland Halloween Time 2026: confirmed dates, ride overlays, Oogie Boogie Bash closures and what regular admission includes.",
+  "titleTail": ": Ends Oct 31",
+  "description": "Disneyland Halloween Time 2026 closes October 31: final-week ride overlays, Oogie Boogie Bash closures and what regular admission includes.",
   "typicalWindow": {
     "startsAround": "late August",
     "endsAround": "31 October",
@@ -149,6 +149,10 @@
     {
       "q": "Are this season's Halloween Time dates confirmed?",
       "a": "Yes. Disney confirms Halloween Time from August 21 through October 31, 2026. DCA Halloween décor and Guardians of the Galaxy – Monsters After Dark began August 18; Plaza de la Familia runs August 21–November 2. Check the daily calendar for entertainment times and party-day park hours."
+    },
+    {
+      "q": "When does Halloween Time end in 2026?",
+      "a": "The 2026 season ends Saturday, October 31. It began August 21 with ride overlays and the Oogie Boogie Bash hard-ticket nights; after October 31 the overlays close and holiday programming takes over."
     }
   ],
   "crossLinks": [
@@ -194,6 +198,8 @@
       "dates": "August 21 – October 31, 2026",
       "startDate": "2026-08-21",
       "endDate": "2026-10-31",
+
+      "titleTail": ": Ends Oct 31",
       "changes": [
         "Halloween Time runs August 21–October 31, 2026; regular park admission and a same-day park reservation are required inside the parks.",
         "DCA Halloween décor and Guardians of the Galaxy – Monsters After Dark began August 18; Disneyland Park, Downtown Disney and resort hotel décor were fully in place August 21.",
