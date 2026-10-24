@@ -9,7 +9,7 @@
   "summary": "A costly party whose value depends on what you want: seasonal decorations and Jingle Cruise are available during ordinary park hours, while Disney lists holiday Space Mountain, Tomorrowland Speedway and Mad Tea Party among its party attractions alongside the parade, fireworks and character meets.",
   "h1": "Mickey's Very Merry Christmas Party: what it is and whether it's worth it",
   "title": "Mickey's Very Merry Christmas Party",
-  "titleTail": ": Dates, Prices & Verdict",
+  "titleTail": ": Starts Nov 8",
   "description": "2026 Magic Kingdom Christmas party: 25 select nights November 8–December 22, 7 p.m.–midnight, with entry from 4 p.m. Tickets cost $189–$229 plus tax.",
   "typicalWindow": {
     "startsAround": "early November",
@@ -161,6 +161,10 @@
     {
       "q": "Is one party night enough?",
       "a": "Yes, and a second night in the same trip is close to wasted money. Every element repeats identically each night: the same parade, the same fireworks, the same stage show, the same meets. The only case for a second night is a group that split up and missed something on the first."
+    },
+    {
+      "q": "When does Mickey's Very Merry Christmas Party start in 2026?",
+      "a": "The first 2026 party is Saturday, November 8. The run spans 25 select nights through December 22, with event entry from 4 p.m. and the party from 7 p.m. to midnight."
     }
   ],
   "crossLinks": [
@@ -208,6 +212,8 @@
       "dates": "November 8 – December 22, 2026 (select nights)",
       "startDate": "2026-11-08",
       "endDate": "2026-12-22",
+
+      "titleTail": ": Starts Nov 8",
       "freshness": {
         "verified": "2026-09",
         "confidence": "confirmed",

@@ -10,8 +10,8 @@
   "summary": "Worth buying once, on an early-season weeknight, and only if you accept that you are paying for a parade, a fireworks show and character lines that exist on no other date — not for a night of short ride waits.",
   "h1": "Mickey's Not-So-Scary Halloween Party: what it is and whether it's worth it",
   "title": "Mickey's Not-So-Scary Halloween Party",
-  "titleTail": ": Dates, Prices & Verdict",
-  "description": "2026 Magic Kingdom Halloween party: August 7–October 31 on 38 select nights, 7 p.m.–midnight. All 2026 dates are sold out as of September 26.",
+  "titleTail": ": Ends Oct 31",
+  "description": "The 2026 Magic Kingdom Halloween party ends October 31 after 38 select nights, 7 p.m.–midnight. Remaining dates sold out as of September 26.",
   "typicalWindow": {
     "startsAround": "early August",
     "endsAround": "Halloween",
@@ -169,6 +169,10 @@
     {
       "q": "How does it compare to the Christmas party at the same park?",
       "a": "The Halloween party is the better event and the Christmas party is the better night in the park. Not-So-Scary has the stronger parade, a wider costume and character offer, and a much wider price band, so a cheap night is genuinely cheap. Mickey's Very Merry Christmas Party has a narrower price floor and a shorter season, but the park itself is dressed more thoroughly."
+    },
+    {
+      "q": "When does Mickey's Not-So-Scary Halloween Party end in 2026?",
+      "a": "The final 2026 party is Saturday, October 31. The run spanned 38 select nights from August 7, 7 p.m. to midnight, and all 2026 dates were sold out as of September 26."
     }
   ],
   "crossLinks": [
@@ -216,6 +220,8 @@
       "dates": "August 7 – October 31, 2026 (select nights)",
       "startDate": "2026-08-07",
       "endDate": "2026-10-31",
+
+      "titleTail": ": Ends Oct 31",
       "changes": [
         "Disney lists 38 select nights August 7–October 31, 2026, with event hours 7 p.m.–midnight and entry from 4 p.m. on a valid party ticket.",
         "All 2026 event dates are sold out on Disney’s official ticket page as of September 26, 2026.",
