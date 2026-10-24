@@ -9,8 +9,8 @@
   "summary": "Tricks and Treats at Six Flags Magic Mountain is the park’s daytime, family-focused Halloween event in 2026. It offers costumes, treats and shows before the more intense Fright Fest program after dark. Check the park calendar because the announced range includes only scheduled event days.",
   "h1": "Tricks and Treats at Six Flags Magic Mountain: 2026 dates and family plan",
   "title": "Tricks and Treats at Six Flags Magic Mountain",
-  "titleTail": ": Dates & Family Guide",
-  "description": "Tricks and Treats at Six Flags Magic Mountain in 2026: confirmed dates, daytime activities, age guidance and how to leave before Fright Fest scares begin.",
+  "titleTail": ": Ends Nov 1",
+  "description": "Tricks and Treats at Six Flags Magic Mountain runs its final 2026 dates through November 1: daytime costumes, treats and shows before Fright Fest scares begin.",
   "typicalWindow": {
     "startsAround": "mid-September",
     "endsAround": "early November",
@@ -91,6 +91,10 @@
     {
       "q": "Can we stay for Fright Fest afterward?",
       "a": "On a scheduled Fright Fest night, park admission or a valid pass covers the general event. Haunted mazes need a Haunted Attractions Pass unless an explicitly inclusive bundle is purchased, and maze Express is a separate upgrade unless included. Ordinary ride Fast Lane does not establish maze coverage. Fright Fest is not recommended for children under 13; that is guidance rather than a stated admission ban. Check the official calendar and app for the transition and individual times."
+    },
+    {
+      "q": "When does Tricks and Treats end in 2026?",
+      "a": "The 2026 edition is scheduled through Sunday, November 1. Closing-week dates follow the event's select-night pattern, so not every remaining calendar day is an event day — recheck the park's date-specific calendar before buying final-night tickets."
     }
   ],
   "crossLinks": [
@@ -117,6 +121,8 @@
       "dates": "Noon–5 p.m. on select dates, September 18–November 1, 2026",
       "startDate": "2026-09-18",
       "endDate": "2026-11-01",
+
+      "titleTail": ": Ends Nov 1",
       "changes": [
         "Trick-or-Treat Trail for children 13 and under is listed for 2026.",
         "Patch’s Pumpkin Patch is listed for 2026.",

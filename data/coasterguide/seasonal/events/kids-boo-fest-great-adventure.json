@@ -9,8 +9,8 @@
   "summary": "Kids Boo Fest at Six Flags Great Adventure is the park’s daytime, family-focused Halloween event in 2026. It offers costumes, treats and shows before the more intense Fright Fest program after dark. Check the park calendar because the announced range includes only scheduled event days.",
   "h1": "Kids Boo Fest at Six Flags Great Adventure: 2026 dates and family plan",
   "title": "Kids Boo Fest at Six Flags Great Adventure",
-  "titleTail": ": Dates & Family Guide",
-  "description": "Kids Boo Fest at Six Flags Great Adventure in 2026: confirmed dates, daytime activities, age guidance and how to leave before Fright Fest scares begin.",
+  "titleTail": ": Ends Nov 1",
+  "description": "Kids Boo Fest at Six Flags Great Adventure runs its final 2026 dates through November 1: daytime costumes, treats and shows before Fright Fest scares begin.",
   "typicalWindow": {
     "startsAround": "mid-September",
     "endsAround": "early November",
@@ -85,6 +85,10 @@
     {
       "q": "Can we stay for Fright Fest afterward?",
       "a": "A standard ticket may cover the general evening scare zones on a scheduled Fright Fest night, but haunted mazes require a separate Haunted Attractions Pass. Six Flags does not recommend the evening event for children under 13."
+    },
+    {
+      "q": "When does Kids Boo Fest end in 2026?",
+      "a": "The 2026 edition is scheduled through Sunday, November 1. Closing-week dates follow the event's select-night pattern, so not every remaining calendar day is an event day — recheck the park's date-specific calendar before buying final-night tickets."
     }
   ],
   "crossLinks": [
@@ -111,6 +115,8 @@
       "dates": "Select days September 12–November 1, 2026",
       "startDate": "2026-09-12",
       "endDate": "2026-11-01",
+
+      "titleTail": ": Ends Nov 1",
       "changes": [
         "Trick or Treatin’ with Boo for children 12 and under is listed for 2026.",
         "Beatrix n Treats is listed for 2026.",

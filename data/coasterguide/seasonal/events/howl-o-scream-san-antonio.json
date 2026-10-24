@@ -9,8 +9,8 @@
   "summary": "Howl-O-Scream is SeaWorld San Antonio's Halloween night, included with park admission on select dates: haunted houses, scare zones, shows and rides after dark. It begins at 7 p.m. and is intended for mature audiences.",
   "h1": "Howl-O-Scream SeaWorld San Antonio: what it costs and whether it is worth it",
   "title": "Howl-O-Scream SeaWorld San Antonio",
-  "titleTail": ": Dates, Prices & Verdict",
-  "description": "Howl-O-Scream at SeaWorld San Antonio: 2026 select dates, park-admission inclusion, haunted houses and coasters after dark.",
+  "titleTail": ": Ends Nov 1",
+  "description": "Howl-O-Scream at SeaWorld San Antonio runs its final 2026 dates through November 1: park-admission inclusion, haunted houses and coasters after dark.",
   "typicalWindow": {
     "startsAround": "mid-September",
     "endsAround": "early November",
@@ -90,6 +90,10 @@
     {
       "q": "Do the coasters really run during the event?",
       "a": "Yes — the big coasters running after dark are half the product and the event's differentiator against standalone haunts. Which specific rides run each night is on the event page."
+    },
+    {
+      "q": "When does Howl-O-Scream end in 2026?",
+      "a": "The 2026 edition is scheduled through Sunday, November 1. Closing-week dates follow the event's select-night pattern, so not every remaining calendar day is an event day — recheck the park's date-specific calendar before buying final-night tickets."
     }
   ],
   "crossLinks": [
@@ -121,6 +125,8 @@
       "dates": "Select nights, September 11 – November 1, 2026",
       "startDate": "2026-09-11",
       "endDate": "2026-11-01",
+
+      "titleTail": ": Ends Nov 1",
       "changes": [
         "The only SeaWorld haunt of the three that extends into November",
         "Included with regular park admission on scheduled dates; optional priority upgrades are extra",

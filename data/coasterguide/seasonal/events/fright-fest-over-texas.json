@@ -9,8 +9,8 @@
   "summary": "Six Flags Over Texas runs Fright Fest on select nights through November 1, 2026. Park admission covers most nighttime scare zones and shows; haunted mazes and Doc Varnum’s Hybrid Hell Pit scare zone require a separate Haunted Attractions Pass. The park also offers Tricks and Treats for families during the day.",
   "h1": "Fright Fest at Six Flags Over Texas: what it is and whether it is worth it",
   "title": "Fright Fest Six Flags Over Texas",
-  "titleTail": ": Dates & Prices 2026",
-  "description": "Fright Fest at Six Flags Over Texas runs evenings on select nights, September 11 to November 1, 2026: dates, admission and maze-pass costs.",
+  "titleTail": ": Ends Nov 1",
+  "description": "Fright Fest at Six Flags Over Texas runs its final select nights through November 1, 2026: dates, admission and maze-pass costs for the last week.",
   "typicalWindow": {
     "startsAround": "mid-September",
     "endsAround": "early November",
@@ -86,6 +86,10 @@
     {
       "q": "Do I need a maze pass?",
       "a": "Yes, if you want to enter the 2026 haunted mazes. A normal park ticket or pass covers the general Fright Fest atmosphere but not maze admission. Check the park’s ticket page for current pass prices and fees."
+    },
+    {
+      "q": "When does Fright Fest end in 2026?",
+      "a": "The 2026 edition is scheduled through Sunday, November 1. Closing-week dates follow the event's select-night pattern, so not every remaining calendar day is an event day — recheck the park's date-specific calendar before buying final-night tickets."
     }
   ],
   "crossLinks": [
@@ -117,6 +121,8 @@
       "dates": "Select nights, September 11 – November 1, 2026",
       "startDate": "2026-09-11",
       "endDate": "2026-11-01",
+
+      "titleTail": ": Ends Nov 1",
       "changes": [
         "New 2026 mazes include The Strangers: No Escape, SAW: Legacy of Terror and The Conjuring Universe.",
         "New Doc Varnum’s Hybrid Hell Pit scare zone requires the Haunted Attractions Pass."

@@ -9,8 +9,8 @@
   "summary": "A shorter, tighter version of the Orlando event with one thing Orlando cannot copy: the Terror Tram, which takes the backlot after dark. It is an adult horror event, it is small enough that Los Angeles fills it on Fridays and Saturdays, and the night you pick matters more than anything else you decide.",
   "h1": "Halloween Horror Nights Hollywood: the mazes, the Terror Tram, and which nights are worth buying",
   "title": "Halloween Horror Nights Hollywood",
-  "titleTail": ": Dates, Prices & Verdict",
-  "description": "Universal Studios Hollywood's hard-ticket horror event: the full 2026 house lineup, the Terror Tram, ticket ladder, which nights to buy, and who should skip it.",
+  "titleTail": ": Ends Nov 1",
+  "description": "Universal Studios Hollywood's hard-ticket horror event closes its 2026 run on November 1: final-night houses, the Terror Tram, the ticket ladder and who should skip it.",
   "typicalWindow": {
     "startsAround": "early September",
     "endsAround": "the first weekend of November",
@@ -216,6 +216,10 @@
     {
       "q": "What does the event food cost in 2026?",
       "a": "Universal has published a 2026 menu featuring house-themed food and drinks, including Sinners items at City Snacks and Mulligan's Bar. Prices can change, so check the current menu board. The Dining Pass covers two eligible entrées and four eligible sides, snacks, desserts or beverages at participating locations on the selected date; compare it with what you plan to order."
+    },
+    {
+      "q": "When does HHN Hollywood end in 2026?",
+      "a": "The 42-night 2026 run is scheduled through Sunday, November 1. Use Universal's published date list rather than assuming every night in the closing week is included, and buy specific-date tickets accordingly."
     }
   ],
   "crossLinks": [
@@ -292,7 +296,7 @@
         "cycle": "annual"
       },
       "titleTail": ": All 8 Houses & Dates",
-      "description": "All eight HHN Hollywood 2026 houses — Stranger Things 5, Sinners, Hellraiser, Ozzy, Evil Dead Burn, Killer Klowns, Killceañera, Dead Deader Deadest — plus dates.",
+      "description": "All eight HHN Hollywood 2026 houses — Stranger Things 5, Sinners, Hellraiser, Ozzy, Evil Dead Burn, Killer Klowns, Killceañera, Dead Deader Deadest — through November 1.",
       "lineup": {
         "heading": "The eight houses, and where each one sits",
         "intro": [

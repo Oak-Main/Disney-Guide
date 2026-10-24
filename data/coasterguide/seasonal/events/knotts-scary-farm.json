@@ -9,8 +9,8 @@
   "summary": "Knott's Scary Farm is the oldest big haunt in the country — running since 1973 — and still among the best: dozens of mazes, scare zones through the real Ghost Town, and a separately-ticketed night event that transforms the whole park.",
   "h1": "Knott's Scary Farm: what it is, what it costs, and whether it is worth it",
   "title": "Knott's Scary Farm",
-  "titleTail": ": Dates, Prices & Verdict",
-  "description": "Knott's Scary Farm, the original big Halloween haunt: mazes, Ghost Town scare zones and shows on a separate ticket. The honest worth-it verdict and the planning playbook.",
+  "titleTail": ": Ends Oct 31",
+  "description": "Knott's Scary Farm runs its final 2026 mazes and Ghost Town scares through Halloween night, October 31: separate ticket, the honest verdict and the playbook.",
   "typicalWindow": {
     "startsAround": "mid-September",
     "endsAround": "Halloween night",
@@ -117,6 +117,10 @@
     {
       "q": "Is it the best haunt in the country?",
       "a": "It is the argument's center. Knott's invented the big-park haunt in 1973 and still leads on maze count and Ghost Town atmosphere; the Universal parks' Halloween Horror Nights lead on IP production. Haunt fans ride both and argue forever — this site's verdict is that Scary Farm on a calm night is the best value in the genre."
+    },
+    {
+      "q": "When does Scary Farm end in 2026?",
+      "a": "The 2026 edition is scheduled through Saturday, October 31. Closing-week dates follow the event's select-night pattern, so not every remaining calendar day is an event day — recheck the park's date-specific calendar before buying final-night tickets."
     }
   ],
   "crossLinks": [
@@ -149,6 +153,8 @@
       "dates": "Select nights, September 17 – October 31, 2026",
       "startDate": "2026-09-17",
       "endDate": "2026-10-31",
+
+      "titleTail": ": Ends Oct 31",
       "nights": 26,
       "changes": [
         "26 select nights, Thursdays through Sundays plus added nights near Halloween",

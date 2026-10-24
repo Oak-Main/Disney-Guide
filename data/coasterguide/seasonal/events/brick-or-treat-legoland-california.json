@@ -9,8 +9,8 @@
   "summary": "Brick-or-Treat is LEGOLAND California's daytime, family-focused Halloween event on 12 select dates in 2026, with costumes, LEGO monsters, treat activities and shows. It is included with a dated park ticket; some annual-pass tiers need a paid event ticket.",
   "h1": "Brick-or-Treat at LEGOLAND California: the family Halloween, priced and judged",
   "title": "Brick-or-Treat LEGOLAND California",
-  "titleTail": ": Dates, Prices & Verdict",
-  "description": "Brick-or-Treat at LEGOLAND California: confirmed 2026 dates, family activities and which park tickets or annual passes include the event.",
+  "titleTail": ": Ends Nov 1",
+  "description": "Brick-or-Treat at LEGOLAND California runs its final 2026 dates through November 1: family activities, treats and shows, and which tickets or passes include it.",
   "typicalWindow": {
     "startsAround": "late September",
     "endsAround": "early November",
@@ -89,6 +89,10 @@
     {
       "q": "What ages is it best for?",
       "a": "Roughly three to ten, matching the park itself. Costumed kids at the younger end get the most from it; kids over ten are past the treat-trail demographic."
+    },
+    {
+      "q": "When does Brick-or-Treat end in 2026?",
+      "a": "The 2026 edition is scheduled through Sunday, November 1. Closing-week dates follow the event's select-night pattern, so not every remaining calendar day is an event day — recheck the park's date-specific calendar before buying final-night tickets."
     }
   ],
   "crossLinks": [
@@ -118,6 +122,8 @@
       "dates": "Select dates, September 19 – November 1, 2026",
       "startDate": "2026-09-19",
       "endDate": "2026-11-01",
+
+      "titleTail": ": Ends Nov 1",
       "changes": [
         "New Brick or Treat Street, with six life-size LEGO monster characters",
         "Included with a dated park ticket and Premium/Elite passes; several other pass tiers require an additional ticket",

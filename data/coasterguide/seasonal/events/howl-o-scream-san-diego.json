@@ -9,8 +9,8 @@
   "summary": "Howl-O-Scream is SeaWorld San Diego's separately-ticketed Halloween night: produced haunted houses, scare zones and coasters running after dark across the marine park. The San Diego edition is the smallest of the three SeaWorld haunts and the most atmosphere-per-acre — the bay-side park turns genuinely eerie.",
   "h1": "Howl-O-Scream SeaWorld San Diego: what it costs and whether it is worth it",
   "title": "Howl-O-Scream SeaWorld San Diego",
-  "titleTail": ": Dates, Prices & Verdict",
-  "description": "Howl-O-Scream at SeaWorld San Diego: haunted houses, scare zones and coasters after dark on Mission Bay. Costs as pattern, the worth-it verdict, and the playbook.",
+  "titleTail": ": Ends Oct 31",
+  "description": "Howl-O-Scream at SeaWorld San Diego runs its last 2026 nights through October 31: haunted houses, scare zones and coasters after dark on Mission Bay.",
   "typicalWindow": {
     "startsAround": "mid-September",
     "endsAround": "Halloween night",
@@ -101,6 +101,10 @@
     {
       "q": "Do the coasters really run during the event?",
       "a": "Yes — the big coasters running after dark are half the product and the event's differentiator against standalone haunts. Which specific rides run each night is on the event page."
+    },
+    {
+      "q": "When does Howl-O-Scream end in 2026?",
+      "a": "The 2026 edition is scheduled through Saturday, October 31. Closing-week dates follow the event's select-night pattern, so not every remaining calendar day is an event day — recheck the park's date-specific calendar before buying final-night tickets."
     }
   ],
   "crossLinks": [
@@ -132,6 +136,8 @@
       "dates": "Select nights, September 11 – October 31, 2026",
       "startDate": "2026-09-11",
       "endDate": "2026-10-31",
+
+      "titleTail": ": Ends Oct 31",
       "changes": [
         "Six haunted houses and eight scare zones",
         "A new haunted house themed to I Know What You Did Last Summer opens with the season",
