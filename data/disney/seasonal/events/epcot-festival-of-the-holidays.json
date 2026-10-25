@@ -9,7 +9,7 @@
   "summary": "The 2026 festival opens November 27, after Thanksgiving, and ends December 30. Plan a December weekday for the Candlelight Processional and holiday kitchens.",
   "h1": "EPCOT International Festival of the Holidays: what it is and whether it's worth it",
   "title": "EPCOT International Festival of the Holidays",
-  "titleTail": ": Dates, Kitchens & Verdict",
+  "titleTail": ": Starts Nov 27",
   "description": "Confirmed 2026 EPCOT Festival of the Holidays dates: November 27–December 30, with Candlelight Processional and holiday kitchens included in the park experience.",
   "typicalWindow": {
     "startsAround": "late November",
@@ -195,6 +195,10 @@
     {
       "q": "Are the World Showcase storytellers worth planning around?",
       "a": "Yes, and they are the most underused free content at any EPCOT festival. Each pavilion runs a holiday storyteller performing short sets several times a day with no queue and no charge. Pick four from the times guide and build your kitchen loop to arrive at each pavilion shortly before its set — seeing all of them in one day is not achievable."
+    },
+    {
+      "q": "When does the EPCOT Festival of the Holidays start in 2026?",
+      "a": "The 2026 festival runs November 27 through December 30, with the Candlelight Processional and holiday kitchens included with valid EPCOT admission."
     }
   ],
   "crossLinks": [
@@ -242,6 +246,8 @@
       "dates": "November 27 – December 30, 2026",
       "startDate": "2026-11-27",
       "endDate": "2026-12-30",
+
+      "titleTail": ": Starts Nov 27",
       "freshness": {
         "verified": "2026-09",
         "confidence": "confirmed",

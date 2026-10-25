@@ -9,7 +9,7 @@
   "summary": "The best ride value of Walt Disney World's holiday hard tickets and the weakest content value — a late-night party at Hollywood Studios that is really an after-hours ticket with a jazz band attached.",
   "h1": "Disney Jollywood Nights: what it is and whether it's worth it",
   "title": "Disney Jollywood Nights",
-  "titleTail": ": Dates, Prices & Verdict",
+  "titleTail": ": Starts Nov 7",
   "description": "2026–27 Disney Jollywood Nights at Hollywood Studios: 15 select nights November 7–January 5, 7:30 p.m.–12:30 a.m., tickets $169–$199 plus tax.",
   "typicalWindow": {
     "startsAround": "early November",
@@ -159,6 +159,10 @@
     {
       "q": "Is it worth buying two nights in one trip?",
       "a": "No. The entertainment repeats identically and the ride list is finite; two nights at a park this size is a repeat purchase. If you want a second capped-crowd evening in the same trip, buy it at a different park rather than a second date at this one."
+    },
+    {
+      "q": "When does Disney Jollywood Nights start in 2026?",
+      "a": "The first 2026–27 night is Saturday, November 7 at Disney's Hollywood Studios. The run spans 15 select nights through January 5, 7:30 p.m. to 12:30 a.m."
     }
   ],
   "crossLinks": [
@@ -206,6 +210,8 @@
       "dates": "November 7, 2026 – January 5, 2027 (select nights)",
       "startDate": "2026-11-07",
       "endDate": "2027-01-05",
+
+      "titleTail": ": Starts Nov 7",
       "nights": 15,
       "priceRangeUsd": [
         169,
