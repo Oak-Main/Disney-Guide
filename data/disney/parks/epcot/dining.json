@@ -118,6 +118,7 @@
     {
       "slug": "space-220-restaurant",
       "name": "Space 220 Restaurant",
+      "metaTitleTail": ": lunch $55, dinner $79",
       "land": "world-discovery",
       "service": "table-service",
       "cuisine": "Contemporary American",
@@ -143,7 +144,7 @@
       "outdoorSeating": false,
       "characterDining": false,
       "standalonePage": true,
-      "summary": "A prix fixe restaurant staged as a space station two hundred miles up, with screen windows showing Earth turning below you.",
+      "summary": "Space 220 serves roughly $55 adult lunch and $79 adult dinner prix fixe as of July 2026; the lounge offers a shorter à la carte menu and limited walk-ups, all in a space-station dining room with screen views of Earth.",
       "description": [
         "Space 220 sits beside Mission: SPACE and is entered through a 'space elevator' — a room with screen floors and ceilings that simulates a climb from a Florida launch pad to orbit over about two minutes. You step out into a dining room ringed with screens showing the curve of the Earth, the sun crossing, and the occasional passing spacecraft.",
         "The theater is excellent. The elevator gag is the best pre-meal bit at any Walt Disney World restaurant, and the window effect holds up because the imagery moves slowly and continuously rather than looping obviously. Cast members stay in character as station crew.",
@@ -178,6 +179,18 @@
         {
           "q": "Can you eat at Space 220 without a reservation?",
           "a": "Sometimes, in the lounge. It holds a limited number of walk-up guests and serves a shorter menu at lower cost. Put your name in early in the day and expect a wait."
+        },
+        {
+          "q": "How much does Space 220 cost?",
+          "a": "The recorded prix fixe is roughly $55 per adult at lunch and $79 per adult at dinner as of July 2026, before drinks and tax. The lounge offers a shorter à la carte menu at a lower spend, but the current record does not supply individual lounge prices."
+        },
+        {
+          "q": "What are Space 220's opening hours?",
+          "a": "Space 220 serves lunch and dinner. The July 2026 record does not publish exact daily opening or closing times for the restaurant or lounge, so check the official Disney app or venue calendar for your visit date."
+        },
+        {
+          "q": "What is on the Space 220 menu?",
+          "a": "The restaurant serves contemporary American food as a fixed-price multi-course meal. Recorded items include Blue Moon Cauliflower, Starry Calamari, slow-rotisserie beef short rib and Carrot Cake. The lounge serves a shorter à la carte menu; confirm current dishes and availability before visiting."
         },
         {
           "q": "Is the view real?",
