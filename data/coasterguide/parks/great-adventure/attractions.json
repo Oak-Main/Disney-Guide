@@ -130,7 +130,7 @@
       },
       "tier": "headliner",
       "standalonePage": true,
-      "summary": "The 215-foot B&M hypercoaster along the lakefront — giant floater airtime, a 65-degree drop, and the park's best steel riding.",
+      "summary": "Riders must be at least 54 inches tall for this 215-foot B&M hypercoaster with giant floater airtime and a 65-degree drop.",
       "description": [
         "Nitro is Great Adventure's giant: a B&M hypercoaster with a 215-foot lift, a drop toward the lake at speed, and a course of enormous airtime hills and a helix finale through the trees. It is the ride style that made B&M's reputation — huge, smooth, and generous with weightlessness.",
         "The restraint is a lap bar, the trains are roomy, and the pacing alternates between soaring hills and high-speed turns. Nitro is the coaster at this park most likely to convert a cautious rider: nothing inverts, the forces are comfortable, and the airtime is the friendly floating kind.",
@@ -168,7 +168,8 @@
         "batman-the-ride"
       ],
       "image": null,
-      "lastVerified": "2026-07"
+      "lastVerified": "2026-07",
+      "titleTail": ": 54-inch minimum height"
     },
     {
       "slug": "kingda-ka",
