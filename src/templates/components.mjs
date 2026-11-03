@@ -347,12 +347,15 @@ export function bulletList (items, { style = 'bullet', className = '' } = {}) {
     arr.map((i) => `<li>${inline(i)}</li>`).join('') + `</${Tag}>`)
 }
 
-export function tipList (tips, { title = 'Tips that actually help', tone = 'tip' } = {}) {
+export function tipList (tips, { title = 'Tips that actually help', tone = 'tip', headingLevel = 3 } = {}) {
   const arr = (tips || []).filter(Boolean)
   if (!arr.length) return raw('')
+  const heading = headingLevel === 2
+    ? html`<h2 class="tips__title">${title}</h2>`
+    : html`<h3 class="tips__title">${title}</h3>`
   return html`
     <div class="tips tips--${tone}">
-      <h3 class="tips__title">${title}</h3>
+      ${heading}
       <ul>${arr.map((t) => html`<li>${inline(t)}</li>`)}</ul>
     </div>
   `

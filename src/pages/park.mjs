@@ -556,7 +556,7 @@ export function landPage (land, data) {
             ${land.vibe ? C.callout({ type: 'note', title: 'What it feels like standing here', body: land.vibe }) : ''}
           </div>
           <div class="split__aside">
-            ${land.highlights && land.highlights.length ? C.tipList(land.highlights, { title: 'Do not miss' }) : ''}
+            ${land.highlights && land.highlights.length ? C.tipList(land.highlights, { title: 'Do not miss', headingLevel: data.operator === 'universal' ? 2 : 3 }) : ''}
             ${land.tips && land.tips.length ? C.tipList(land.tips, { title: `${land.name} tips` }) : ''}
           </div>
         </div>
