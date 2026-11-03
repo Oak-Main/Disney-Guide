@@ -202,7 +202,7 @@ function renderMarker (marker, park, standalone = false) {
  * @param {object} park  a park record from loadData()
  * @returns {{svg: import('./html.mjs').Raw, synthetic: boolean, note: string}|null}
  */
-export function renderParkMap (park, { standalone = false } = {}) {
+export function renderParkMap (park, { standalone = false, interactive = false } = {}) {
   const map = park.map || syntheticMap(park)
   if (!map) return null
   const coverageDiagram = Boolean(map.synthetic && park.operator === 'coasterguide')
@@ -220,7 +220,7 @@ export function renderParkMap (park, { standalone = false } = {}) {
   const canvas = [vx - padSide, vy - padTop, vw + padSide * 2, vh + padTop + padBottom]
 
   const svg = html`
-    <svg class="parkmap parkmap--vintage" viewBox="${canvas.join(' ')}" role="img"
+    <svg class="parkmap parkmap--vintage" viewBox="${canvas.join(' ')}" role="${interactive ? 'group' : 'img'}"
          aria-label="${coverageDiagram ? `Illustrative guide coverage diagram for ${park.name}; area positions are not verified geography` : `Illustrated map of ${park.name} showing each land and its main attractions`}"
          xmlns="http://www.w3.org/2000/svg">
       <title>${park.name} — ${coverageDiagram ? 'illustrative guide coverage diagram' : 'illustrated park map'}</title>
