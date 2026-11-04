@@ -5,7 +5,7 @@ import assert from 'node:assert/strict'
 import { loadData } from '../src/lib/data.mjs'
 import { loadSeasonal } from '../src/lib/seasonal-data.mjs'
 import { homePage } from '../src/pages/core.mjs'
-import { ganttBands, bandCovers, BUILD_MONTH_NUMBER } from '../src/seasonal/core.mjs'
+import { ganttBands, bandCovers } from '../src/seasonal/core.mjs'
 
 const root = new URL('..', import.meta.url)
 const css = await readFile(new URL('./assets/css/main.css', root), 'utf8')
@@ -26,8 +26,8 @@ test('the site has one complete warm dark-only token system', () => {
 test('the home page renders the configured confirmed Halloween spotlight and non-blocking landing bats', async () => {
   const data = await loadData('disney')
   const seasonal = await loadSeasonal('disney', data)
-  const running = ganttBands(seasonal).filter((band) => bandCovers(band, BUILD_MONTH_NUMBER)).map((band) => band.event)
-  const page = homePage(data, seasonal).html
+  const running = ganttBands(seasonal).filter((band) => bandCovers(band, 9)).map((band) => band.event)
+  const page = homePage(data, seasonal, '2026-09').html
 
   assert.match(page, /data-landing-bats data-season-until="2026-10-31" aria-hidden="true"/)
   assert.match(page, /Halloween is already here at both resorts/)
@@ -41,6 +41,13 @@ test('the home page renders the configured confirmed Halloween spotlight and non
   assert.ok(entries.every((index) => index >= 0), 'configured Halloween cards were not rendered')
   assert.deepEqual(entries.slice().sort((a, b) => a - b), entries, 'spotlight card order drifted')
   assert.equal(running.filter((event) => event.season === 'halloween').length >= 3, true)
+})
+
+test('the November rebuild retires the October Disney spotlight and its landing bats', async () => {
+  const data = await loadData('disney')
+  const seasonal = await loadSeasonal('disney', data)
+  const page = homePage(data, seasonal, '2026-11').html
+  assert.doesNotMatch(page, /data-landing-bats|id="season-spotlight-title"/)
 })
 
 test('landing bats remain decorative and clear after their three-second sequence', () => {

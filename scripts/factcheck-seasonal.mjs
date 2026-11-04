@@ -133,6 +133,8 @@ async function checkEvents () {
     if (ev.category !== ref.category) fail(where, `category is "${ev.category}", reference says "${ref.category}"`)
 
     const win = WINDOWS[slug]
+    if (!Object.hasOwn(WINDOWS, slug)) fail(where, 'missing independent §7.2 window reference')
+    if (win && !ev.typicalWindow) fail(where, 'missing typicalWindow for the independently verified window')
     if (win && ev.typicalWindow) {
       const starts = norm(ev.typicalWindow.startsAround || '')
       const ends = norm(ev.typicalWindow.endsAround || '')
@@ -240,14 +242,14 @@ async function main () {
   }
 
   if (problems.length) {
-    console.error(`\n  ${problems.length} fact${problems.length === 1 ? '' : 's'} disagree with the July 2026 seasonal reference tables:\n`)
+    console.error(`\n  ${problems.length} fact${problems.length === 1 ? '' : 's'} disagree with the seasonal reference tables:\n`)
     for (const p of problems) console.error(`    ✗ ${p}`)
     console.error('\n  Either the data is wrong, or reality moved and docs/SEASONAL-SCHEMA.md §7 needs updating in this same commit.\n')
     process.exitCode = 1
     return
   }
 
-  console.log(`\n  Seasonal facts check out against the July 2026 reference tables for ${targets.length} operator${targets.length === 1 ? '' : 's'}.\n`)
+  console.log(`\n  Seasonal facts check out against the reference tables for ${targets.length} operator${targets.length === 1 ? '' : 's'}.\n`)
 }
 
 main().catch((e) => { console.error('\nFact checker crashed:\n', e); process.exitCode = 1 })

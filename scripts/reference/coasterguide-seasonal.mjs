@@ -54,6 +54,9 @@ export const WINDOWS = {
   'howl-o-scream-san-antonio': { starts: ['september'], ends: ['november', 'halloween'], nights: [8, 25] },
   'howl-o-scream-orlando': { starts: ['september'], ends: ['november', 'halloween'], nights: [10, 30] },
   'brick-or-treat-legoland-california': { starts: ['september', 'october'], ends: ['november', 'halloween'] },
+  // Visit Santa Clarita independently lists Nov 26, 2026–Jan 3, 2027:
+  // https://visitsantaclarita.com/inspiration/seasonal-activities/holiday-in-the-park-at-six-flags-magic-mountain/
+  'holiday-in-the-park-magic-mountain': { starts: ['late november'], ends: ['early january'] },
 }
 
 /**

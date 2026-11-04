@@ -31,6 +31,9 @@ export const EVENTS = {
  * before Christmas", which is better copy than "late December" and describes the same fortnight.
  */
 export const WINDOWS = {
+  // These separately themed nights vary by park and edition; there is no stable reference window.
+  'disney-after-hours': null,
+  'disneyland-after-dark': null,
   'mickeys-not-so-scary-halloween-party': { starts: ['august'], ends: ['october', 'halloween'], nights: [30, 40] },
   'mickeys-very-merry-christmas-party': { starts: ['november'], ends: ['december', 'christmas'], nights: [20, 26] },
   'disney-jollywood-nights': { starts: ['november'], ends: ['january'], nights: [8, 16] },

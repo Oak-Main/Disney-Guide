@@ -157,6 +157,7 @@ export function eventPage (event, data) {
   // An Event node needs a real start date. Without confirmed dates this page is honestly an article
   // about a recurring event, so that is what it says it is.
   const eventNode = latest ? SS.event(site, schemaShape(event, latest, labels), latest, { stale }) : null
+  const modified = event.factCheck?.verified ?? `${event.freshness.verified}-01`
 
   return {
     url,
@@ -169,7 +170,7 @@ export function eventPage (event, data) {
         titleTail: event.titleTail,
         description: event.description,
         trail: event.breadcrumbTrail,
-        modified: `${event.freshness.verified}-01`,
+        modified,
         ogType: 'article',
       },
       body,
@@ -178,7 +179,7 @@ export function eventPage (event, data) {
           url,
           title: event.h1 || event.name,
           description: event.summary,
-          modified: `${event.freshness.verified}-01`,
+          modified,
           section: 'Events',
         }),
         S.faqPage(site, { url, faqs: event.faqs }),

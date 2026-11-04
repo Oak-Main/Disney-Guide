@@ -23,6 +23,8 @@ import { fileURLToPath } from 'node:url'
 
 import { loadData } from '../src/lib/data.mjs'
 import { evergreenUrlSet, urls } from '../src/lib/seasonal-data.mjs'
+import { BUILD_MONTH } from '../src/lib/staleness.mjs'
+import { bandCovers } from '../src/seasonal/core.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 let DATA = join(ROOT, 'data')
@@ -123,6 +125,7 @@ function checkFreshness (obj, where, { requireWindow = false, hasWindow = false 
 
   const scope = `${where} → freshness`
   if (!MONTH_RE.test(fr.verified || '')) err(scope, `"verified" must be YYYY-MM (got ${JSON.stringify(fr.verified)})`)
+  else if (fr.verified > BUILD_MONTH) err(scope, `verification month ${fr.verified} is after build month ${BUILD_MONTH}`)
   if (!MONTH_RE.test(fr.reviewBy || '')) err(scope, `"reviewBy" must be YYYY-MM (got ${JSON.stringify(fr.reviewBy)})`)
   oneOf(fr, 'confidence', CONFIDENCE, scope)
   oneOf(fr, 'cycle', CYCLE, scope)
@@ -343,6 +346,13 @@ async function validateEvents (s1Urls, s1Data) {
     }
 
     const fr = checkFreshness(ev, where, { requireWindow: true, hasWindow: Boolean(win) })
+    if (ev.factCheck?.verified != null) {
+      const day = ev.factCheck.verified
+      const date = new Date(`${day}T00:00:00Z`)
+      if (typeof day !== 'string' || Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== day || day.slice(0, 7) !== fr?.verified) {
+        err(where, 'factCheck.verified must be an ISO calendar date in the freshness.verified month')
+      }
+    }
     checkCrossLinks(ev, where, s1Urls, { min: 1 })
     checkScope(ev, where)
 
@@ -410,7 +420,12 @@ async function validateEvents (s1Urls, s1Data) {
 async function validateMonths (s1Urls, eventSlugs) {
   const dir = join(DATA, 'months')
   const files = await listJson(dir)
-  if (!files.length) { warn('months', 'no month files found'); return }
+  const listings = new Map()
+  if (!files.length) {
+    if (eventSlugs.size) err('months', 'no month pages for the published events')
+    else warn('months', 'no month files found')
+    return listings
+  }
 
   const expectedFiles = MONTH_NAMES.map((_, i) => String(i + 1).padStart(2, '0') + '.json')
   for (const want of expectedFiles) {
@@ -463,7 +478,12 @@ async function validateMonths (s1Urls, eventSlugs) {
       }
     }
 
-    for (const slug of m.whatsOn || []) {
+    if (!Array.isArray(m.whatsOn)) err(where, 'missing or invalid "whatsOn" array')
+    const slugs = Array.isArray(m.whatsOn) ? m.whatsOn : []
+    const whatsOn = new Set(slugs)
+    listings.set(num, whatsOn)
+    if (whatsOn.size !== slugs.length) err(where, 'duplicate event in "whatsOn"')
+    for (const slug of whatsOn) {
       if (!eventSlugs.has(slug)) err(where, `"whatsOn" entry "${slug}" is not an event on this site`)
     }
 
@@ -480,6 +500,7 @@ async function validateMonths (s1Urls, eventSlugs) {
       err('months', `every month grades within ${distinct.size} letter band(s) (${[...distinct].join(', ')}) — the verdict is not doing any work`)
     }
   }
+  return listings
 }
 
 /* ------------------------------------------------------------------ *
@@ -564,9 +585,12 @@ async function validateClosures (s1Data) {
   }
 }
 
-async function validateCalendar (eventSlugs) {
+async function validateCalendar (eventSlugs, listings) {
   const path = join(DATA, 'calendar.json')
-  if (!existsSync(path)) { warn('calendar.json', 'missing — the year-at-a-glance page will not render'); return }
+  if (!existsSync(path)) {
+    if (eventSlugs.size) err('calendar.json', 'missing calendar for the published events')
+    return
+  }
   const cal = await readJson(path, 'calendar.json')
   if (!cal) return
   if (!Array.isArray(cal.bands)) { err('calendar.json', 'missing "bands" array'); return }
@@ -582,9 +606,23 @@ async function validateCalendar (eventSlugs) {
     }
     oneOf(band, 'resort', RESORT, scope)
     oneOf(band, 'confidence', CONFIDENCE, scope)
+    // Intermittent series can have a broad annual band with gaps between individual events.
+    const windowMonths = MONTH_NAMES.map((_, i) => i + 1).filter((month) => bandCovers(band, month))
+    const expected = band.listingMonths === undefined ? windowMonths : band.listingMonths
+    if (!Array.isArray(expected) || !expected.length || new Set(expected).size !== expected.length ||
+        expected.some((month) => !windowMonths.includes(month))) {
+      err(scope, 'listing months must be distinct months within the calendar band')
+      continue
+    }
+    for (const [month, slugs] of listings) {
+      if (slugs.has(band.eventSlug) !== expected.includes(month)) {
+        const mismatch = expected.includes(month) ? 'missing from' : 'unexpectedly listed in'
+        err(scope, `${band.eventSlug} is ${mismatch} ${MONTH_NAMES[month - 1]} whatsOn`)
+      }
+    }
   }
   for (const slug of eventSlugs) {
-    if (!seen.has(slug)) warn('calendar.json', `no band for "${slug}" — it will be missing from the year view`)
+    if (!seen.has(slug)) err('calendar.json', `no band for "${slug}" — it will be missing from the year view`)
   }
 }
 
@@ -662,11 +700,11 @@ async function validateOperator (operatorSlug) {
 
   const eventSlugs = await validateEvents(s1Urls, s1Data)
   await validateNav(eventSlugs, s1Urls)
-  await validateMonths(s1Urls, eventSlugs)
+  const listings = await validateMonths(s1Urls, eventSlugs)
   await validateHolidays(s1Urls, eventSlugs)
   await validatePrices(s1Urls)
   await validateClosures(s1Data)
-  await validateCalendar(eventSlugs)
+  await validateCalendar(eventSlugs, listings)
   return { size: eventSlugs.size, urls: s1Urls.size }
 }
 

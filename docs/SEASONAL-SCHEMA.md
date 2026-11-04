@@ -107,6 +107,8 @@ Every file that makes a dated claim carries one. There is no default and no opti
 Rules the validator enforces:
 
 - `verified` and `reviewBy` match `^\d{4}-(0[1-9]|1[0-2])$`, and `reviewBy > verified`.
+- `verified` must fall on or before the configured build month. An event can also record
+  `factCheck.verified` as an exact calendar day in that month for its page and article metadata.
 - `confidence: "confirmed"` requires a `sourceNote` of at least 30 characters.
 - `reviewBy` may not be more than 18 months after `verified` — a fact nobody rechecks for two years
   is not being maintained, it is being abandoned.
@@ -301,9 +303,11 @@ verify it themselves. `reopening` is prose ("late 2026"), never a fixed date, un
 `reopeningConfidence === "confirmed"`.
 
 ### `calendar.json`
-The year-at-a-glance timeline: `{ bands[] }` where each band is
-`{ eventSlug, startMonth, endMonth, resort, confidence }`. Every `eventSlug` must resolve. Bands are
-rendered as a CSS-grid Gantt, no library.
+The year-at-a-glance timeline has one band per event, with `eventSlug`, `startMonth`, `endMonth`,
+`resort` and `confidence`. Both endpoint months are included. November through January is written
+as 11 through 1. Each covered month must list the event once in `whatsOn`. For an intermittent
+series whose overall band spans gaps, `listingMonths` identifies the months with individual events.
+The validator checks those month pages while the calendar continues to show the overall window.
 
 ---
 

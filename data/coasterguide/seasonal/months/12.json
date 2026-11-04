@@ -2,7 +2,7 @@
   "month": 12,
   "name": "December",
   "slug": "december",
-  "summary": "Holiday weeks carry the month at the warm parks. Great Adventure has announced a 2026 holiday event, but its exact dates remain pending; Great America has no announced December 2026 dates as of September 26.",
+  "summary": "December brings holiday shows and lights to Magic Mountain and Great Adventure on select days. Check each park’s December calendar, especially if you plan to visit on a weekday.",
   "verdict": {
     "grade": "B-",
     "short": "December at these parks: holiday weeks are busiest at the warm parks. Check each northern park's published calendar before treating December as an operating month.",
@@ -17,7 +17,7 @@
   },
   "crowds": {
     "level": "high",
-    "shape": "Holiday weeks carry the month at the warm parks. Great Adventure has announced a holiday program with exact 2026 dates pending; Great America has no announced December 2026 dates as of September 26.",
+    "shape": "Christmas week tends to draw the largest crowds at parks that are open. Magic Mountain and Great Adventure publish their own Holiday in the Park dates.",
     "peakWindows": [
       "The Christmas-to-New Year week"
     ],
@@ -61,7 +61,9 @@
     "level": "high",
     "note": "Ticket prices move by date at every park on this site; the level describes the month's overall shape rather than any single day."
   },
-  "whatsOn": [],
+  "whatsOn": [
+    "holiday-in-the-park-magic-mountain"
+  ],
   "planningNotes": [
     {
       "heading": "The month in one decision",
@@ -89,10 +91,10 @@
     }
   ],
   "freshness": {
-    "verified": "2026-09",
+    "verified": "2026-11",
     "confidence": "expected",
-    "sourceNote": "Six Flags' 2026 holiday announcement names Great Adventure and Over Georgia, not Great America: https://www.sixflags.com/blog/holiday-in-the-park-returns. Great America's published events calendar ended with November 1 Fright Fest as of September 26: https://www.sixflags.com/greatamerica/events. Crowd and cost shapes are multi-year patterns, not a single-year forecast. Weather figures are regional climate normals.",
-    "reviewBy": "2026-11",
+    "sourceNote": "Holiday timing checked November 4, 2026 against [Magic Mountain’s event calendar](https://www.sixflags.com/magicmountain/events) and [Great Adventure’s event listing](https://www.sixflags.com/greatadventure/events/holiday-in-the-park). Crowd and cost estimates describe multi-year patterns. Weather figures are regional climate normals.",
+    "reviewBy": "2026-12",
     "cycle": "rolling"
   }
 }
