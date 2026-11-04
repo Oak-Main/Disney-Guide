@@ -1182,12 +1182,12 @@
     {
       "slug": "be-our-guest-restaurant",
       "name": "Be Our Guest Restaurant",
-      "metaTitleTail": ": prices & verdict",
+      "metaTitleTail": ": menu & prices",
       "land": "fantasyland",
       "service": "table-service",
       "cuisine": "French-inspired American",
       "priceTier": "$$$$",
-      "priceNote": "Prix fixe dinner generally in the $62 to $72 per adult range as of July 2026, before drinks",
+      "priceNote": "Three-course prix fixe lunch and dinner; check Disney's current menus for adult and child prices, plus tax and gratuity",
       "priceVerified": "2026-07",
       "mealPeriods": [
         "lunch",
@@ -1208,18 +1208,16 @@
       "outdoorSeating": false,
       "characterDining": false,
       "standalonePage": true,
-      "summary": "A prix fixe French-inspired meal inside the Beast's castle, with three dining rooms and the hardest reservation in the park.",
+      "summary": "Prix fixe lunch and dinner in the Beast's castle, with three dining rooms; reserve ahead and check Disney's current menu for prices.",
       "description": [
         "Be Our Guest occupies a purpose-built castle at the back of Fantasyland with three distinct dining rooms: a grand ballroom with a painted sky ceiling and falling snow outside the windows, a darker west wing with a portrait that changes and a thunderstorm effect, and a smaller rose gallery.",
-        "Dinner is a three-course prix fixe menu with French-influenced dishes — a soup or salad, an entree from a short list including steak, poultry and a vegetarian option, and a dessert trio that includes the grey-colored mousse the restaurant is known for. Lunch runs a similar structure.",
+        "French-inspired three-course prix fixe meals are served at lunch and dinner. Entree and dessert choices can change; use Disney's current menus when choosing your meal.",
         "The rooms are the product. The ballroom in particular is one of the most impressive interiors Disney has built for a restaurant anywhere, and the falling snow outside the windows is a practical effect that holds up close. The food is competent and expensive."
       ],
       "signatureItems": [
         "The Grey Stuff dessert",
-        "Center-cut filet",
-        "French onion soup",
-        "Ratatouille",
-        "Triple chocolate cupcake"
+        "Grilled filet mignon",
+        "French onion soup"
       ],
       "goodFor": [
         "special-occasion",
@@ -1231,11 +1229,11 @@
       "tips": [
         "Request the ballroom when you check in. All three rooms cost the same, the west wing is atmospheric but dark and hard to photograph, and the ballroom is the one people book this restaurant for.",
         "Book at exactly sixty days out at 6 a.m. Eastern. This is one of the two hardest reservations at Magic Kingdom and availability disappears within minutes on popular dates.",
-        "Lunch costs less than dinner for a similar structure and the rooms look the same. If you want the experience rather than the meal, book lunch.",
+        "Compare Disney's current lunch and dinner menus before reserving; pricing and inclusions can change. Both meal periods offer the castle setting.",
         "Ask a server about the grey mousse if you are celebrating anything. They will usually bring one out with a plate message, and it is the same dessert everyone photographs.",
         "The entrance is at the far back of Fantasyland past Gaston's Tavern, and the walk from the hub takes ten minutes with a stroller. Do not cut your arrival close."
       ],
-      "verdict": "You are buying a room, and it is a spectacular room. The food is fine and the price is not — go for lunch if you want the castle without the dinner bill.",
+      "verdict": "Choose this restaurant for its three themed dining rooms. Compare the current prix fixe menus and prices before deciding whether the castle experience fits your budget.",
       "faqs": [
         {
           "q": "What are the three dining rooms at Be Our Guest Restaurant?",
@@ -1243,7 +1241,15 @@
         },
         {
           "q": "How much does Be Our Guest cost?",
-          "a": "Dinner is a prix fixe running roughly $62 to $72 per adult as of July 2026, before drinks and tax, with lower pricing for children. Lunch follows a similar format at a lower price."
+          "a": "Lunch and dinner use three-course prix fixe menus, with separate adult and child pricing. Check Disney's current menus for the price and inclusions for your meal; tax, gratuity and some drinks cost extra."
+        },
+        {
+          "q": "What are Be Our Guest Restaurant's opening hours?",
+          "a": "Be Our Guest serves lunch and dinner. Hours vary by date; check the official Disney app or venue calendar for your visit date."
+        },
+        {
+          "q": "What is on the Be Our Guest menu?",
+          "a": "Lunch and dinner feature French-inspired three-course prix fixe meals. Check Disney's current menu for appetizers, entrees, desserts and dietary options, since individual dishes change."
         },
         {
           "q": "How far in advance should you book Be Our Guest?",

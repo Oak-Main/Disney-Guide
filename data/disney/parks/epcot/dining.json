@@ -118,6 +118,7 @@
     {
       "slug": "space-220-restaurant",
       "name": "Space 220 Restaurant",
+      "metaTitleTail": ": menu & lounge",
       "land": "world-discovery",
       "service": "table-service",
       "cuisine": "Contemporary American",
@@ -143,7 +144,7 @@
       "outdoorSeating": false,
       "characterDining": false,
       "standalonePage": true,
-      "summary": "A prix fixe restaurant staged as a space station two hundred miles up, with screen windows showing Earth turning below you.",
+      "summary": "Space 220 offers prix fixe lunch and dinner plus a separate lounge menu in a space-station setting; check Disney's menu for prices.",
       "description": [
         "Space 220 sits beside Mission: SPACE and is entered through a 'space elevator' — a room with screen floors and ceilings that simulates a climb from a Florida launch pad to orbit over about two minutes. You step out into a dining room ringed with screens showing the curve of the Earth, the sun crossing, and the occasional passing spacecraft.",
         "The theater is excellent. The elevator gag is the best pre-meal bit at any Walt Disney World restaurant, and the window effect holds up because the imagery moves slowly and continuously rather than looping obviously. Cast members stay in character as station crew.",
@@ -152,7 +153,7 @@
       "signatureItems": [
         "Blue Moon Cauliflower",
         "Starry Calamari",
-        "Slow-rotisserie beef short rib",
+        "Slow Rotation Zero-G Short Rib",
         "Carrot Cake"
       ],
       "goodFor": [
@@ -178,6 +179,18 @@
         {
           "q": "Can you eat at Space 220 without a reservation?",
           "a": "Sometimes, in the lounge. It holds a limited number of walk-up guests and serves a shorter menu at lower cost. Put your name in early in the day and expect a wait."
+        },
+        {
+          "q": "How much does Space 220 cost?",
+          "a": "The restaurant uses prix fixe menus, while the lounge has a separate à la carte menu. Check Disney's official menus for current prices, meal inclusions, tax and gratuity before booking."
+        },
+        {
+          "q": "What are Space 220's opening hours?",
+          "a": "Space 220 serves lunch and dinner. Hours vary by date; check the official Disney app or venue calendar for restaurant and lounge hours on your visit date."
+        },
+        {
+          "q": "What is on the Space 220 menu?",
+          "a": "The restaurant serves contemporary American prix fixe meals, with different inclusions at lunch and dinner. The lounge offers a separate à la carte menu. Check Disney's current menus for the available dishes before booking."
         },
         {
           "q": "Is the view real?",
