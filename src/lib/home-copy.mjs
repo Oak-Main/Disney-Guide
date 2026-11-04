@@ -1,6 +1,7 @@
 /**
  * Homepage copy slots. site.home is an optional, flat map using the keys below.
- * Defaults are the pre-facelift copy; operators without overrides render unchanged.
+ * Defaults preserve the pre-facelift copy except for the shared edition label:
+ * the build month dates the guide, while individual records carry their verification dates.
  * Limits apply to the authored template, before data placeholders are expanded.
  */
 export const HOME_COPY_SLOTS = {

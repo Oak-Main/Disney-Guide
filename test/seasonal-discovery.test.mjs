@@ -11,7 +11,7 @@ import { statusIndex, statusParkPage } from '../src/seasonal/status.mjs'
 test('every published event has one calendar link and one card in each applicable month', async () => {
   for (const operator of await resolveTargets([])) {
     const data = await loadSeasonal(operator.slug)
-    const calendarRows = calendarPage(data).html.match(/<div class="gantt__row" role="row">[\s\S]*?<\/div>/g) || []
+    const calendarRows = (calendarPage(data).html.match(/<div class="gantt__row" role="row">[\s\S]*?<\/div>/g) || []).join('\n')
     const cards = MONTHS.map(({ month, name }) => {
       const page = monthPage(data.monthByNumber.get(month), data).html
       const section = page.split(`<h2>What is on in ${name}</h2>`)[1]
@@ -22,7 +22,7 @@ test('every published event has one calendar link and one card in each applicabl
       const link = `href="${event.url}"`
       const bands = data.calendarBands.filter((band) => band.eventSlug === event.slug)
       assert.equal(bands.length, 1, event.slug)
-      assert.equal(calendarRows.filter((row) => row.includes(link)).length, 1, `calendar row for ${event.slug}`)
+      assert.equal(calendarRows.split(link).length - 1, 1, `calendar link for ${event.slug}`)
       const [band] = bands
       for (const { month, name } of MONTHS) {
         const listed = band.listingMonths?.includes(month) ?? bandCovers(band, month)
@@ -45,6 +45,7 @@ test('the status index and park page date closure evidence from the regional tra
   const missing = statusParkPage(park, data, { closures: [] }).html
   assert.match(missing, /Closure tracker has no recorded check/)
   assert.doesNotMatch(missing, /"dateModified"/)
+  assert.ok(missing.includes('href="https://www.sixflags.com/magicmountain/scheduled-ride-closures"'))
 })
 
 test('Magic Mountain Holiday in the Park keeps its Southern California year-wrap and verified metadata', async () => {

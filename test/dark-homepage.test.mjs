@@ -47,7 +47,8 @@ test('the default build retires the expired 2026 Disney Halloween promotion', as
   const data = await loadData('disney')
   const seasonal = await loadSeasonal('disney', data)
   const page = homePage(data, seasonal).html
-  assert.doesNotMatch(page, /class="band spotlight spotlight--halloween" data-season-until="2026-10-31"|data-landing-bats data-season-until="2026-10-31"/)
+  assert.doesNotMatch(page, /\bspotlight--halloween\b/)
+  assert.doesNotMatch(page, /\bdata-landing-bats\b/)
 })
 
 test('landing bats remain decorative and clear after their three-second sequence', () => {
