@@ -375,7 +375,7 @@ const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep
  * as 11 → 1 and split into two segments here. Clamping it to December instead would have been
  * simpler and would have quietly lied about January.
  */
-export function calendarGantt (bands, { title } = {}) {
+export function calendarGantt (bands, { title, resorts = [] } = {}) {
   const arr = (bands || []).filter((b) => b && b.startMonth && b.endMonth)
   if (!arr.length) return raw('')
 
@@ -395,7 +395,7 @@ export function calendarGantt (bands, { title } = {}) {
           <div class="gantt__row" role="row">
             <span class="gantt__label" role="rowheader">
               ${band.url ? html`<a href="${band.url}">${band.name || band.eventSlug}</a>` : (band.name || band.eventSlug)}
-              <i class="gantt__resort">${band.resort === 'walt-disney-world' ? 'WDW' : band.resort === 'disneyland' ? 'DLR' : 'Both'}</i>
+              <i class="gantt__resort">${band.resort === 'walt-disney-world' ? 'WDW' : band.resort === 'disneyland' ? 'DLR' : resortLabel(band.resort, resorts)}</i>
             </span>
             <span class="gantt__track" role="cell">
               ${MONTH_ABBR.map(() => html`<i class="gantt__cell" aria-hidden="true"></i>`)}

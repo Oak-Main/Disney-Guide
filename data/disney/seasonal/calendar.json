@@ -101,6 +101,7 @@
       "eventSlug": "disneyland-after-dark",
       "startMonth": 1,
       "endMonth": 10,
+      "listingMonths": [2, 3, 4, 5, 6],
       "resort": "disneyland",
       "confidence": "expected"
     }

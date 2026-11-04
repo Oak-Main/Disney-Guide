@@ -142,7 +142,7 @@ function buildPages (data, seasonal) {
 
   // Ride status: the per-park open/closed board with the guest-report layer (Phase 2 client
   // hydrates from /api/status; the scheduled half is complete without it).
-  pages.push(statusPages.statusIndex(data))
+  pages.push(statusPages.statusIndex(data, seasonal))
   for (const park of data.parks) pages.push(statusPages.statusParkPage(park, data, seasonal))
 
   pages.push(...legalPages(data, seasonal))

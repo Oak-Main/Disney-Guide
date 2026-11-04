@@ -49,7 +49,7 @@ export function calendarPage (data) {
 
     ${C.section({
       wide: true,
-      children: SC.calendarGantt(ganttBands(data), { title: 'Twelve months, every event' }),
+      children: SC.calendarGantt(ganttBands(data), { title: 'Twelve months, every event', resorts: site.resorts }),
     })}
 
     ${C.section({

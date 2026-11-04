@@ -71,7 +71,8 @@
     "tricks-and-treats-magic-mountain",
     "tricks-and-treats-over-texas",
     "kids-boo-fest-great-adventure",
-    "kids-boo-fest-great-america"
+    "kids-boo-fest-great-america",
+    "holiday-in-the-park-magic-mountain"
   ],
   "planningNotes": [
     {
@@ -83,7 +84,7 @@
     {
       "heading": "The detail that matters",
       "body": [
-        "Holiday events open across the month at several parks and the Thanksgiving-to-December bridge crowds build steadily toward the holiday peak."
+        "At Magic Mountain, Holiday in the Park begins on Thanksgiving and runs on select dates. Check the event calendar before choosing a park day."
       ]
     }
   ],
@@ -100,10 +101,10 @@
     }
   ],
   "freshness": {
-    "verified": "2026-07",
+    "verified": "2026-11",
     "confidence": "expected",
-    "sourceNote": "Crowd and cost shapes describe multi-year patterns across the ten parks rather than a forecast for any single year. Weather figures are climate normals for each region and do not decay; the Texas figures blend the DFW and San Antonio areas, and the Southern California figures blend the coastal and inland valleys.",
-    "reviewBy": "2027-07",
+    "sourceNote": "Holiday timing checked November 4, 2026 against [Magic Mountain’s event calendar](https://www.sixflags.com/magicmountain/events). Crowd and cost estimates describe multi-year patterns. Weather figures are regional climate normals.",
+    "reviewBy": "2026-12",
     "cycle": "rolling"
   }
 }

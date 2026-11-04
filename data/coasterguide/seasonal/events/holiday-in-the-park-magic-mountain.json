@@ -6,11 +6,11 @@
   "parkSlug": "magic-mountain",
   "category": "overlay",
   "season": "holidays",
-  "summary": "Six Flags Magic Mountain runs Holiday in the Park on select dates from November 26, 2026 through January 3, 2027. Park admission covers the light displays, decorated areas and select rides; food and premium experiences cost extra.",
+  "summary": "Six Flags Magic Mountain celebrates Holiday in the Park on select dates from November 26, 2026 through January 3, 2027. Admission includes the light displays, live shows and most rides. Food and some holiday activities cost extra.",
   "h1": "Holiday in the Park at Six Flags Magic Mountain: dates, what's included and whether it's worth it",
   "title": "Holiday in the Park Six Flags Magic Mountain",
   "titleTail": ": Nov 26–Jan 3",
-  "description": "Holiday in the Park at Six Flags Magic Mountain runs select dates November 26, 2026 through January 3, 2027: what's included with admission, what costs extra, and tips for visiting.",
+  "description": "Holiday in the Park at Six Flags Magic Mountain runs on select dates Nov 26, 2026–Jan 3, 2027. See which shows and rides admission covers and what costs extra.",
   "typicalWindow": {
     "startsAround": "late November",
     "endsAround": "early January",
@@ -20,9 +20,9 @@
     "model": "included",
     "asOf": "November 2026",
     "notes": [
-      "Regular park admission or a valid season pass covers Holiday in the Park light displays, decorated areas and operating rides on event days.",
-      "Seasonal food, drinks, merchandise and certain premium experiences are sold separately.",
-      "The park has not published 2026 single-day pricing specifically for Holiday in the Park; general admission applies."
+      "Use a daily ticket, season pass or membership valid for Magic Mountain on your chosen event date.",
+      "Admission covers holiday shows, light displays, select activities and most rides operating that day.",
+      "Budget separately for food, drinks, souvenirs and select activities such as cookie decorating and s’mores."
     ]
   },
   "whatYouGet": [
@@ -32,44 +32,49 @@
     "A festive atmosphere layered over the regular park experience without a separate event ticket."
   ],
   "whatYouDont": [
-    "Every ride operating; some close for the season or for maintenance during holiday events.",
+    "A guarantee that a particular ride will operate. Check the park’s ride status for your visit.",
     "Food, drinks or premium holiday experiences included with admission; those cost extra.",
     "Warm weather; Valencia evenings in late November and December can drop below 50°F — dress in layers."
   ],
   "verdict": {
-    "short": "Worth visiting for festive lights and shorter coaster lines. Included with admission — the fair pricing makes it easy to justify, though several rides close for the season.",
+    "short": "Worth a visit if your group wants an evening of lights and shows after a day on the rides. Choose a published event date and set aside extra money for food or paid activities.",
     "worthItIf": [
-      "You want a festive atmosphere with shorter coaster lines than summer.",
+      "You want holiday shows and lights as part of a park day.",
       "You already hold a season pass or plan to visit Magic Mountain anyway.",
       "Your group enjoys holiday lights, decorated areas and seasonal food."
     ],
     "skipIf": [
-      "You only care about maximum coaster count — several rides close for the season.",
+      "A particular coaster is the main reason for your visit and its availability is uncertain.",
       "You expect every area decorated — some sections remain standard.",
       "You want warm-weather rides — Valencia evenings drop below 50°F from late November."
     ]
   },
   "sources": [
     {
-      "publisher": "Six Flags Magic Mountain official events page",
+      "publisher": "Six Flags Magic Mountain event calendar",
       "url": "https://www.sixflags.com/magicmountain/events",
       "retrieved": "2026-11-04"
     },
     {
-      "publisher": "Six Flags Holiday in the Park announcement",
-      "url": "https://www.sixflags.com/blog/holiday-in-the-park-returns",
+      "publisher": "Six Flags Magic Mountain Holiday in the Park",
+      "url": "https://www.sixflags.com/magicmountain/events/holiday-in-the-park",
+      "retrieved": "2026-11-04"
+    },
+    {
+      "publisher": "Visit Santa Clarita",
+      "url": "https://visitsantaclarita.com/inspiration/seasonal-activities/holiday-in-the-park-at-six-flags-magic-mountain/",
       "retrieved": "2026-11-04"
     }
   ],
   "factCheck": {
     "verified": "2026-11-04",
-    "method": "Live-web verification against sixflags.com (Sonar lane)",
-    "notes": "Dates verified as November 26, 2026 through January 3, 2027 per the official Magic Mountain events page. Great America (Santa Clara) NOT confirmed for 2026 Holiday in the Park."
+    "method": "Checked the park calendar and admission terms against the official Magic Mountain event page. Visit Santa Clarita independently lists the same opening and closing dates.",
+    "notes": "The announced window covers select dates from November 26, 2026 through January 3, 2027. Daily admission, passes and memberships must be valid for the visit. Food, drinks, merchandise and select activities cost extra."
   },
   "freshness": {
     "verified": "2026-11",
     "confidence": "confirmed",
-    "sourceNote": "Checked November 4, 2026 against the official Magic Mountain events page (sixflags.com/magicmountain/events). The official page confirms select dates November 26, 2026 through January 3, 2027. Holiday in the Park features, pricing model and included-with-admission terms verified against the official announcement post.",
+    "sourceNote": "Checked November 4, 2026. The [Magic Mountain calendar](https://www.sixflags.com/magicmountain/events) lists select dates from November 26 through January 3, 2027. The [official event guide](https://www.sixflags.com/magicmountain/events/holiday-in-the-park) explains which shows, rides and activities admission covers.",
     "reviewBy": "2026-12",
     "cycle": "annual"
   },
@@ -92,11 +97,11 @@
     },
     {
       "q": "Is Holiday in the Park included with admission?",
-      "a": "Yes. Light displays, decorated areas, select operating rides and holiday entertainment are included with regular park admission or a valid season pass. Seasonal food, drinks, merchandise and certain premium experiences are sold separately."
+      "a": "Yes. A ticket, season pass or membership valid for your visit covers holiday shows, light displays, select activities and most rides. Food, drinks, merchandise and some holiday experiences cost extra."
     },
     {
       "q": "Are all rides open during Holiday in the Park?",
-      "a": "No. Several rides close for the season or for maintenance during the holiday event. The park typically lists ride closures on its daily schedule; check the ride status page before visiting if a specific coaster is the reason for your trip."
+      "a": "Six Flags lists select rides and attractions for the celebration. Check the park’s app for ride availability, especially if one coaster is the reason for your trip."
     },
     {
       "q": "What should I wear to Holiday in the Park?",
@@ -116,17 +121,17 @@
       ]
     },
     {
-      "heading": "Check the ride closure list before choosing a date",
+      "heading": "Check ride availability and showtimes",
       "body": [
-        "Several rides close for season or maintenance during the holiday event. If a specific coaster is the reason for your visit, confirm it is operating on your chosen date.",
-        "The park typically posts ride closures on its daily schedule page."
+        "Pick a date on the event calendar, then check the park’s app for ride availability before you leave.",
+        "If a specific show is a priority, check its schedule separately from park opening and closing times."
       ]
     },
     {
       "heading": "Timing around the holidays",
       "body": [
-        "Early December weekdays and the first week of January are noticeably lighter than the Christmas-to-New-Year window.",
-        "The week between Christmas and New Year’s Day is the busiest of the event; expect longer lines and fuller parking."
+        "Check that your chosen day appears on the holiday calendar before making travel plans. Park operating hours and event dates can differ.",
+        "The announced window ends January 3, 2027. Choose a listed event day if you plan to visit in January."
       ]
     },
     {
@@ -138,12 +143,12 @@
     }
   ],
   "whenToGo": {
-    "best": "Early December or the first week of January for lighter crowds",
+    "best": "A listed event date when you can stay after dark for the lights and shows",
     "avoid": "The week between Christmas and New Year’s Day",
     "hours": "Check the park calendar for each date’s operating hours; they vary throughout the event"
   },
   "crowds": {
     "level": "moderate-to-heavy",
-    "notes": "Holiday in the Park draws families and seasonal visitors; the Christmas-to-New-Year window is the busiest. Early December weekdays and January weekdays are noticeably lighter."
+    "notes": "Allow extra time for arrival and popular attractions during the school holiday break. Check the park’s app for waits on the day you visit."
   }
 }

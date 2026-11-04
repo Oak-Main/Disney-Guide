@@ -5,9 +5,8 @@ import * as S from '../lib/schema.mjs'
 import { urls, attractionCoverage } from '../lib/data.mjs'
 import * as f from '../lib/format.mjs'
 import * as SC from '../templates/seasonal-components.mjs'
-import { bandCovers, ganttBands, BUILD_MONTH_NUMBER } from '../seasonal/core.mjs'
+import { bandCovers, ganttBands } from '../seasonal/core.mjs'
 import { riderDataPayload } from './tools.mjs'
-import { BUILD_MONTH as BUILD_MONTH_RAW } from '../lib/staleness.mjs'
 import { BUILD_MONTH } from '../lib/staleness.mjs'
 import { MONTHS } from '../lib/seasonal-data.mjs'
 import { latestParkTimeZone } from '../lib/park-time-zone.mjs'
@@ -53,14 +52,14 @@ function latestSeasonEnd (events) {
 
 /**
  * The Halloween event band. Renders while any Halloween edition is announced and not yet over,
- * measured against BUILD_MONTH so a November rebuild retires it. Runtime expiry covers cached pages. The
+ * measured against the supplied build month. Runtime expiry covers cached pages. The
  * events it claims are removed from the plain "on right now" grid below — one event, one card.
  */
-function hauntBand (runningNow) {
+function hauntBand (runningNow, buildMonth) {
   const current = runningNow.filter((e) => {
     if (e.season !== 'halloween') return false
     const ed = (e.editions || []).find((x) => x.status === 'announced' && x.startDate && x.endDate)
-    return ed && ed.endDate >= `${BUILD_MONTH}-01`
+    return ed && ed.endDate >= `${buildMonth}-01`
   })
   if (current.length < 2) return { band: raw(''), claimed: [] }
   const year = (current[0].editions || []).find((x) => x.status === 'announced').year
@@ -99,13 +98,10 @@ function spotlightEventCard (event, site) {
  * The season spotlight is a themed homepage plate. Its copy, dates, CTA links,
  * and prioritized cards are authored in site.json; this renderer only supplies the shared scene.
  */
-function seasonSpotlight (site, running) {
+function seasonSpotlight (site, running, buildMonth) {
   const spot = site.seasonSpotlight
   if (!spot || !spot.season || !spot.until) return raw('')
-  const [untilYear, untilMonth] = String(spot.until).split('-').map(Number)
-  const buildKey = Number(BUILD_MONTH_RAW.slice(0, 4)) * 12 + Number(BUILD_MONTH_RAW.slice(5, 7))
-  const untilKey = untilYear * 12 + untilMonth
-  if (buildKey > untilKey) return raw('')
+  if (buildMonth > spot.until.slice(0, 7)) return raw('')
 
   const inSeason = (spot.events || [])
     .map((slug) => (running || []).find((event) => event.slug === slug))
@@ -166,8 +162,8 @@ function seasonSpotlight (site, running) {
 }
 
 /** A brief, decor-only welcome moment; it never captures input and removes itself after playing. */
-function landingBats (until, timeZone) {
-  if (!until || BUILD_MONTH_RAW > until.slice(0, 7)) return raw('')
+function landingBats (until, timeZone, buildMonth) {
+  if (!until || buildMonth > until.slice(0, 7)) return raw('')
   const bat = (name) => html`<svg class="landing-bats__bat landing-bats__bat--${name}" viewBox="0 0 80 28" aria-hidden="true"><path d="M0 12c9-10 19-10 29 0 4-9 9-12 11-12s7 3 11 12c10-10 20-10 29 0-9 1-15 5-19 12-5-2-10-5-21-5s-16 3-21 5C15 17 9 13 0 12Z" fill="currentColor" stroke="none"/></svg>`
   return html`
     <div class="landing-bats" data-landing-bats data-season-until="${until}" aria-hidden="true" data-season-time-zone="${timeZone}">
@@ -178,11 +174,12 @@ function landingBats (until, timeZone) {
   `
 }
 
-export function homePage (data, seasonal) {
+export function homePage (data, seasonal, buildMonth = BUILD_MONTH) {
   const { site, parks } = data
+  const monthNumber = Number(buildMonth.slice(5, 7))
   const copy = homeCopy(site, {
     parkCount: parks.length, foodCount: data.allFood.length, guideCount: data.guides.length,
-    month: MONTHS[BUILD_MONTH_NUMBER - 1].name, shortDisclaimer: site.legal.shortDisclaimer,
+    month: MONTHS[monthNumber - 1].name, shortDisclaimer: site.legal.shortDisclaimer,
   })
   const totalAttractions = parks.reduce((count, park) => count + attractionCoverage(park).currentCount, 0)
   const totalFood = data.allFood.length
@@ -223,13 +220,13 @@ export function homePage (data, seasonal) {
   // A monthly rebuild rotates the featured content. Runtime expiry removes the Halloween plate
   // from cached pages after the final published date.
   const bands = ganttBands(seasonal)
-  const runningNow = bands.filter((b) => bandCovers(b, BUILD_MONTH_NUMBER)).map((b) => b.event)
-  const haunt = hauntBand(runningNow)
+  const runningNow = bands.filter((b) => bandCovers(b, monthNumber)).map((b) => b.event)
+  const haunt = hauntBand(runningNow, buildMonth)
   const halloweenEnd = latestSeasonEnd(runningNow.filter((e) => e.season === 'halloween'))
   const otherRunning = runningNow.filter((e) => !haunt.claimed.includes(e))
-  const thisMonth = seasonal.monthByNumber.get(BUILD_MONTH_NUMBER)
-  const nextMonth = seasonal.monthByNumber.get(BUILD_MONTH_NUMBER === 12 ? 1 : BUILD_MONTH_NUMBER + 1)
-  const buildMonthEnd = `${BUILD_MONTH}-${String(new Date(Number(BUILD_MONTH.slice(0, 4)), Number(BUILD_MONTH.slice(5, 7)), 0).getDate()).padStart(2, '0')}`
+  const thisMonth = seasonal.monthByNumber.get(monthNumber)
+  const nextMonth = seasonal.monthByNumber.get(monthNumber === 12 ? 1 : monthNumber + 1)
+  const buildMonthEnd = `${buildMonth}-${new Date(Date.UTC(Number(buildMonth.slice(0, 4)), monthNumber, 0)).getUTCDate()}`
 
   const hollywood = isHollywoodEdition(site)
   const destinationChoice = hollywood ? html`
@@ -241,7 +238,7 @@ export function homePage (data, seasonal) {
             </a>
           `)}
         </div>
-        ${C.lastVerified(BUILD_MONTH, copy('hero.reviewLabel'))}
+        ${C.lastVerified(buildMonth, copy('hero.reviewLabel'))}
       ` : undefined
   const parkSection = C.section({
     title: copy('parks.title'),
@@ -287,7 +284,7 @@ export function homePage (data, seasonal) {
   })
 
   const body = html`
-    ${hollywood ? '' : landingBats(halloweenEnd.date, halloweenEnd.timeZone)}
+    ${hollywood ? '' : landingBats(halloweenEnd.date, halloweenEnd.timeZone, buildMonth)}
     ${C.hero({
       eyebrow: copy('hero.kicker'),
       title: copy('hero.title'),
@@ -313,7 +310,7 @@ export function homePage (data, seasonal) {
           { value: totalFood, label: copy('hero.stats.food') },
           { value: totalDining, label: copy('hero.stats.dining') },
         ])}
-        ${C.lastVerified(BUILD_MONTH, copy('hero.reviewLabel'))}
+        ${C.lastVerified(buildMonth, copy('hero.reviewLabel'))}
       `,
       image: hollywood ? undefined : data.photo.hero,
       video: hollywood ? undefined : site.heroVideo,
@@ -338,7 +335,7 @@ export function homePage (data, seasonal) {
 
     ${hollywood ? html`${parkSection}${toolSection}` : parkSection}
 
-    ${seasonSpotlight(site, runningNow)}
+    ${seasonSpotlight(site, runningNow, buildMonth)}
 
     ${haunt.band}
 
@@ -389,7 +386,7 @@ export function homePage (data, seasonal) {
       intro: copy('calendar.intro'),
       wide: true,
       children: html`
-        ${SC.calendarGantt(bands)}
+        ${SC.calendarGantt(bands, { resorts: site.resorts })}
         <p class="mt-5"><a class="btn btn--ghost" href="${urls.calendar()}">${copy('calendar.label')}</a></p>
       `,
     }) : ''}

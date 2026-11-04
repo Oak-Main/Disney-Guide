@@ -1,6 +1,7 @@
 /**
  * Homepage copy slots. site.home is an optional, flat map using the keys below.
- * Defaults are the pre-facelift copy; operators without overrides render unchanged.
+ * Defaults preserve the pre-facelift copy except for the shared edition label:
+ * the build month dates the guide, while individual records carry their verification dates.
  * Limits apply to the authored template, before data placeholders are expanded.
  */
 export const HOME_COPY_SLOTS = {
@@ -13,7 +14,7 @@ export const HOME_COPY_SLOTS = {
   'hero.stats.heights': ['Height requirements', 32],
   'hero.stats.food': ['Snacks with real prices', 32],
   'hero.stats.dining': ['Places to eat', 32],
-  'hero.reviewLabel': ['Seasonal information reviewed', 36],
+  'hero.reviewLabel': ['Seasonal guide edition', 36],
   'trust[0].title': ['Independent and unofficial', 36],
   'trust[0].body': ['We buy our own tickets. No park pays for a place on this site.', 100],
   'trust[1].title': ['Every fact is dated', 30],

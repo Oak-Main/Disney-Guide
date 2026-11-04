@@ -90,6 +90,13 @@
       "endMonth": 11,
       "resort": "chicago",
       "confidence": "confirmed"
+    },
+    {
+      "eventSlug": "holiday-in-the-park-magic-mountain",
+      "startMonth": 11,
+      "endMonth": 1,
+      "resort": "southern-california",
+      "confidence": "confirmed"
     }
   ]
 }
