@@ -130,9 +130,9 @@
       },
       "tier": "headliner",
       "standalonePage": true,
-      "summary": "The 215-foot B&M hypercoaster along the lakefront — giant floater airtime, a 65-degree drop, and the park's best steel riding.",
+      "summary": "Riders must be at least 54 inches tall. Nitro is a B&M hypercoaster with a 215-foot first drop and long airtime hills.",
       "description": [
-        "Nitro is Great Adventure's giant: a B&M hypercoaster with a 215-foot lift, a drop toward the lake at speed, and a course of enormous airtime hills and a helix finale through the trees. It is the ride style that made B&M's reputation — huge, smooth, and generous with weightlessness.",
+        "Nitro is Great Adventure's giant: a B&M hypercoaster with a 233-foot lift hill, a drop toward the lake at speed, and a course of enormous airtime hills and a helix finale through the trees. It is the ride style that made B&M's reputation — huge, smooth, and generous with weightlessness.",
         "The restraint is a lap bar, the trains are roomy, and the pacing alternates between soaring hills and high-speed turns. Nitro is the coaster at this park most likely to convert a cautious rider: nothing inverts, the forces are comfortable, and the airtime is the friendly floating kind.",
         "Against El Toro's violence, Nitro is the elegance counterweight — the two together, a hundred yards of walking apart, are among the best one-two punches at any American park."
       ],
@@ -155,7 +155,7 @@
         },
         {
           "q": "What is the height requirement for Nitro?",
-          "a": "54 inches, the standard minimum for B&M hypers at this chain. The ride itself is intense-but-gentle by looper standards — the bar is policy, not a judgment of the forces."
+          "a": "The minimum height is 54 inches, according to Six Flags. Check the official ride page and park app for current operating status."
         },
         {
           "q": "Does Nitro have inversions?",
@@ -168,7 +168,8 @@
         "batman-the-ride"
       ],
       "image": null,
-      "lastVerified": "2026-07"
+      "lastVerified": "2026-07",
+      "titleTail": ": 54-inch minimum height"
     },
     {
       "slug": "kingda-ka",
