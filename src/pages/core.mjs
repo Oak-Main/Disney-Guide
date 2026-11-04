@@ -52,7 +52,7 @@ function latestSeasonEnd (events) {
 
 /**
  * The Halloween event band. Renders while any Halloween edition is announced and not yet over,
- * measured against BUILD_MONTH so a November rebuild retires it. Runtime expiry covers cached pages. The
+ * measured against the supplied build month. Runtime expiry covers cached pages. The
  * events it claims are removed from the plain "on right now" grid below — one event, one card.
  */
 function hauntBand (runningNow, buildMonth) {

@@ -43,11 +43,11 @@ test('the home page renders the configured confirmed Halloween spotlight and non
   assert.equal(running.filter((event) => event.season === 'halloween').length >= 3, true)
 })
 
-test('the November rebuild retires the October Disney spotlight and its landing bats', async () => {
+test('the default build retires the expired 2026 Disney Halloween promotion', async () => {
   const data = await loadData('disney')
   const seasonal = await loadSeasonal('disney', data)
-  const page = homePage(data, seasonal, '2026-11').html
-  assert.doesNotMatch(page, /data-landing-bats|id="season-spotlight-title"/)
+  const page = homePage(data, seasonal).html
+  assert.doesNotMatch(page, /class="band spotlight spotlight--halloween" data-season-until="2026-10-31"|data-landing-bats data-season-until="2026-10-31"/)
 })
 
 test('landing bats remain decorative and clear after their three-second sequence', () => {

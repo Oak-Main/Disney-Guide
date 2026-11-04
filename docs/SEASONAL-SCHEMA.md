@@ -303,7 +303,7 @@ verify it themselves. `reopening` is prose ("late 2026"), never a fixed date, un
 `reopeningConfidence === "confirmed"`.
 
 ### `calendar.json`
-The year-at-a-glance timeline has one band per event, with `eventSlug`, `startMonth`, `endMonth`,
+The top-level `bands` array holds one band per event, with `eventSlug`, `startMonth`, `endMonth`,
 `resort` and `confidence`. Both endpoint months are included. November through January is written
 as 11 through 1. Each covered month must list the event once in `whatsOn`. For an intermittent
 series whose overall band spans gaps, `listingMonths` identifies the months with individual events.

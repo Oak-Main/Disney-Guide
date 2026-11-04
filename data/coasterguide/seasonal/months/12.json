@@ -2,7 +2,7 @@
   "month": 12,
   "name": "December",
   "slug": "december",
-  "summary": "December brings holiday shows and lights to Magic Mountain and Great Adventure on select days. Check each park’s December calendar, especially if you plan to visit on a weekday.",
+  "summary": "Magic Mountain runs Holiday in the Park on select December days. Check the park’s calendar before choosing a weekday for the lights and shows.",
   "verdict": {
     "grade": "B-",
     "short": "December at these parks: holiday weeks are busiest at the warm parks. Check each northern park's published calendar before treating December as an operating month.",
@@ -17,7 +17,7 @@
   },
   "crowds": {
     "level": "high",
-    "shape": "Christmas week tends to draw the largest crowds at parks that are open. Magic Mountain and Great Adventure publish their own Holiday in the Park dates.",
+    "shape": "Christmas week tends to draw the largest crowds at parks that are open. In Southern California, check the event calendar before choosing a quieter December date.",
     "peakWindows": [
       "The Christmas-to-New Year week"
     ],
@@ -93,7 +93,7 @@
   "freshness": {
     "verified": "2026-11",
     "confidence": "expected",
-    "sourceNote": "Holiday timing checked November 4, 2026 against [Magic Mountain’s event calendar](https://www.sixflags.com/magicmountain/events) and [Great Adventure’s event listing](https://www.sixflags.com/greatadventure/events/holiday-in-the-park). Crowd and cost estimates describe multi-year patterns. Weather figures are regional climate normals.",
+    "sourceNote": "Holiday timing checked November 4, 2026 against [Magic Mountain’s event calendar](https://www.sixflags.com/magicmountain/events). Crowd and cost estimates describe multi-year patterns. Weather figures are regional climate normals.",
     "reviewBy": "2026-12",
     "cycle": "rolling"
   }

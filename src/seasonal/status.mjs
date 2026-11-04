@@ -20,7 +20,7 @@ import { renderPage } from '../templates/layout.mjs'
 import { isHollywoodEdition } from '../lib/palette.mjs'
 import * as C from '../templates/components.mjs'
 import { urls } from '../lib/data.mjs'
-import { BUILD_MONTH } from '../lib/staleness.mjs'
+import { isMonth } from '../lib/staleness.mjs'
 import * as f from '../lib/format.mjs'
 
 const OFFICIAL_LINKS = {
@@ -39,7 +39,7 @@ function statusDisclaimer (site) {
   return html`
     <div class="callout callout--note status-disclaimer" role="note">
       <h3>Read this first: what this page can and cannot tell you</h3>
-      <p>${site.brand.name} is an independent, unofficial publication with no affiliation to Disney or any park operator. <strong>Scheduled closures</strong> below come from the operator's published calendars and our verified trackers. <strong>Guest reports</strong> are anonymous pings from people at the park — they are <strong>not verified by us, and we cannot confirm any ride's actual operating status</strong>. Reports may be wrong, duplicated, or out of date, and they expire automatically: nothing older than twelve hours can influence anything on this page. Before you walk to a ride, check the operator's own channels — linked from every park page — because only their information is authoritative.</p>
+      <p>${site.brand.name} is an independent, unofficial publication with no affiliation to Disney or any park operator. <strong>Scheduled closures</strong> come from our dated trackers. <strong>Guest reports</strong> are anonymous pings from people at the park — they are <strong>not verified by us, and we cannot confirm any ride's actual operating status</strong>. Reports may be wrong, duplicated, or out of date, and they expire automatically: nothing older than twelve hours can influence anything on this page. Before you walk to a ride, check the park’s official app for current operations.</p>
     </div>
   `
 }
@@ -68,9 +68,16 @@ function scheduledLabel (item) {
   return { label: 'Closed — scheduled', tone: 'warn', note: item.note }
 }
 
-export function statusIndex (data) {
+function closureReview (tracker) {
+  if (!isMonth(tracker?.freshness?.verified)) return 'Closure tracker has no recorded check'
+  const checked = `Closure tracker checked ${f.humanDate(tracker.freshness.verified)}`
+  return tracker.staleness?.state === 'fresh' ? checked : `${checked} · ${tracker.staleness?.label || 'Review date unknown'}`
+}
+
+export function statusIndex (data, seasonal) {
   const { site, parks } = data
   const url = urls.statusIndex()
+  const lastCheck = (seasonal?.closures || []).map((t) => t.freshness?.verified).filter(isMonth).sort().at(-1)
   const trail = [{ label: 'Home', href: '/' }, { label: 'Ride status', href: url }]
 
   const body = html`
@@ -78,7 +85,7 @@ export function statusIndex (data) {
     ${C.hero({
       eyebrow: 'Live-ish, and honest about which parts',
       title: 'Ride status',
-      lede: 'Scheduled closures, verified and dated. Guest reports from inside the park, anonymous and unverified, expiring on a twelve-hour rolling window so nothing stale survives the day. The operator\'s own channels outrank both — and every page here links to them.',
+      lede: 'Check when each regional closure tracker was reviewed. Guest reports from inside the park expire after twelve hours. Consult the park’s own app for today’s ride availability.',
       tone: 'compact',
     })}
 
@@ -89,7 +96,7 @@ export function statusIndex (data) {
           ${C.cardGrid(parks.map((p) => C.card({
             href: urls.statusPark(p.slug),
             title: `${p.name} ride status`,
-            summary: `${p.attractions.filter((a) => a.isOpen).length} open attractions · scheduled closures verified ${BUILD_MONTH} · guest reports live`,
+            summary: `${p.attractions.length} listed attractions · ${closureReview(seasonal?.closuresByResort?.get(p.resort))}`,
           })), { columns: 3 })}
         </div>
       `,
@@ -122,9 +129,9 @@ export function statusIndex (data) {
         ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: 'Ride status',
         titleTail: ' — scheduled closures and guest reports',
-        description: 'Per-park ride status: verified scheduled closures plus anonymous, unverified guest reports on a twelve-hour rolling window, with the operator\'s official channels linked from every page.',
+        description: 'Find scheduled ride closures by park, each regional tracker’s last review, and anonymous guest reports from the past twelve hours.',
         trail,
-        modified: `${BUILD_MONTH}-01`,
+        modified: lastCheck && `${lastCheck}-01`,
       },
       body,
     }),
@@ -136,7 +143,9 @@ export function statusParkPage (park, data, seasonal) {
   const url = urls.statusPark(park.slug)
   const trail = [{ label: 'Home', href: '/' }, { label: 'Ride status', href: urls.statusIndex() }, { label: park.shortLabel || park.name, href: url }]
   const scheduled = scheduledFor(seasonal, park)
-  const official = OFFICIAL_LINKS[park.resortInfo?.slug] || OFFICIAL_LINKS['walt-disney-world']
+  const tracker = seasonal?.closuresByResort?.get(park.resort)
+  const lastCheck = tracker?.freshness?.verified
+  const official = OFFICIAL_LINKS[park.resort]
   /* Every attraction the dataset knows: open rides as live rows, closed or unbuilt ones
      as their verified tracker state - a board that omits the closed rides answers a
      different question than the one a reader brings to it. */
@@ -151,10 +160,10 @@ export function statusParkPage (park, data, seasonal) {
     ${C.hero({
       eyebrow: `${park.resortInfo ? park.resortInfo.name : ''} · ride status`,
       title: `${park.name} today`,
-      lede: `Scheduled closures are verified and dated. Everything else is guest-reported and unverified — and the operator's app outranks all of it.`,
+      lede: `${closureReview(tracker)}. Check the park’s own app for same-day ride availability.`,
       tone: 'compact',
       meta: [
-        { label: 'Open attractions', value: String(rides.length - closedCount) },
+        { label: 'No closure listed', value: String(rides.length - closedCount) },
         { label: 'Closed or scheduled', value: String(closedCount) },
         { label: 'Guest reports', value: 'rolling 12-hour window' },
       ],
@@ -163,7 +172,8 @@ export function statusParkPage (park, data, seasonal) {
     ${C.section({
       children: html`
         ${statusDisclaimer(site)}
-        <p class="small mt-4">Official source for this resort: <a href="${official.href}" rel="noopener">${official.label}</a> <span class="muted">(external, operator-run).</span></p>
+        ${tracker?.url ? html`<p class="small mt-4"><a href="${tracker.url}">Regional closure tracker and review notes</a></p>` : ''}
+        ${official ? html`<p class="small mt-4">Official source for this resort: <a href="${official.href}" rel="noopener">${official.label}</a> <span class="muted">(external, operator-run).</span></p>` : ''}
         <div class="mt-5 status-board" data-status-board="${park.slug}" data-turnstile-key="0x4AAAAAAEuLe7a9JPDqEtAx">
           <noscript><p class="callout callout--note">Guest reports need JavaScript. The scheduled-closure table below is complete without them.</p></noscript>
           <div data-status-rows>
@@ -178,7 +188,7 @@ export function statusParkPage (park, data, seasonal) {
               }
               return html`<div class="status-row" data-ride="${r.isOpen ? r.slug : ''}">
                 <span class="status-row__name">${r.url ? html`<a href="${r.url}">${r.name}</a>` : r.name}</span>
-                <span class="pill status-row__pill status-row__pill--open" data-open-pill>Not scheduled for closure</span>
+                <span class="pill status-row__pill status-row__pill--open" data-open-pill>No closure listed</span>
                 <span class="status-row__report" data-report-slot></span>
               </div>`
             })}
@@ -197,9 +207,9 @@ export function statusParkPage (park, data, seasonal) {
         ...(isHollywoodEdition(site) ? { bodyClass: 'hrg-seasonal' } : {}),
         title: `${park.name} ride status`,
         titleTail: ' — closures and guest reports',
-        description: `Ride status at ${park.name}: verified scheduled closures plus unverified guest reports, expiring on a rolling window. The operator's app is authoritative.`,
+        description: `Ride status at ${park.name}, including dated closure records and guest reports from the past twelve hours. Check the park’s app for same-day operations.`,
         trail,
-        modified: `${BUILD_MONTH}-01`,
+        modified: isMonth(lastCheck) ? `${lastCheck}-01` : undefined,
         noindex: false,
       },
       body,

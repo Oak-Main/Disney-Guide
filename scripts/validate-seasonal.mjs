@@ -357,7 +357,8 @@ async function validateEvents (s1Urls, s1Data) {
     checkScope(ev, where)
 
     // The pattern page's own prose is checked at its own confidence; each edition at its own.
-    const { editions, ...pattern } = ev
+    // Editorial provenance dates describe a check, not an announced event day.
+    const { editions, factCheck, sources, ...pattern } = ev
     if (fr) checkNoExactDates(pattern, where, fr.confidence)
 
     for (const [i, ed] of (editions || []).entries()) {
