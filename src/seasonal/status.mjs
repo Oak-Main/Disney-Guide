@@ -40,10 +40,14 @@ const OFFICIAL_LINKS = {
     label: 'the official Universal Studios Hollywood app',
     href: 'https://www.universalstudioshollywood.com/web/en/us/the-universal-studios-hollywood-mobile-app',
   },
+  'seaworld-san-antonio': {
+    label: 'the SeaWorld San Antonio app for in-park ride information',
+    href: 'https://seaworld.com/san-antonio/mobile-app/',
+  },
 }
 
 // CoasterReady regions contain parks run by different operators.
-const PARK_OPERATIONS = {
+const PARK_CLOSURES = {
   'magic-mountain': 'https://www.sixflags.com/magicmountain/scheduled-ride-closures',
   'knotts-berry-farm': 'https://www.sixflags.com/knotts/scheduled-ride-closures',
   'great-america': 'https://www.sixflags.com/greatamerica/scheduled-ride-closures',
@@ -51,7 +55,6 @@ const PARK_OPERATIONS = {
   'six-flags-over-texas': 'https://www.sixflags.com/overtexas/scheduled-ride-closures',
   'seaworld-san-diego': 'https://seaworld.com/san-diego/park-info/ride-attraction-schedule/',
   'seaworld-orlando': 'https://seaworld.com/orlando/park-info/ride-attraction-schedule/',
-  'seaworld-san-antonio': 'https://seaworld.com/san-antonio/mobile-app/',
   'legoland-california': 'https://www.legoland.com/california/plan-your-visit/know-before-you-go/temporary-closures/',
   'legoland-florida': 'https://www.legoland.com/florida/plan-your-visit/know-before-you-go/temporary-closures/',
 }
@@ -167,8 +170,10 @@ export function statusParkPage (park, data, seasonal) {
   const scheduled = scheduledFor(seasonal, park)
   const tracker = seasonal?.closuresByResort?.get(park.resort)
   const lastCheck = tracker?.freshness?.verified
-  const official = OFFICIAL_LINKS[park.resort]
-  const officialHref = PARK_OPERATIONS[park.slug] || official?.href
+  const closuresUrl = PARK_CLOSURES[park.slug]
+  const official = closuresUrl
+    ? { href: closuresUrl, label: `${park.name} scheduled closures` }
+    : OFFICIAL_LINKS[park.slug] || OFFICIAL_LINKS[park.resort]
   /* Every attraction the dataset knows: open rides as live rows, closed or unbuilt ones
      as their verified tracker state - a board that omits the closed rides answers a
      different question than the one a reader brings to it. */
@@ -196,7 +201,7 @@ export function statusParkPage (park, data, seasonal) {
       children: html`
         ${statusDisclaimer(site)}
         ${tracker?.url ? html`<p class="small mt-4"><a href="${tracker.url}">Regional closure tracker and review notes</a></p>` : ''}
-        ${officialHref ? html`<p class="small mt-4">Official park source: <a href="${officialHref}" rel="noopener">${official?.label || `${park.name} visitor information`}</a></p>` : ''}
+        ${official ? html`<p class="small mt-4">Official park source: <a href="${official.href}" rel="noopener">${official.label}</a></p>` : ''}
         <div class="mt-5 status-board" data-status-board="${park.slug}" data-turnstile-key="0x4AAAAAAEuLe7a9JPDqEtAx">
           <noscript><p class="callout callout--note">Guest reports need JavaScript. The scheduled-closure table below is complete without them.</p></noscript>
           <div data-status-rows>
