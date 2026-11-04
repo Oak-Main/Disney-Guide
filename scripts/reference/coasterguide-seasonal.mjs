@@ -32,6 +32,7 @@ export const EVENTS = {
   'howl-o-scream-san-antonio': { resort: 'texas', park: 'seaworld-san-antonio', category: 'overlay' },
   'howl-o-scream-orlando': { resort: 'orlando', park: 'seaworld-orlando', category: 'hard-ticket' },
   'brick-or-treat-legoland-california': { resort: 'southern-california', park: 'legoland-california', category: 'overlay' },
+  'holiday-in-the-park-magic-mountain': { resort: 'southern-california', park: 'magic-mountain', category: 'overlay' },
 }
 
 /**
