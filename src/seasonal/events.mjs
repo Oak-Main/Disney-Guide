@@ -71,7 +71,7 @@ export function eventPage (event, data) {
       lede: event.summary,
       image: event.heroImage ? data.photo[event.heroImage] : undefined,
       meta: heroMeta,
-      aside: SC.freshnessRibbon(event.freshness, state),
+      aside: SC.freshnessRibbon(event.freshness, state, event.freshness.showVerifiedDay ? event.factCheck?.verified : null),
     })}
 
     ${C.section({
