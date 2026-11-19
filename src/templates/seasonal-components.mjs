@@ -35,7 +35,7 @@ export function monthLabel (ym) {
  * `state` comes from src/lib/staleness.mjs and is computed against the build month, so a page that
  * has gone past its review date says so even though nobody edited it.
  */
-export function freshnessRibbon (freshness, state) {
+export function freshnessRibbon (freshness, state, verifiedDay = null) {
   if (!freshness) return raw('')
   const s = state || {}
   return html`
@@ -43,7 +43,7 @@ export function freshnessRibbon (freshness, state) {
       <p class="freshness__lead">
         <span class="freshness__dot" aria-hidden="true"></span>
         <strong>${s.confidenceLabel || 'Unverified'}</strong>
-        ${freshness.verified ? html`<span class="freshness__sep">·</span> Checked ${monthLabel(freshness.verified)}` : ''}
+        ${freshness.verified ? html`<span class="freshness__sep">·</span> Checked ${verifiedDay ? f.humanDate(verifiedDay) : monthLabel(freshness.verified)}` : ''}
       </p>
       ${freshness.sourceNote ? html`<p class="freshness__note">${inline(freshness.sourceNote)}</p>` : ''}
       <p class="freshness__meta">
