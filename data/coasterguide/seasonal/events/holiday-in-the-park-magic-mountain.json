@@ -28,7 +28,9 @@
   "whatYouGet": [
     "Holiday light displays and decorated themed areas throughout the park.",
     "Select operating rides and attractions included with admission on event days.",
-    "Seasonal entertainment and holiday character appearances, including Santa meet-and-greets.",
+    "Live shows, led by Magic of the Holidays, which Six Flags bills as brand-new this year. Also on the list: Cool Yule Christmas, No Biz Like Snow Biz with the Looney Tunes characters, Tinker's Toy Factory, 'Twas: A Merry Mishap, The Mistletones and The Yule Logs at Metro Pub.",
+    "A tree lighting ceremony to start the evening, with music, dancers and singers around a giant Christmas tree.",
+    "Santa photos in Santa's Cottage, Story Time with Mrs. Claus, the North Pole Craft Depot and Post Office, and the Tree Lot Maze.",
     "A festive atmosphere layered over the regular park experience without a separate event ticket."
   ],
   "whatYouDont": [
@@ -53,12 +55,12 @@
     {
       "publisher": "Six Flags Magic Mountain event calendar",
       "url": "https://www.sixflags.com/magicmountain/events",
-      "retrieved": "2026-11-04"
+      "retrieved": "2026-11-19"
     },
     {
       "publisher": "Six Flags Magic Mountain Holiday in the Park",
       "url": "https://www.sixflags.com/magicmountain/events/holiday-in-the-park",
-      "retrieved": "2026-11-04"
+      "retrieved": "2026-11-19"
     },
     {
       "publisher": "Visit Santa Clarita",
@@ -67,16 +69,17 @@
     }
   ],
   "factCheck": {
-    "verified": "2026-11-04",
+    "verified": "2026-11-19",
     "method": "Checked the park calendar and admission terms against the official Magic Mountain event page. Visit Santa Clarita independently lists the same opening and closing dates.",
     "notes": "The announced window covers select dates from November 26, 2026 through January 3, 2027. Daily admission, passes and memberships must be valid for the visit. Food, drinks, merchandise and select activities cost extra."
   },
   "freshness": {
     "verified": "2026-11",
     "confidence": "confirmed",
-    "sourceNote": "Checked November 4, 2026. The [Magic Mountain calendar](https://www.sixflags.com/magicmountain/events) lists select dates from November 26 through January 3, 2027. The [official event guide](https://www.sixflags.com/magicmountain/events/holiday-in-the-park) explains which shows, rides and activities admission covers.",
+    "sourceNote": "Checked November 18, 2026. The [Magic Mountain calendar](https://www.sixflags.com/magicmountain/events) lists select dates from November 26 through January 3, 2027. The [official event guide](https://www.sixflags.com/magicmountain/events/holiday-in-the-park) lists this year's shows, including Magic of the Holidays, which Six Flags calls brand-new.",
     "reviewBy": "2026-12",
-    "cycle": "annual"
+    "cycle": "annual",
+    "showVerifiedDay": true
   },
   "crossLinks": [
     {
@@ -109,7 +112,15 @@
     },
     {
       "q": "Can I meet Santa at Holiday in the Park?",
-      "a": "Six Flags Magic Mountain typically includes holiday character meet-and-greets, including Santa, as part of the event. Check the park’s daily entertainment schedule for times and locations on the day of your visit."
+      "a": "Yes. Six Flags lists Santa photos in Santa's Cottage among the Holiday in the Park activities. Check the park's daily entertainment schedule for times on the day of your visit."
+    },
+    {
+      "q": "What shows are at Holiday in the Park this year?",
+      "a": "Six Flags lists Magic of the Holidays, which it calls brand-new, plus Cool Yule Christmas, No Biz Like Snow Biz, Tinker's Toy Factory, 'Twas: A Merry Mishap, The Mistletones and The Yule Logs. A tree lighting ceremony opens the evening. Showtimes are in the park's app on the day of your visit."
+    },
+    {
+      "q": "Is there a New Year's Eve event at Holiday in the Park?",
+      "a": "Six Flags has not posted New Year's Eve details on its Holiday in the Park page as of November 18, 2026. Check the Magic Mountain calendar for December 31 hours."
     }
   ],
   "strategy": [
@@ -131,7 +142,8 @@
       "heading": "Timing around the holidays",
       "body": [
         "Check that your chosen day appears on the holiday calendar before making travel plans. Park operating hours and event dates can differ.",
-        "The announced window ends January 3, 2027. Choose a listed event day if you plan to visit in January."
+        "The announced window ends January 3, 2027. Choose a listed event day if you plan to visit in January.",
+        "New Year's Eve: as of November 18, Six Flags has not posted New Year's Eve plans on its Holiday in the Park page. Check the park calendar for December 31 hours before you plan a countdown there."
       ]
     },
     {
